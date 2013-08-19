@@ -47,14 +47,14 @@ What's so special about HPX?
 
 
 The documentation for the latest release of HPX (currently V0.9.5) can be
-`found here <http://stellar.cct.lsu.edu/files/hpx_0.9.5/html/index.html>`_.
+`found here <http://stellar.cct.lsu.edu/files/hpx_0.9.6/html/index.html>`_.
 
 Additionally, we regularily upload the current status of the documentation
 (which is being worked on as we speak)
 `here <http://stellar.cct.lsu.edu/files/hpx_master/docs/index.html>`_.
 
 If you plan to use HPX we suggest to start with the latest released version
-(currently HPX V0.9.5) which can be `downloaded here <http://stellar.cct.lsu.edu/downloads/>`_.
+(currently HPX V0.9.6) which can be `downloaded here <http://stellar.cct.lsu.edu/downloads/>`_.
 
 If you would like to work with the cutting edge version from this repository
 we suggest following the current health status of the master branch by looking at
@@ -75,7 +75,7 @@ Version 1.0 (See accompanying file LICENSE_1_0.txt or an online copy available
 `here <http://www.boost.org/LICENSE_1_0.txt>`_).
 
 Before starting to build HPX, please read about the
-`prerequisites <http://stellar.cct.lsu.edu/files/hpx_0.9.5/docs/hpx/tutorial/getting_started.html>`_.
+`prerequisites <http://stellar.cct.lsu.edu/files/hpx_0.9.6/html/hpx/tutorial/getting_started.html>`_.
 
 Linux
 -----
