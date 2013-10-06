@@ -27,7 +27,7 @@ namespace hpx { namespace util
             static yes_type call(T0);
             static bool const value =
                 sizeof(
-                    call(util::get< 0>( boost::declval<UTuple>()))
+                    call(util::get< 0>(boost::declval<UTuple>()))
                 ) == sizeof(yes_type);
             typedef boost::mpl::bool_<value> type;
         };
@@ -62,7 +62,9 @@ namespace hpx { namespace util
           , typename boost::enable_if_c<
                 detail::are_tuples_compatible<
                     tuple
-                  , typename add_rvalue_reference<tuple<U0> >::type
+                  , typename add_rvalue_reference<
+                        tuple<U0>
+                    >::type
                 >::value
             >::type* = 0
         ) : _m0(boost::forward<U0>(u0))
@@ -77,7 +79,7 @@ namespace hpx { namespace util
         
         
         BOOST_CONSTEXPR tuple(BOOST_RV_REF(tuple) other)
-          : _m0(boost::move(other._m0))
+          : _m0(boost::forward<T0>(other._m0))
         {}
         
         
@@ -147,7 +149,9 @@ namespace hpx { namespace util
         
         
         void swap(tuple& other)
-            BOOST_NOEXCEPT_IF(true && BOOST_NOEXCEPT_EXPR((boost::swap(_m0._value, other._m0._value))))
+            BOOST_NOEXCEPT_IF(
+                true && BOOST_NOEXCEPT_EXPR((boost::swap(_m0._value, other._m0._value)))
+            )
         {
             boost::swap(_m0._value, other._m0._value);;
         }
@@ -165,7 +169,7 @@ namespace hpx { namespace util
     {
         return
             tuple<typename detail::make_tuple_element<T0>::type>(
-                boost::forward<T0>(v0)
+                boost::forward<T0>( v0 )
             );
     }
     
@@ -179,7 +183,7 @@ namespace hpx { namespace util
     {
         return
             tuple<typename add_rvalue_reference<T0>::type>(
-                boost::forward<T0>(v0)
+                boost::forward<T0>( v0 )
             );
     }
     
@@ -192,15 +196,14 @@ namespace hpx { namespace util
     
     template <typename T0>
     BOOST_FORCEINLINE
-    tuple<T0&>
-    tie(T0& v0) BOOST_NOEXCEPT
+    tuple<typename util::add_lvalue_reference<T0>::type>
+    tie(T0 & v0) BOOST_NOEXCEPT
     {
         return
-            tuple<T0&>(
+            tuple<typename util::add_lvalue_reference<T0>::type>(
                 v0
             );
     }
-    
     
     
     
@@ -216,7 +219,7 @@ namespace hpx { namespace util
     {
         return
             typename detail::tuple_cat_result<TTuple, UTuple>::type(
-                detail::tuple_cat_element< 0, T0, T1>::call(t0, t1)
+                HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 0, _)
             );
     }
     
@@ -231,12 +234,17 @@ namespace hpx { namespace util
     
     
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7>
-    struct tuple_element<0, tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7> >
-      : boost::mpl::identity<T0>
+    struct tuple_element<
+        0
+      , tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7>
+    > : boost::mpl::identity<T0>
     {
         template <typename Tuple>
         static BOOST_CONSTEXPR BOOST_FORCEINLINE
-        typename detail::qualify_as<T0, Tuple&>::type
+        typename detail::qualify_as<
+            T0
+          , Tuple&
+        >::type
         get(Tuple& tuple) BOOST_NOEXCEPT
         {
             return tuple._m0._value;
@@ -261,7 +269,7 @@ namespace hpx { namespace util
             static yes_type call(T0 , T1);
             static bool const value =
                 sizeof(
-                    call(util::get< 0>( boost::declval<UTuple>()) , util::get< 1>( boost::declval<UTuple>()))
+                    call(util::get< 0>(boost::declval<UTuple>()) , util::get< 1>(boost::declval<UTuple>()))
                 ) == sizeof(yes_type);
             typedef boost::mpl::bool_<value> type;
         };
@@ -296,7 +304,9 @@ namespace hpx { namespace util
           , typename boost::enable_if_c<
                 detail::are_tuples_compatible<
                     tuple
-                  , typename add_rvalue_reference<tuple<U0 , U1> >::type
+                  , typename add_rvalue_reference<
+                        tuple<U0 , U1>
+                    >::type
                 >::value
             >::type* = 0
         ) : _m0(boost::forward<U0>(u0)) , _m1(boost::forward<U1>(u1))
@@ -311,7 +321,7 @@ namespace hpx { namespace util
         
         
         BOOST_CONSTEXPR tuple(BOOST_RV_REF(tuple) other)
-          : _m0(boost::move(other._m0)) , _m1(boost::move(other._m1))
+          : _m0(boost::forward<T0>(other._m0)) , _m1(boost::forward<T1>(other._m1))
         {}
         
         
@@ -381,7 +391,9 @@ namespace hpx { namespace util
         
         
         void swap(tuple& other)
-            BOOST_NOEXCEPT_IF(true && BOOST_NOEXCEPT_EXPR((boost::swap(_m0._value, other._m0._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m1._value, other._m1._value))))
+            BOOST_NOEXCEPT_IF(
+                true && BOOST_NOEXCEPT_EXPR((boost::swap(_m0._value, other._m0._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m1._value, other._m1._value)))
+            )
         {
             boost::swap(_m0._value, other._m0._value); boost::swap(_m1._value, other._m1._value);;
         }
@@ -399,7 +411,7 @@ namespace hpx { namespace util
     {
         return
             tuple<typename detail::make_tuple_element<T0>::type , typename detail::make_tuple_element<T1>::type>(
-                boost::forward<T0>(v0) , boost::forward<T1>(v1)
+                boost::forward<T0>( v0 ) , boost::forward<T1>( v1 )
             );
     }
     
@@ -413,7 +425,7 @@ namespace hpx { namespace util
     {
         return
             tuple<typename add_rvalue_reference<T0>::type , typename add_rvalue_reference<T1>::type>(
-                boost::forward<T0>(v0) , boost::forward<T1>(v1)
+                boost::forward<T0>( v0 ) , boost::forward<T1>( v1 )
             );
     }
     
@@ -426,15 +438,14 @@ namespace hpx { namespace util
     
     template <typename T0 , typename T1>
     BOOST_FORCEINLINE
-    tuple<T0& , T1&>
-    tie(T0& v0 , T1& v1) BOOST_NOEXCEPT
+    tuple<typename util::add_lvalue_reference<T0>::type , typename util::add_lvalue_reference<T1>::type>
+    tie(T0 & v0 , T1 & v1) BOOST_NOEXCEPT
     {
         return
-            tuple<T0& , T1&>(
+            tuple<typename util::add_lvalue_reference<T0>::type , typename util::add_lvalue_reference<T1>::type>(
                 v0 , v1
             );
     }
-    
     
     
     
@@ -450,7 +461,7 @@ namespace hpx { namespace util
     {
         return
             typename detail::tuple_cat_result<TTuple, UTuple>::type(
-                detail::tuple_cat_element< 0, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 1, T0, T1>::call(t0, t1)
+                HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 0, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 1, _)
             );
     }
     
@@ -465,12 +476,17 @@ namespace hpx { namespace util
     
     
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7>
-    struct tuple_element<1, tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7> >
-      : boost::mpl::identity<T1>
+    struct tuple_element<
+        1
+      , tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7>
+    > : boost::mpl::identity<T1>
     {
         template <typename Tuple>
         static BOOST_CONSTEXPR BOOST_FORCEINLINE
-        typename detail::qualify_as<T1, Tuple&>::type
+        typename detail::qualify_as<
+            T1
+          , Tuple&
+        >::type
         get(Tuple& tuple) BOOST_NOEXCEPT
         {
             return tuple._m1._value;
@@ -495,7 +511,7 @@ namespace hpx { namespace util
             static yes_type call(T0 , T1 , T2);
             static bool const value =
                 sizeof(
-                    call(util::get< 0>( boost::declval<UTuple>()) , util::get< 1>( boost::declval<UTuple>()) , util::get< 2>( boost::declval<UTuple>()))
+                    call(util::get< 0>(boost::declval<UTuple>()) , util::get< 1>(boost::declval<UTuple>()) , util::get< 2>(boost::declval<UTuple>()))
                 ) == sizeof(yes_type);
             typedef boost::mpl::bool_<value> type;
         };
@@ -530,7 +546,9 @@ namespace hpx { namespace util
           , typename boost::enable_if_c<
                 detail::are_tuples_compatible<
                     tuple
-                  , typename add_rvalue_reference<tuple<U0 , U1 , U2> >::type
+                  , typename add_rvalue_reference<
+                        tuple<U0 , U1 , U2>
+                    >::type
                 >::value
             >::type* = 0
         ) : _m0(boost::forward<U0>(u0)) , _m1(boost::forward<U1>(u1)) , _m2(boost::forward<U2>(u2))
@@ -545,7 +563,7 @@ namespace hpx { namespace util
         
         
         BOOST_CONSTEXPR tuple(BOOST_RV_REF(tuple) other)
-          : _m0(boost::move(other._m0)) , _m1(boost::move(other._m1)) , _m2(boost::move(other._m2))
+          : _m0(boost::forward<T0>(other._m0)) , _m1(boost::forward<T1>(other._m1)) , _m2(boost::forward<T2>(other._m2))
         {}
         
         
@@ -615,7 +633,9 @@ namespace hpx { namespace util
         
         
         void swap(tuple& other)
-            BOOST_NOEXCEPT_IF(true && BOOST_NOEXCEPT_EXPR((boost::swap(_m0._value, other._m0._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m1._value, other._m1._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m2._value, other._m2._value))))
+            BOOST_NOEXCEPT_IF(
+                true && BOOST_NOEXCEPT_EXPR((boost::swap(_m0._value, other._m0._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m1._value, other._m1._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m2._value, other._m2._value)))
+            )
         {
             boost::swap(_m0._value, other._m0._value); boost::swap(_m1._value, other._m1._value); boost::swap(_m2._value, other._m2._value);;
         }
@@ -633,7 +653,7 @@ namespace hpx { namespace util
     {
         return
             tuple<typename detail::make_tuple_element<T0>::type , typename detail::make_tuple_element<T1>::type , typename detail::make_tuple_element<T2>::type>(
-                boost::forward<T0>(v0) , boost::forward<T1>(v1) , boost::forward<T2>(v2)
+                boost::forward<T0>( v0 ) , boost::forward<T1>( v1 ) , boost::forward<T2>( v2 )
             );
     }
     
@@ -647,7 +667,7 @@ namespace hpx { namespace util
     {
         return
             tuple<typename add_rvalue_reference<T0>::type , typename add_rvalue_reference<T1>::type , typename add_rvalue_reference<T2>::type>(
-                boost::forward<T0>(v0) , boost::forward<T1>(v1) , boost::forward<T2>(v2)
+                boost::forward<T0>( v0 ) , boost::forward<T1>( v1 ) , boost::forward<T2>( v2 )
             );
     }
     
@@ -660,15 +680,14 @@ namespace hpx { namespace util
     
     template <typename T0 , typename T1 , typename T2>
     BOOST_FORCEINLINE
-    tuple<T0& , T1& , T2&>
-    tie(T0& v0 , T1& v1 , T2& v2) BOOST_NOEXCEPT
+    tuple<typename util::add_lvalue_reference<T0>::type , typename util::add_lvalue_reference<T1>::type , typename util::add_lvalue_reference<T2>::type>
+    tie(T0 & v0 , T1 & v1 , T2 & v2) BOOST_NOEXCEPT
     {
         return
-            tuple<T0& , T1& , T2&>(
+            tuple<typename util::add_lvalue_reference<T0>::type , typename util::add_lvalue_reference<T1>::type , typename util::add_lvalue_reference<T2>::type>(
                 v0 , v1 , v2
             );
     }
-    
     
     
     
@@ -684,7 +703,7 @@ namespace hpx { namespace util
     {
         return
             typename detail::tuple_cat_result<TTuple, UTuple>::type(
-                detail::tuple_cat_element< 0, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 1, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 2, T0, T1>::call(t0, t1)
+                HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 0, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 1, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 2, _)
             );
     }
     template <typename T0 , typename T1 , typename T2>
@@ -713,12 +732,17 @@ namespace hpx { namespace util
     
     
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7>
-    struct tuple_element<2, tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7> >
-      : boost::mpl::identity<T2>
+    struct tuple_element<
+        2
+      , tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7>
+    > : boost::mpl::identity<T2>
     {
         template <typename Tuple>
         static BOOST_CONSTEXPR BOOST_FORCEINLINE
-        typename detail::qualify_as<T2, Tuple&>::type
+        typename detail::qualify_as<
+            T2
+          , Tuple&
+        >::type
         get(Tuple& tuple) BOOST_NOEXCEPT
         {
             return tuple._m2._value;
@@ -743,7 +767,7 @@ namespace hpx { namespace util
             static yes_type call(T0 , T1 , T2 , T3);
             static bool const value =
                 sizeof(
-                    call(util::get< 0>( boost::declval<UTuple>()) , util::get< 1>( boost::declval<UTuple>()) , util::get< 2>( boost::declval<UTuple>()) , util::get< 3>( boost::declval<UTuple>()))
+                    call(util::get< 0>(boost::declval<UTuple>()) , util::get< 1>(boost::declval<UTuple>()) , util::get< 2>(boost::declval<UTuple>()) , util::get< 3>(boost::declval<UTuple>()))
                 ) == sizeof(yes_type);
             typedef boost::mpl::bool_<value> type;
         };
@@ -778,7 +802,9 @@ namespace hpx { namespace util
           , typename boost::enable_if_c<
                 detail::are_tuples_compatible<
                     tuple
-                  , typename add_rvalue_reference<tuple<U0 , U1 , U2 , U3> >::type
+                  , typename add_rvalue_reference<
+                        tuple<U0 , U1 , U2 , U3>
+                    >::type
                 >::value
             >::type* = 0
         ) : _m0(boost::forward<U0>(u0)) , _m1(boost::forward<U1>(u1)) , _m2(boost::forward<U2>(u2)) , _m3(boost::forward<U3>(u3))
@@ -793,7 +819,7 @@ namespace hpx { namespace util
         
         
         BOOST_CONSTEXPR tuple(BOOST_RV_REF(tuple) other)
-          : _m0(boost::move(other._m0)) , _m1(boost::move(other._m1)) , _m2(boost::move(other._m2)) , _m3(boost::move(other._m3))
+          : _m0(boost::forward<T0>(other._m0)) , _m1(boost::forward<T1>(other._m1)) , _m2(boost::forward<T2>(other._m2)) , _m3(boost::forward<T3>(other._m3))
         {}
         
         
@@ -863,7 +889,9 @@ namespace hpx { namespace util
         
         
         void swap(tuple& other)
-            BOOST_NOEXCEPT_IF(true && BOOST_NOEXCEPT_EXPR((boost::swap(_m0._value, other._m0._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m1._value, other._m1._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m2._value, other._m2._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m3._value, other._m3._value))))
+            BOOST_NOEXCEPT_IF(
+                true && BOOST_NOEXCEPT_EXPR((boost::swap(_m0._value, other._m0._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m1._value, other._m1._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m2._value, other._m2._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m3._value, other._m3._value)))
+            )
         {
             boost::swap(_m0._value, other._m0._value); boost::swap(_m1._value, other._m1._value); boost::swap(_m2._value, other._m2._value); boost::swap(_m3._value, other._m3._value);;
         }
@@ -881,7 +909,7 @@ namespace hpx { namespace util
     {
         return
             tuple<typename detail::make_tuple_element<T0>::type , typename detail::make_tuple_element<T1>::type , typename detail::make_tuple_element<T2>::type , typename detail::make_tuple_element<T3>::type>(
-                boost::forward<T0>(v0) , boost::forward<T1>(v1) , boost::forward<T2>(v2) , boost::forward<T3>(v3)
+                boost::forward<T0>( v0 ) , boost::forward<T1>( v1 ) , boost::forward<T2>( v2 ) , boost::forward<T3>( v3 )
             );
     }
     
@@ -895,7 +923,7 @@ namespace hpx { namespace util
     {
         return
             tuple<typename add_rvalue_reference<T0>::type , typename add_rvalue_reference<T1>::type , typename add_rvalue_reference<T2>::type , typename add_rvalue_reference<T3>::type>(
-                boost::forward<T0>(v0) , boost::forward<T1>(v1) , boost::forward<T2>(v2) , boost::forward<T3>(v3)
+                boost::forward<T0>( v0 ) , boost::forward<T1>( v1 ) , boost::forward<T2>( v2 ) , boost::forward<T3>( v3 )
             );
     }
     
@@ -908,15 +936,14 @@ namespace hpx { namespace util
     
     template <typename T0 , typename T1 , typename T2 , typename T3>
     BOOST_FORCEINLINE
-    tuple<T0& , T1& , T2& , T3&>
-    tie(T0& v0 , T1& v1 , T2& v2 , T3& v3) BOOST_NOEXCEPT
+    tuple<typename util::add_lvalue_reference<T0>::type , typename util::add_lvalue_reference<T1>::type , typename util::add_lvalue_reference<T2>::type , typename util::add_lvalue_reference<T3>::type>
+    tie(T0 & v0 , T1 & v1 , T2 & v2 , T3 & v3) BOOST_NOEXCEPT
     {
         return
-            tuple<T0& , T1& , T2& , T3&>(
+            tuple<typename util::add_lvalue_reference<T0>::type , typename util::add_lvalue_reference<T1>::type , typename util::add_lvalue_reference<T2>::type , typename util::add_lvalue_reference<T3>::type>(
                 v0 , v1 , v2 , v3
             );
     }
-    
     
     
     
@@ -932,7 +959,7 @@ namespace hpx { namespace util
     {
         return
             typename detail::tuple_cat_result<TTuple, UTuple>::type(
-                detail::tuple_cat_element< 0, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 1, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 2, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 3, T0, T1>::call(t0, t1)
+                HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 0, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 1, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 2, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 3, _)
             );
     }
     template <typename T0 , typename T1 , typename T2 , typename T3>
@@ -959,12 +986,17 @@ namespace hpx { namespace util
     
     
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7>
-    struct tuple_element<3, tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7> >
-      : boost::mpl::identity<T3>
+    struct tuple_element<
+        3
+      , tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7>
+    > : boost::mpl::identity<T3>
     {
         template <typename Tuple>
         static BOOST_CONSTEXPR BOOST_FORCEINLINE
-        typename detail::qualify_as<T3, Tuple&>::type
+        typename detail::qualify_as<
+            T3
+          , Tuple&
+        >::type
         get(Tuple& tuple) BOOST_NOEXCEPT
         {
             return tuple._m3._value;
@@ -989,7 +1021,7 @@ namespace hpx { namespace util
             static yes_type call(T0 , T1 , T2 , T3 , T4);
             static bool const value =
                 sizeof(
-                    call(util::get< 0>( boost::declval<UTuple>()) , util::get< 1>( boost::declval<UTuple>()) , util::get< 2>( boost::declval<UTuple>()) , util::get< 3>( boost::declval<UTuple>()) , util::get< 4>( boost::declval<UTuple>()))
+                    call(util::get< 0>(boost::declval<UTuple>()) , util::get< 1>(boost::declval<UTuple>()) , util::get< 2>(boost::declval<UTuple>()) , util::get< 3>(boost::declval<UTuple>()) , util::get< 4>(boost::declval<UTuple>()))
                 ) == sizeof(yes_type);
             typedef boost::mpl::bool_<value> type;
         };
@@ -1024,7 +1056,9 @@ namespace hpx { namespace util
           , typename boost::enable_if_c<
                 detail::are_tuples_compatible<
                     tuple
-                  , typename add_rvalue_reference<tuple<U0 , U1 , U2 , U3 , U4> >::type
+                  , typename add_rvalue_reference<
+                        tuple<U0 , U1 , U2 , U3 , U4>
+                    >::type
                 >::value
             >::type* = 0
         ) : _m0(boost::forward<U0>(u0)) , _m1(boost::forward<U1>(u1)) , _m2(boost::forward<U2>(u2)) , _m3(boost::forward<U3>(u3)) , _m4(boost::forward<U4>(u4))
@@ -1039,7 +1073,7 @@ namespace hpx { namespace util
         
         
         BOOST_CONSTEXPR tuple(BOOST_RV_REF(tuple) other)
-          : _m0(boost::move(other._m0)) , _m1(boost::move(other._m1)) , _m2(boost::move(other._m2)) , _m3(boost::move(other._m3)) , _m4(boost::move(other._m4))
+          : _m0(boost::forward<T0>(other._m0)) , _m1(boost::forward<T1>(other._m1)) , _m2(boost::forward<T2>(other._m2)) , _m3(boost::forward<T3>(other._m3)) , _m4(boost::forward<T4>(other._m4))
         {}
         
         
@@ -1109,7 +1143,9 @@ namespace hpx { namespace util
         
         
         void swap(tuple& other)
-            BOOST_NOEXCEPT_IF(true && BOOST_NOEXCEPT_EXPR((boost::swap(_m0._value, other._m0._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m1._value, other._m1._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m2._value, other._m2._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m3._value, other._m3._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m4._value, other._m4._value))))
+            BOOST_NOEXCEPT_IF(
+                true && BOOST_NOEXCEPT_EXPR((boost::swap(_m0._value, other._m0._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m1._value, other._m1._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m2._value, other._m2._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m3._value, other._m3._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m4._value, other._m4._value)))
+            )
         {
             boost::swap(_m0._value, other._m0._value); boost::swap(_m1._value, other._m1._value); boost::swap(_m2._value, other._m2._value); boost::swap(_m3._value, other._m3._value); boost::swap(_m4._value, other._m4._value);;
         }
@@ -1127,7 +1163,7 @@ namespace hpx { namespace util
     {
         return
             tuple<typename detail::make_tuple_element<T0>::type , typename detail::make_tuple_element<T1>::type , typename detail::make_tuple_element<T2>::type , typename detail::make_tuple_element<T3>::type , typename detail::make_tuple_element<T4>::type>(
-                boost::forward<T0>(v0) , boost::forward<T1>(v1) , boost::forward<T2>(v2) , boost::forward<T3>(v3) , boost::forward<T4>(v4)
+                boost::forward<T0>( v0 ) , boost::forward<T1>( v1 ) , boost::forward<T2>( v2 ) , boost::forward<T3>( v3 ) , boost::forward<T4>( v4 )
             );
     }
     
@@ -1141,7 +1177,7 @@ namespace hpx { namespace util
     {
         return
             tuple<typename add_rvalue_reference<T0>::type , typename add_rvalue_reference<T1>::type , typename add_rvalue_reference<T2>::type , typename add_rvalue_reference<T3>::type , typename add_rvalue_reference<T4>::type>(
-                boost::forward<T0>(v0) , boost::forward<T1>(v1) , boost::forward<T2>(v2) , boost::forward<T3>(v3) , boost::forward<T4>(v4)
+                boost::forward<T0>( v0 ) , boost::forward<T1>( v1 ) , boost::forward<T2>( v2 ) , boost::forward<T3>( v3 ) , boost::forward<T4>( v4 )
             );
     }
     
@@ -1154,15 +1190,14 @@ namespace hpx { namespace util
     
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4>
     BOOST_FORCEINLINE
-    tuple<T0& , T1& , T2& , T3& , T4&>
-    tie(T0& v0 , T1& v1 , T2& v2 , T3& v3 , T4& v4) BOOST_NOEXCEPT
+    tuple<typename util::add_lvalue_reference<T0>::type , typename util::add_lvalue_reference<T1>::type , typename util::add_lvalue_reference<T2>::type , typename util::add_lvalue_reference<T3>::type , typename util::add_lvalue_reference<T4>::type>
+    tie(T0 & v0 , T1 & v1 , T2 & v2 , T3 & v3 , T4 & v4) BOOST_NOEXCEPT
     {
         return
-            tuple<T0& , T1& , T2& , T3& , T4&>(
+            tuple<typename util::add_lvalue_reference<T0>::type , typename util::add_lvalue_reference<T1>::type , typename util::add_lvalue_reference<T2>::type , typename util::add_lvalue_reference<T3>::type , typename util::add_lvalue_reference<T4>::type>(
                 v0 , v1 , v2 , v3 , v4
             );
     }
-    
     
     
     
@@ -1178,7 +1213,7 @@ namespace hpx { namespace util
     {
         return
             typename detail::tuple_cat_result<TTuple, UTuple>::type(
-                detail::tuple_cat_element< 0, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 1, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 2, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 3, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 4, T0, T1>::call(t0, t1)
+                HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 0, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 1, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 2, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 3, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 4, _)
             );
     }
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4>
@@ -1207,12 +1242,17 @@ namespace hpx { namespace util
     
     
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7>
-    struct tuple_element<4, tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7> >
-      : boost::mpl::identity<T4>
+    struct tuple_element<
+        4
+      , tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7>
+    > : boost::mpl::identity<T4>
     {
         template <typename Tuple>
         static BOOST_CONSTEXPR BOOST_FORCEINLINE
-        typename detail::qualify_as<T4, Tuple&>::type
+        typename detail::qualify_as<
+            T4
+          , Tuple&
+        >::type
         get(Tuple& tuple) BOOST_NOEXCEPT
         {
             return tuple._m4._value;
@@ -1237,7 +1277,7 @@ namespace hpx { namespace util
             static yes_type call(T0 , T1 , T2 , T3 , T4 , T5);
             static bool const value =
                 sizeof(
-                    call(util::get< 0>( boost::declval<UTuple>()) , util::get< 1>( boost::declval<UTuple>()) , util::get< 2>( boost::declval<UTuple>()) , util::get< 3>( boost::declval<UTuple>()) , util::get< 4>( boost::declval<UTuple>()) , util::get< 5>( boost::declval<UTuple>()))
+                    call(util::get< 0>(boost::declval<UTuple>()) , util::get< 1>(boost::declval<UTuple>()) , util::get< 2>(boost::declval<UTuple>()) , util::get< 3>(boost::declval<UTuple>()) , util::get< 4>(boost::declval<UTuple>()) , util::get< 5>(boost::declval<UTuple>()))
                 ) == sizeof(yes_type);
             typedef boost::mpl::bool_<value> type;
         };
@@ -1272,7 +1312,9 @@ namespace hpx { namespace util
           , typename boost::enable_if_c<
                 detail::are_tuples_compatible<
                     tuple
-                  , typename add_rvalue_reference<tuple<U0 , U1 , U2 , U3 , U4 , U5> >::type
+                  , typename add_rvalue_reference<
+                        tuple<U0 , U1 , U2 , U3 , U4 , U5>
+                    >::type
                 >::value
             >::type* = 0
         ) : _m0(boost::forward<U0>(u0)) , _m1(boost::forward<U1>(u1)) , _m2(boost::forward<U2>(u2)) , _m3(boost::forward<U3>(u3)) , _m4(boost::forward<U4>(u4)) , _m5(boost::forward<U5>(u5))
@@ -1287,7 +1329,7 @@ namespace hpx { namespace util
         
         
         BOOST_CONSTEXPR tuple(BOOST_RV_REF(tuple) other)
-          : _m0(boost::move(other._m0)) , _m1(boost::move(other._m1)) , _m2(boost::move(other._m2)) , _m3(boost::move(other._m3)) , _m4(boost::move(other._m4)) , _m5(boost::move(other._m5))
+          : _m0(boost::forward<T0>(other._m0)) , _m1(boost::forward<T1>(other._m1)) , _m2(boost::forward<T2>(other._m2)) , _m3(boost::forward<T3>(other._m3)) , _m4(boost::forward<T4>(other._m4)) , _m5(boost::forward<T5>(other._m5))
         {}
         
         
@@ -1357,7 +1399,9 @@ namespace hpx { namespace util
         
         
         void swap(tuple& other)
-            BOOST_NOEXCEPT_IF(true && BOOST_NOEXCEPT_EXPR((boost::swap(_m0._value, other._m0._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m1._value, other._m1._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m2._value, other._m2._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m3._value, other._m3._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m4._value, other._m4._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m5._value, other._m5._value))))
+            BOOST_NOEXCEPT_IF(
+                true && BOOST_NOEXCEPT_EXPR((boost::swap(_m0._value, other._m0._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m1._value, other._m1._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m2._value, other._m2._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m3._value, other._m3._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m4._value, other._m4._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m5._value, other._m5._value)))
+            )
         {
             boost::swap(_m0._value, other._m0._value); boost::swap(_m1._value, other._m1._value); boost::swap(_m2._value, other._m2._value); boost::swap(_m3._value, other._m3._value); boost::swap(_m4._value, other._m4._value); boost::swap(_m5._value, other._m5._value);;
         }
@@ -1375,7 +1419,7 @@ namespace hpx { namespace util
     {
         return
             tuple<typename detail::make_tuple_element<T0>::type , typename detail::make_tuple_element<T1>::type , typename detail::make_tuple_element<T2>::type , typename detail::make_tuple_element<T3>::type , typename detail::make_tuple_element<T4>::type , typename detail::make_tuple_element<T5>::type>(
-                boost::forward<T0>(v0) , boost::forward<T1>(v1) , boost::forward<T2>(v2) , boost::forward<T3>(v3) , boost::forward<T4>(v4) , boost::forward<T5>(v5)
+                boost::forward<T0>( v0 ) , boost::forward<T1>( v1 ) , boost::forward<T2>( v2 ) , boost::forward<T3>( v3 ) , boost::forward<T4>( v4 ) , boost::forward<T5>( v5 )
             );
     }
     
@@ -1389,7 +1433,7 @@ namespace hpx { namespace util
     {
         return
             tuple<typename add_rvalue_reference<T0>::type , typename add_rvalue_reference<T1>::type , typename add_rvalue_reference<T2>::type , typename add_rvalue_reference<T3>::type , typename add_rvalue_reference<T4>::type , typename add_rvalue_reference<T5>::type>(
-                boost::forward<T0>(v0) , boost::forward<T1>(v1) , boost::forward<T2>(v2) , boost::forward<T3>(v3) , boost::forward<T4>(v4) , boost::forward<T5>(v5)
+                boost::forward<T0>( v0 ) , boost::forward<T1>( v1 ) , boost::forward<T2>( v2 ) , boost::forward<T3>( v3 ) , boost::forward<T4>( v4 ) , boost::forward<T5>( v5 )
             );
     }
     
@@ -1402,15 +1446,14 @@ namespace hpx { namespace util
     
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5>
     BOOST_FORCEINLINE
-    tuple<T0& , T1& , T2& , T3& , T4& , T5&>
-    tie(T0& v0 , T1& v1 , T2& v2 , T3& v3 , T4& v4 , T5& v5) BOOST_NOEXCEPT
+    tuple<typename util::add_lvalue_reference<T0>::type , typename util::add_lvalue_reference<T1>::type , typename util::add_lvalue_reference<T2>::type , typename util::add_lvalue_reference<T3>::type , typename util::add_lvalue_reference<T4>::type , typename util::add_lvalue_reference<T5>::type>
+    tie(T0 & v0 , T1 & v1 , T2 & v2 , T3 & v3 , T4 & v4 , T5 & v5) BOOST_NOEXCEPT
     {
         return
-            tuple<T0& , T1& , T2& , T3& , T4& , T5&>(
+            tuple<typename util::add_lvalue_reference<T0>::type , typename util::add_lvalue_reference<T1>::type , typename util::add_lvalue_reference<T2>::type , typename util::add_lvalue_reference<T3>::type , typename util::add_lvalue_reference<T4>::type , typename util::add_lvalue_reference<T5>::type>(
                 v0 , v1 , v2 , v3 , v4 , v5
             );
     }
-    
     
     
     
@@ -1426,7 +1469,7 @@ namespace hpx { namespace util
     {
         return
             typename detail::tuple_cat_result<TTuple, UTuple>::type(
-                detail::tuple_cat_element< 0, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 1, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 2, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 3, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 4, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 5, T0, T1>::call(t0, t1)
+                HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 0, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 1, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 2, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 3, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 4, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 5, _)
             );
     }
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5>
@@ -1453,12 +1496,17 @@ namespace hpx { namespace util
     
     
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7>
-    struct tuple_element<5, tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7> >
-      : boost::mpl::identity<T5>
+    struct tuple_element<
+        5
+      , tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7>
+    > : boost::mpl::identity<T5>
     {
         template <typename Tuple>
         static BOOST_CONSTEXPR BOOST_FORCEINLINE
-        typename detail::qualify_as<T5, Tuple&>::type
+        typename detail::qualify_as<
+            T5
+          , Tuple&
+        >::type
         get(Tuple& tuple) BOOST_NOEXCEPT
         {
             return tuple._m5._value;
@@ -1483,7 +1531,7 @@ namespace hpx { namespace util
             static yes_type call(T0 , T1 , T2 , T3 , T4 , T5 , T6);
             static bool const value =
                 sizeof(
-                    call(util::get< 0>( boost::declval<UTuple>()) , util::get< 1>( boost::declval<UTuple>()) , util::get< 2>( boost::declval<UTuple>()) , util::get< 3>( boost::declval<UTuple>()) , util::get< 4>( boost::declval<UTuple>()) , util::get< 5>( boost::declval<UTuple>()) , util::get< 6>( boost::declval<UTuple>()))
+                    call(util::get< 0>(boost::declval<UTuple>()) , util::get< 1>(boost::declval<UTuple>()) , util::get< 2>(boost::declval<UTuple>()) , util::get< 3>(boost::declval<UTuple>()) , util::get< 4>(boost::declval<UTuple>()) , util::get< 5>(boost::declval<UTuple>()) , util::get< 6>(boost::declval<UTuple>()))
                 ) == sizeof(yes_type);
             typedef boost::mpl::bool_<value> type;
         };
@@ -1518,7 +1566,9 @@ namespace hpx { namespace util
           , typename boost::enable_if_c<
                 detail::are_tuples_compatible<
                     tuple
-                  , typename add_rvalue_reference<tuple<U0 , U1 , U2 , U3 , U4 , U5 , U6> >::type
+                  , typename add_rvalue_reference<
+                        tuple<U0 , U1 , U2 , U3 , U4 , U5 , U6>
+                    >::type
                 >::value
             >::type* = 0
         ) : _m0(boost::forward<U0>(u0)) , _m1(boost::forward<U1>(u1)) , _m2(boost::forward<U2>(u2)) , _m3(boost::forward<U3>(u3)) , _m4(boost::forward<U4>(u4)) , _m5(boost::forward<U5>(u5)) , _m6(boost::forward<U6>(u6))
@@ -1533,7 +1583,7 @@ namespace hpx { namespace util
         
         
         BOOST_CONSTEXPR tuple(BOOST_RV_REF(tuple) other)
-          : _m0(boost::move(other._m0)) , _m1(boost::move(other._m1)) , _m2(boost::move(other._m2)) , _m3(boost::move(other._m3)) , _m4(boost::move(other._m4)) , _m5(boost::move(other._m5)) , _m6(boost::move(other._m6))
+          : _m0(boost::forward<T0>(other._m0)) , _m1(boost::forward<T1>(other._m1)) , _m2(boost::forward<T2>(other._m2)) , _m3(boost::forward<T3>(other._m3)) , _m4(boost::forward<T4>(other._m4)) , _m5(boost::forward<T5>(other._m5)) , _m6(boost::forward<T6>(other._m6))
         {}
         
         
@@ -1603,7 +1653,9 @@ namespace hpx { namespace util
         
         
         void swap(tuple& other)
-            BOOST_NOEXCEPT_IF(true && BOOST_NOEXCEPT_EXPR((boost::swap(_m0._value, other._m0._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m1._value, other._m1._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m2._value, other._m2._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m3._value, other._m3._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m4._value, other._m4._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m5._value, other._m5._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m6._value, other._m6._value))))
+            BOOST_NOEXCEPT_IF(
+                true && BOOST_NOEXCEPT_EXPR((boost::swap(_m0._value, other._m0._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m1._value, other._m1._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m2._value, other._m2._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m3._value, other._m3._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m4._value, other._m4._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m5._value, other._m5._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m6._value, other._m6._value)))
+            )
         {
             boost::swap(_m0._value, other._m0._value); boost::swap(_m1._value, other._m1._value); boost::swap(_m2._value, other._m2._value); boost::swap(_m3._value, other._m3._value); boost::swap(_m4._value, other._m4._value); boost::swap(_m5._value, other._m5._value); boost::swap(_m6._value, other._m6._value);;
         }
@@ -1621,7 +1673,7 @@ namespace hpx { namespace util
     {
         return
             tuple<typename detail::make_tuple_element<T0>::type , typename detail::make_tuple_element<T1>::type , typename detail::make_tuple_element<T2>::type , typename detail::make_tuple_element<T3>::type , typename detail::make_tuple_element<T4>::type , typename detail::make_tuple_element<T5>::type , typename detail::make_tuple_element<T6>::type>(
-                boost::forward<T0>(v0) , boost::forward<T1>(v1) , boost::forward<T2>(v2) , boost::forward<T3>(v3) , boost::forward<T4>(v4) , boost::forward<T5>(v5) , boost::forward<T6>(v6)
+                boost::forward<T0>( v0 ) , boost::forward<T1>( v1 ) , boost::forward<T2>( v2 ) , boost::forward<T3>( v3 ) , boost::forward<T4>( v4 ) , boost::forward<T5>( v5 ) , boost::forward<T6>( v6 )
             );
     }
     
@@ -1635,7 +1687,7 @@ namespace hpx { namespace util
     {
         return
             tuple<typename add_rvalue_reference<T0>::type , typename add_rvalue_reference<T1>::type , typename add_rvalue_reference<T2>::type , typename add_rvalue_reference<T3>::type , typename add_rvalue_reference<T4>::type , typename add_rvalue_reference<T5>::type , typename add_rvalue_reference<T6>::type>(
-                boost::forward<T0>(v0) , boost::forward<T1>(v1) , boost::forward<T2>(v2) , boost::forward<T3>(v3) , boost::forward<T4>(v4) , boost::forward<T5>(v5) , boost::forward<T6>(v6)
+                boost::forward<T0>( v0 ) , boost::forward<T1>( v1 ) , boost::forward<T2>( v2 ) , boost::forward<T3>( v3 ) , boost::forward<T4>( v4 ) , boost::forward<T5>( v5 ) , boost::forward<T6>( v6 )
             );
     }
     
@@ -1648,15 +1700,14 @@ namespace hpx { namespace util
     
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6>
     BOOST_FORCEINLINE
-    tuple<T0& , T1& , T2& , T3& , T4& , T5& , T6&>
-    tie(T0& v0 , T1& v1 , T2& v2 , T3& v3 , T4& v4 , T5& v5 , T6& v6) BOOST_NOEXCEPT
+    tuple<typename util::add_lvalue_reference<T0>::type , typename util::add_lvalue_reference<T1>::type , typename util::add_lvalue_reference<T2>::type , typename util::add_lvalue_reference<T3>::type , typename util::add_lvalue_reference<T4>::type , typename util::add_lvalue_reference<T5>::type , typename util::add_lvalue_reference<T6>::type>
+    tie(T0 & v0 , T1 & v1 , T2 & v2 , T3 & v3 , T4 & v4 , T5 & v5 , T6 & v6) BOOST_NOEXCEPT
     {
         return
-            tuple<T0& , T1& , T2& , T3& , T4& , T5& , T6&>(
+            tuple<typename util::add_lvalue_reference<T0>::type , typename util::add_lvalue_reference<T1>::type , typename util::add_lvalue_reference<T2>::type , typename util::add_lvalue_reference<T3>::type , typename util::add_lvalue_reference<T4>::type , typename util::add_lvalue_reference<T5>::type , typename util::add_lvalue_reference<T6>::type>(
                 v0 , v1 , v2 , v3 , v4 , v5 , v6
             );
     }
-    
     
     
     
@@ -1672,7 +1723,7 @@ namespace hpx { namespace util
     {
         return
             typename detail::tuple_cat_result<TTuple, UTuple>::type(
-                detail::tuple_cat_element< 0, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 1, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 2, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 3, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 4, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 5, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 6, T0, T1>::call(t0, t1)
+                HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 0, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 1, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 2, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 3, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 4, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 5, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 6, _)
             );
     }
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6>
@@ -1701,12 +1752,17 @@ namespace hpx { namespace util
     
     
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7>
-    struct tuple_element<6, tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7> >
-      : boost::mpl::identity<T6>
+    struct tuple_element<
+        6
+      , tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7>
+    > : boost::mpl::identity<T6>
     {
         template <typename Tuple>
         static BOOST_CONSTEXPR BOOST_FORCEINLINE
-        typename detail::qualify_as<T6, Tuple&>::type
+        typename detail::qualify_as<
+            T6
+          , Tuple&
+        >::type
         get(Tuple& tuple) BOOST_NOEXCEPT
         {
             return tuple._m6._value;
@@ -1731,7 +1787,7 @@ namespace hpx { namespace util
             static yes_type call(T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7);
             static bool const value =
                 sizeof(
-                    call(util::get< 0>( boost::declval<UTuple>()) , util::get< 1>( boost::declval<UTuple>()) , util::get< 2>( boost::declval<UTuple>()) , util::get< 3>( boost::declval<UTuple>()) , util::get< 4>( boost::declval<UTuple>()) , util::get< 5>( boost::declval<UTuple>()) , util::get< 6>( boost::declval<UTuple>()) , util::get< 7>( boost::declval<UTuple>()))
+                    call(util::get< 0>(boost::declval<UTuple>()) , util::get< 1>(boost::declval<UTuple>()) , util::get< 2>(boost::declval<UTuple>()) , util::get< 3>(boost::declval<UTuple>()) , util::get< 4>(boost::declval<UTuple>()) , util::get< 5>(boost::declval<UTuple>()) , util::get< 6>(boost::declval<UTuple>()) , util::get< 7>(boost::declval<UTuple>()))
                 ) == sizeof(yes_type);
             typedef boost::mpl::bool_<value> type;
         };
@@ -1766,7 +1822,9 @@ namespace hpx { namespace util
           , typename boost::enable_if_c<
                 detail::are_tuples_compatible<
                     tuple
-                  , typename add_rvalue_reference<tuple<U0 , U1 , U2 , U3 , U4 , U5 , U6 , U7> >::type
+                  , typename add_rvalue_reference<
+                        tuple<U0 , U1 , U2 , U3 , U4 , U5 , U6 , U7>
+                    >::type
                 >::value
             >::type* = 0
         ) : _m0(boost::forward<U0>(u0)) , _m1(boost::forward<U1>(u1)) , _m2(boost::forward<U2>(u2)) , _m3(boost::forward<U3>(u3)) , _m4(boost::forward<U4>(u4)) , _m5(boost::forward<U5>(u5)) , _m6(boost::forward<U6>(u6)) , _m7(boost::forward<U7>(u7))
@@ -1781,7 +1839,7 @@ namespace hpx { namespace util
         
         
         BOOST_CONSTEXPR tuple(BOOST_RV_REF(tuple) other)
-          : _m0(boost::move(other._m0)) , _m1(boost::move(other._m1)) , _m2(boost::move(other._m2)) , _m3(boost::move(other._m3)) , _m4(boost::move(other._m4)) , _m5(boost::move(other._m5)) , _m6(boost::move(other._m6)) , _m7(boost::move(other._m7))
+          : _m0(boost::forward<T0>(other._m0)) , _m1(boost::forward<T1>(other._m1)) , _m2(boost::forward<T2>(other._m2)) , _m3(boost::forward<T3>(other._m3)) , _m4(boost::forward<T4>(other._m4)) , _m5(boost::forward<T5>(other._m5)) , _m6(boost::forward<T6>(other._m6)) , _m7(boost::forward<T7>(other._m7))
         {}
         
         
@@ -1851,7 +1909,9 @@ namespace hpx { namespace util
         
         
         void swap(tuple& other)
-            BOOST_NOEXCEPT_IF(true && BOOST_NOEXCEPT_EXPR((boost::swap(_m0._value, other._m0._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m1._value, other._m1._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m2._value, other._m2._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m3._value, other._m3._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m4._value, other._m4._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m5._value, other._m5._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m6._value, other._m6._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m7._value, other._m7._value))))
+            BOOST_NOEXCEPT_IF(
+                true && BOOST_NOEXCEPT_EXPR((boost::swap(_m0._value, other._m0._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m1._value, other._m1._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m2._value, other._m2._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m3._value, other._m3._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m4._value, other._m4._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m5._value, other._m5._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m6._value, other._m6._value))) && BOOST_NOEXCEPT_EXPR((boost::swap(_m7._value, other._m7._value)))
+            )
         {
             boost::swap(_m0._value, other._m0._value); boost::swap(_m1._value, other._m1._value); boost::swap(_m2._value, other._m2._value); boost::swap(_m3._value, other._m3._value); boost::swap(_m4._value, other._m4._value); boost::swap(_m5._value, other._m5._value); boost::swap(_m6._value, other._m6._value); boost::swap(_m7._value, other._m7._value);;
         }
@@ -1869,7 +1929,7 @@ namespace hpx { namespace util
     {
         return
             tuple<typename detail::make_tuple_element<T0>::type , typename detail::make_tuple_element<T1>::type , typename detail::make_tuple_element<T2>::type , typename detail::make_tuple_element<T3>::type , typename detail::make_tuple_element<T4>::type , typename detail::make_tuple_element<T5>::type , typename detail::make_tuple_element<T6>::type , typename detail::make_tuple_element<T7>::type>(
-                boost::forward<T0>(v0) , boost::forward<T1>(v1) , boost::forward<T2>(v2) , boost::forward<T3>(v3) , boost::forward<T4>(v4) , boost::forward<T5>(v5) , boost::forward<T6>(v6) , boost::forward<T7>(v7)
+                boost::forward<T0>( v0 ) , boost::forward<T1>( v1 ) , boost::forward<T2>( v2 ) , boost::forward<T3>( v3 ) , boost::forward<T4>( v4 ) , boost::forward<T5>( v5 ) , boost::forward<T6>( v6 ) , boost::forward<T7>( v7 )
             );
     }
     
@@ -1883,7 +1943,7 @@ namespace hpx { namespace util
     {
         return
             tuple<typename add_rvalue_reference<T0>::type , typename add_rvalue_reference<T1>::type , typename add_rvalue_reference<T2>::type , typename add_rvalue_reference<T3>::type , typename add_rvalue_reference<T4>::type , typename add_rvalue_reference<T5>::type , typename add_rvalue_reference<T6>::type , typename add_rvalue_reference<T7>::type>(
-                boost::forward<T0>(v0) , boost::forward<T1>(v1) , boost::forward<T2>(v2) , boost::forward<T3>(v3) , boost::forward<T4>(v4) , boost::forward<T5>(v5) , boost::forward<T6>(v6) , boost::forward<T7>(v7)
+                boost::forward<T0>( v0 ) , boost::forward<T1>( v1 ) , boost::forward<T2>( v2 ) , boost::forward<T3>( v3 ) , boost::forward<T4>( v4 ) , boost::forward<T5>( v5 ) , boost::forward<T6>( v6 ) , boost::forward<T7>( v7 )
             );
     }
     
@@ -1896,15 +1956,14 @@ namespace hpx { namespace util
     
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7>
     BOOST_FORCEINLINE
-    tuple<T0& , T1& , T2& , T3& , T4& , T5& , T6& , T7&>
-    tie(T0& v0 , T1& v1 , T2& v2 , T3& v3 , T4& v4 , T5& v5 , T6& v6 , T7& v7) BOOST_NOEXCEPT
+    tuple<typename util::add_lvalue_reference<T0>::type , typename util::add_lvalue_reference<T1>::type , typename util::add_lvalue_reference<T2>::type , typename util::add_lvalue_reference<T3>::type , typename util::add_lvalue_reference<T4>::type , typename util::add_lvalue_reference<T5>::type , typename util::add_lvalue_reference<T6>::type , typename util::add_lvalue_reference<T7>::type>
+    tie(T0 & v0 , T1 & v1 , T2 & v2 , T3 & v3 , T4 & v4 , T5 & v5 , T6 & v6 , T7 & v7) BOOST_NOEXCEPT
     {
         return
-            tuple<T0& , T1& , T2& , T3& , T4& , T5& , T6& , T7&>(
+            tuple<typename util::add_lvalue_reference<T0>::type , typename util::add_lvalue_reference<T1>::type , typename util::add_lvalue_reference<T2>::type , typename util::add_lvalue_reference<T3>::type , typename util::add_lvalue_reference<T4>::type , typename util::add_lvalue_reference<T5>::type , typename util::add_lvalue_reference<T6>::type , typename util::add_lvalue_reference<T7>::type>(
                 v0 , v1 , v2 , v3 , v4 , v5 , v6 , v7
             );
     }
-    
     
     
     
@@ -1920,7 +1979,7 @@ namespace hpx { namespace util
     {
         return
             typename detail::tuple_cat_result<TTuple, UTuple>::type(
-                detail::tuple_cat_element< 0, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 1, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 2, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 3, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 4, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 5, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 6, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 7, T0, T1>::call(t0, t1)
+                HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 0, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 1, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 2, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 3, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 4, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 5, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 6, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 7, _)
             );
     }
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7>
@@ -1947,12 +2006,17 @@ namespace hpx { namespace util
     
     
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7>
-    struct tuple_element<7, tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7> >
-      : boost::mpl::identity<T7>
+    struct tuple_element<
+        7
+      , tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7>
+    > : boost::mpl::identity<T7>
     {
         template <typename Tuple>
         static BOOST_CONSTEXPR BOOST_FORCEINLINE
-        typename detail::qualify_as<T7, Tuple&>::type
+        typename detail::qualify_as<
+            T7
+          , Tuple&
+        >::type
         get(Tuple& tuple) BOOST_NOEXCEPT
         {
             return tuple._m7._value;
