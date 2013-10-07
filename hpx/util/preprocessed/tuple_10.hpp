@@ -107,6 +107,9 @@ namespace hpx { namespace util
         
         
         tuple& operator=(tuple const& other)
+            BOOST_NOEXCEPT_IF(
+                true && BOOST_NOEXCEPT_EXPR(( _m0 = other._m0 ))
+            )
         {
             _m0 = other._m0;;
             return *this;
@@ -117,6 +120,9 @@ namespace hpx { namespace util
         
         
         tuple& operator=(BOOST_RV_REF(tuple) other)
+            BOOST_NOEXCEPT_IF(
+                true && BOOST_NOEXCEPT_EXPR(( _m0 = boost::move(other._m0) ))
+            )
         {
             _m0 = boost::move(other._m0);;
             return *this;
@@ -138,6 +144,9 @@ namespace hpx { namespace util
           , tuple&
         >::type
         operator=(BOOST_FWD_REF(UTuple) other)
+            BOOST_NOEXCEPT_IF(
+                true && BOOST_NOEXCEPT_EXPR(( _m0 = util::get< 0>(boost::forward<UTuple>(other)) ))
+            )
         {
             _m0 = util::get< 0>(boost::forward<UTuple>(other));;
             return *this;
@@ -204,18 +213,54 @@ namespace hpx { namespace util
     
     
     
+    namespace detail
+    {
+        template <typename Tuple>
+        struct tuple_cat_result<
+            Tuple
+          , typename boost::enable_if_c<tuple_size<Tuple>::value == 1>::type
+        >
+        {
+            typedef
+                tuple<typename tuple_element< 0, Tuple>::type>
+                type;
+        };
+    }
+    template <typename Tuple>
+    BOOST_CONSTEXPR BOOST_FORCEINLINE
+    typename boost::lazy_enable_if_c<
+        tuple_size<typename remove_reference<Tuple>::type>::value == 1
+      , detail::tuple_cat_result<
+            typename remove_reference<Tuple>::type
+        >
+    >::type
+    tuple_cat(BOOST_FWD_REF(Tuple) t)
+    {
+        return
+            typename detail::tuple_cat_result<
+                typename remove_reference<Tuple>::type
+            >::type(
+                util::get< 0>(boost::forward<Tuple>(t))
+            );
+    }
     template <typename TTuple, typename UTuple>
     BOOST_CONSTEXPR BOOST_FORCEINLINE
     typename boost::lazy_enable_if_c<
         tuple_size<typename remove_reference<TTuple>::type>::value
       + tuple_size<typename remove_reference<UTuple>::type>::value == 1
-      , detail::tuple_cat_result<TTuple, UTuple>
+      , detail::tuple_cat_result<
+            typename remove_reference<TTuple>::type
+          , typename remove_reference<UTuple>::type
+        >
     >::type
     tuple_cat(BOOST_FWD_REF(TTuple) t, BOOST_FWD_REF(UTuple) u)
     {
         return
-            typename detail::tuple_cat_result<TTuple, UTuple>::type(
-                HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 0, _)
+            typename detail::tuple_cat_result<
+                typename remove_reference<TTuple>::type
+              , typename remove_reference<UTuple>::type
+            >::type(
+                detail::tuple_cat_element< 0, T0, T1>::call(t0, t1)
             );
     }
     
@@ -345,6 +390,9 @@ namespace hpx { namespace util
         
         
         tuple& operator=(tuple const& other)
+            BOOST_NOEXCEPT_IF(
+                true && BOOST_NOEXCEPT_EXPR(( _m0 = other._m0 )) && BOOST_NOEXCEPT_EXPR(( _m1 = other._m1 ))
+            )
         {
             _m0 = other._m0; _m1 = other._m1;;
             return *this;
@@ -355,6 +403,9 @@ namespace hpx { namespace util
         
         
         tuple& operator=(BOOST_RV_REF(tuple) other)
+            BOOST_NOEXCEPT_IF(
+                true && BOOST_NOEXCEPT_EXPR(( _m0 = boost::move(other._m0) )) && BOOST_NOEXCEPT_EXPR(( _m1 = boost::move(other._m1) ))
+            )
         {
             _m0 = boost::move(other._m0); _m1 = boost::move(other._m1);;
             return *this;
@@ -376,6 +427,9 @@ namespace hpx { namespace util
           , tuple&
         >::type
         operator=(BOOST_FWD_REF(UTuple) other)
+            BOOST_NOEXCEPT_IF(
+                true && BOOST_NOEXCEPT_EXPR(( _m0 = util::get< 0>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m1 = util::get< 1>(boost::forward<UTuple>(other)) ))
+            )
         {
             _m0 = util::get< 0>(boost::forward<UTuple>(other)); _m1 = util::get< 1>(boost::forward<UTuple>(other));;
             return *this;
@@ -442,18 +496,54 @@ namespace hpx { namespace util
     
     
     
+    namespace detail
+    {
+        template <typename Tuple>
+        struct tuple_cat_result<
+            Tuple
+          , typename boost::enable_if_c<tuple_size<Tuple>::value == 2>::type
+        >
+        {
+            typedef
+                tuple<typename tuple_element< 0, Tuple>::type , typename tuple_element< 1, Tuple>::type>
+                type;
+        };
+    }
+    template <typename Tuple>
+    BOOST_CONSTEXPR BOOST_FORCEINLINE
+    typename boost::lazy_enable_if_c<
+        tuple_size<typename remove_reference<Tuple>::type>::value == 2
+      , detail::tuple_cat_result<
+            typename remove_reference<Tuple>::type
+        >
+    >::type
+    tuple_cat(BOOST_FWD_REF(Tuple) t)
+    {
+        return
+            typename detail::tuple_cat_result<
+                typename remove_reference<Tuple>::type
+            >::type(
+                util::get< 0>(boost::forward<Tuple>(t)) , util::get< 1>(boost::forward<Tuple>(t))
+            );
+    }
     template <typename TTuple, typename UTuple>
     BOOST_CONSTEXPR BOOST_FORCEINLINE
     typename boost::lazy_enable_if_c<
         tuple_size<typename remove_reference<TTuple>::type>::value
       + tuple_size<typename remove_reference<UTuple>::type>::value == 2
-      , detail::tuple_cat_result<TTuple, UTuple>
+      , detail::tuple_cat_result<
+            typename remove_reference<TTuple>::type
+          , typename remove_reference<UTuple>::type
+        >
     >::type
     tuple_cat(BOOST_FWD_REF(TTuple) t, BOOST_FWD_REF(UTuple) u)
     {
         return
-            typename detail::tuple_cat_result<TTuple, UTuple>::type(
-                HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 0, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 1, _)
+            typename detail::tuple_cat_result<
+                typename remove_reference<TTuple>::type
+              , typename remove_reference<UTuple>::type
+            >::type(
+                detail::tuple_cat_element< 0, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 1, T0, T1>::call(t0, t1)
             );
     }
     
@@ -583,6 +673,9 @@ namespace hpx { namespace util
         
         
         tuple& operator=(tuple const& other)
+            BOOST_NOEXCEPT_IF(
+                true && BOOST_NOEXCEPT_EXPR(( _m0 = other._m0 )) && BOOST_NOEXCEPT_EXPR(( _m1 = other._m1 )) && BOOST_NOEXCEPT_EXPR(( _m2 = other._m2 ))
+            )
         {
             _m0 = other._m0; _m1 = other._m1; _m2 = other._m2;;
             return *this;
@@ -593,6 +686,9 @@ namespace hpx { namespace util
         
         
         tuple& operator=(BOOST_RV_REF(tuple) other)
+            BOOST_NOEXCEPT_IF(
+                true && BOOST_NOEXCEPT_EXPR(( _m0 = boost::move(other._m0) )) && BOOST_NOEXCEPT_EXPR(( _m1 = boost::move(other._m1) )) && BOOST_NOEXCEPT_EXPR(( _m2 = boost::move(other._m2) ))
+            )
         {
             _m0 = boost::move(other._m0); _m1 = boost::move(other._m1); _m2 = boost::move(other._m2);;
             return *this;
@@ -614,6 +710,9 @@ namespace hpx { namespace util
           , tuple&
         >::type
         operator=(BOOST_FWD_REF(UTuple) other)
+            BOOST_NOEXCEPT_IF(
+                true && BOOST_NOEXCEPT_EXPR(( _m0 = util::get< 0>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m1 = util::get< 1>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m2 = util::get< 2>(boost::forward<UTuple>(other)) ))
+            )
         {
             _m0 = util::get< 0>(boost::forward<UTuple>(other)); _m1 = util::get< 1>(boost::forward<UTuple>(other)); _m2 = util::get< 2>(boost::forward<UTuple>(other));;
             return *this;
@@ -680,24 +779,60 @@ namespace hpx { namespace util
     
     
     
+    namespace detail
+    {
+        template <typename Tuple>
+        struct tuple_cat_result<
+            Tuple
+          , typename boost::enable_if_c<tuple_size<Tuple>::value == 3>::type
+        >
+        {
+            typedef
+                tuple<typename tuple_element< 0, Tuple>::type , typename tuple_element< 1, Tuple>::type , typename tuple_element< 2, Tuple>::type>
+                type;
+        };
+    }
+    template <typename Tuple>
+    BOOST_CONSTEXPR BOOST_FORCEINLINE
+    typename boost::lazy_enable_if_c<
+        tuple_size<typename remove_reference<Tuple>::type>::value == 3
+      , detail::tuple_cat_result<
+            typename remove_reference<Tuple>::type
+        >
+    >::type
+    tuple_cat(BOOST_FWD_REF(Tuple) t)
+    {
+        return
+            typename detail::tuple_cat_result<
+                typename remove_reference<Tuple>::type
+            >::type(
+                util::get< 0>(boost::forward<Tuple>(t)) , util::get< 1>(boost::forward<Tuple>(t)) , util::get< 2>(boost::forward<Tuple>(t))
+            );
+    }
     template <typename TTuple, typename UTuple>
     BOOST_CONSTEXPR BOOST_FORCEINLINE
     typename boost::lazy_enable_if_c<
         tuple_size<typename remove_reference<TTuple>::type>::value
       + tuple_size<typename remove_reference<UTuple>::type>::value == 3
-      , detail::tuple_cat_result<TTuple, UTuple>
+      , detail::tuple_cat_result<
+            typename remove_reference<TTuple>::type
+          , typename remove_reference<UTuple>::type
+        >
     >::type
     tuple_cat(BOOST_FWD_REF(TTuple) t, BOOST_FWD_REF(UTuple) u)
     {
         return
-            typename detail::tuple_cat_result<TTuple, UTuple>::type(
-                HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 0, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 1, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 2, _)
+            typename detail::tuple_cat_result<
+                typename remove_reference<TTuple>::type
+              , typename remove_reference<UTuple>::type
+            >::type(
+                detail::tuple_cat_element< 0, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 1, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 2, T0, T1>::call(t0, t1)
             );
     }
     template <typename T0 , typename T1 , typename T2>
     BOOST_CONSTEXPR BOOST_FORCEINLINE
     typename detail::tuple_cat_result<
-        T0 , T1 , T2
+        typename remove_reference<T0>::type , typename remove_reference<T1>::type , typename remove_reference<T2>::type
     >::type
     tuple_cat(BOOST_FWD_REF(T0) t0 , BOOST_FWD_REF(T1) t1 , BOOST_FWD_REF(T2) t2)
     {
@@ -835,6 +970,9 @@ namespace hpx { namespace util
         
         
         tuple& operator=(tuple const& other)
+            BOOST_NOEXCEPT_IF(
+                true && BOOST_NOEXCEPT_EXPR(( _m0 = other._m0 )) && BOOST_NOEXCEPT_EXPR(( _m1 = other._m1 )) && BOOST_NOEXCEPT_EXPR(( _m2 = other._m2 )) && BOOST_NOEXCEPT_EXPR(( _m3 = other._m3 ))
+            )
         {
             _m0 = other._m0; _m1 = other._m1; _m2 = other._m2; _m3 = other._m3;;
             return *this;
@@ -845,6 +983,9 @@ namespace hpx { namespace util
         
         
         tuple& operator=(BOOST_RV_REF(tuple) other)
+            BOOST_NOEXCEPT_IF(
+                true && BOOST_NOEXCEPT_EXPR(( _m0 = boost::move(other._m0) )) && BOOST_NOEXCEPT_EXPR(( _m1 = boost::move(other._m1) )) && BOOST_NOEXCEPT_EXPR(( _m2 = boost::move(other._m2) )) && BOOST_NOEXCEPT_EXPR(( _m3 = boost::move(other._m3) ))
+            )
         {
             _m0 = boost::move(other._m0); _m1 = boost::move(other._m1); _m2 = boost::move(other._m2); _m3 = boost::move(other._m3);;
             return *this;
@@ -866,6 +1007,9 @@ namespace hpx { namespace util
           , tuple&
         >::type
         operator=(BOOST_FWD_REF(UTuple) other)
+            BOOST_NOEXCEPT_IF(
+                true && BOOST_NOEXCEPT_EXPR(( _m0 = util::get< 0>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m1 = util::get< 1>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m2 = util::get< 2>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m3 = util::get< 3>(boost::forward<UTuple>(other)) ))
+            )
         {
             _m0 = util::get< 0>(boost::forward<UTuple>(other)); _m1 = util::get< 1>(boost::forward<UTuple>(other)); _m2 = util::get< 2>(boost::forward<UTuple>(other)); _m3 = util::get< 3>(boost::forward<UTuple>(other));;
             return *this;
@@ -932,24 +1076,60 @@ namespace hpx { namespace util
     
     
     
+    namespace detail
+    {
+        template <typename Tuple>
+        struct tuple_cat_result<
+            Tuple
+          , typename boost::enable_if_c<tuple_size<Tuple>::value == 4>::type
+        >
+        {
+            typedef
+                tuple<typename tuple_element< 0, Tuple>::type , typename tuple_element< 1, Tuple>::type , typename tuple_element< 2, Tuple>::type , typename tuple_element< 3, Tuple>::type>
+                type;
+        };
+    }
+    template <typename Tuple>
+    BOOST_CONSTEXPR BOOST_FORCEINLINE
+    typename boost::lazy_enable_if_c<
+        tuple_size<typename remove_reference<Tuple>::type>::value == 4
+      , detail::tuple_cat_result<
+            typename remove_reference<Tuple>::type
+        >
+    >::type
+    tuple_cat(BOOST_FWD_REF(Tuple) t)
+    {
+        return
+            typename detail::tuple_cat_result<
+                typename remove_reference<Tuple>::type
+            >::type(
+                util::get< 0>(boost::forward<Tuple>(t)) , util::get< 1>(boost::forward<Tuple>(t)) , util::get< 2>(boost::forward<Tuple>(t)) , util::get< 3>(boost::forward<Tuple>(t))
+            );
+    }
     template <typename TTuple, typename UTuple>
     BOOST_CONSTEXPR BOOST_FORCEINLINE
     typename boost::lazy_enable_if_c<
         tuple_size<typename remove_reference<TTuple>::type>::value
       + tuple_size<typename remove_reference<UTuple>::type>::value == 4
-      , detail::tuple_cat_result<TTuple, UTuple>
+      , detail::tuple_cat_result<
+            typename remove_reference<TTuple>::type
+          , typename remove_reference<UTuple>::type
+        >
     >::type
     tuple_cat(BOOST_FWD_REF(TTuple) t, BOOST_FWD_REF(UTuple) u)
     {
         return
-            typename detail::tuple_cat_result<TTuple, UTuple>::type(
-                HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 0, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 1, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 2, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 3, _)
+            typename detail::tuple_cat_result<
+                typename remove_reference<TTuple>::type
+              , typename remove_reference<UTuple>::type
+            >::type(
+                detail::tuple_cat_element< 0, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 1, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 2, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 3, T0, T1>::call(t0, t1)
             );
     }
     template <typename T0 , typename T1 , typename T2 , typename T3>
     BOOST_CONSTEXPR BOOST_FORCEINLINE
     typename detail::tuple_cat_result<
-        T0 , T1 , T2 , T3
+        typename remove_reference<T0>::type , typename remove_reference<T1>::type , typename remove_reference<T2>::type , typename remove_reference<T3>::type
     >::type
     tuple_cat(BOOST_FWD_REF(T0) t0 , BOOST_FWD_REF(T1) t1 , BOOST_FWD_REF(T2) t2 , BOOST_FWD_REF(T3) t3)
     {
@@ -1085,6 +1265,9 @@ namespace hpx { namespace util
         
         
         tuple& operator=(tuple const& other)
+            BOOST_NOEXCEPT_IF(
+                true && BOOST_NOEXCEPT_EXPR(( _m0 = other._m0 )) && BOOST_NOEXCEPT_EXPR(( _m1 = other._m1 )) && BOOST_NOEXCEPT_EXPR(( _m2 = other._m2 )) && BOOST_NOEXCEPT_EXPR(( _m3 = other._m3 )) && BOOST_NOEXCEPT_EXPR(( _m4 = other._m4 ))
+            )
         {
             _m0 = other._m0; _m1 = other._m1; _m2 = other._m2; _m3 = other._m3; _m4 = other._m4;;
             return *this;
@@ -1095,6 +1278,9 @@ namespace hpx { namespace util
         
         
         tuple& operator=(BOOST_RV_REF(tuple) other)
+            BOOST_NOEXCEPT_IF(
+                true && BOOST_NOEXCEPT_EXPR(( _m0 = boost::move(other._m0) )) && BOOST_NOEXCEPT_EXPR(( _m1 = boost::move(other._m1) )) && BOOST_NOEXCEPT_EXPR(( _m2 = boost::move(other._m2) )) && BOOST_NOEXCEPT_EXPR(( _m3 = boost::move(other._m3) )) && BOOST_NOEXCEPT_EXPR(( _m4 = boost::move(other._m4) ))
+            )
         {
             _m0 = boost::move(other._m0); _m1 = boost::move(other._m1); _m2 = boost::move(other._m2); _m3 = boost::move(other._m3); _m4 = boost::move(other._m4);;
             return *this;
@@ -1116,6 +1302,9 @@ namespace hpx { namespace util
           , tuple&
         >::type
         operator=(BOOST_FWD_REF(UTuple) other)
+            BOOST_NOEXCEPT_IF(
+                true && BOOST_NOEXCEPT_EXPR(( _m0 = util::get< 0>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m1 = util::get< 1>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m2 = util::get< 2>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m3 = util::get< 3>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m4 = util::get< 4>(boost::forward<UTuple>(other)) ))
+            )
         {
             _m0 = util::get< 0>(boost::forward<UTuple>(other)); _m1 = util::get< 1>(boost::forward<UTuple>(other)); _m2 = util::get< 2>(boost::forward<UTuple>(other)); _m3 = util::get< 3>(boost::forward<UTuple>(other)); _m4 = util::get< 4>(boost::forward<UTuple>(other));;
             return *this;
@@ -1182,24 +1371,60 @@ namespace hpx { namespace util
     
     
     
+    namespace detail
+    {
+        template <typename Tuple>
+        struct tuple_cat_result<
+            Tuple
+          , typename boost::enable_if_c<tuple_size<Tuple>::value == 5>::type
+        >
+        {
+            typedef
+                tuple<typename tuple_element< 0, Tuple>::type , typename tuple_element< 1, Tuple>::type , typename tuple_element< 2, Tuple>::type , typename tuple_element< 3, Tuple>::type , typename tuple_element< 4, Tuple>::type>
+                type;
+        };
+    }
+    template <typename Tuple>
+    BOOST_CONSTEXPR BOOST_FORCEINLINE
+    typename boost::lazy_enable_if_c<
+        tuple_size<typename remove_reference<Tuple>::type>::value == 5
+      , detail::tuple_cat_result<
+            typename remove_reference<Tuple>::type
+        >
+    >::type
+    tuple_cat(BOOST_FWD_REF(Tuple) t)
+    {
+        return
+            typename detail::tuple_cat_result<
+                typename remove_reference<Tuple>::type
+            >::type(
+                util::get< 0>(boost::forward<Tuple>(t)) , util::get< 1>(boost::forward<Tuple>(t)) , util::get< 2>(boost::forward<Tuple>(t)) , util::get< 3>(boost::forward<Tuple>(t)) , util::get< 4>(boost::forward<Tuple>(t))
+            );
+    }
     template <typename TTuple, typename UTuple>
     BOOST_CONSTEXPR BOOST_FORCEINLINE
     typename boost::lazy_enable_if_c<
         tuple_size<typename remove_reference<TTuple>::type>::value
       + tuple_size<typename remove_reference<UTuple>::type>::value == 5
-      , detail::tuple_cat_result<TTuple, UTuple>
+      , detail::tuple_cat_result<
+            typename remove_reference<TTuple>::type
+          , typename remove_reference<UTuple>::type
+        >
     >::type
     tuple_cat(BOOST_FWD_REF(TTuple) t, BOOST_FWD_REF(UTuple) u)
     {
         return
-            typename detail::tuple_cat_result<TTuple, UTuple>::type(
-                HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 0, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 1, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 2, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 3, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 4, _)
+            typename detail::tuple_cat_result<
+                typename remove_reference<TTuple>::type
+              , typename remove_reference<UTuple>::type
+            >::type(
+                detail::tuple_cat_element< 0, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 1, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 2, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 3, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 4, T0, T1>::call(t0, t1)
             );
     }
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4>
     BOOST_CONSTEXPR BOOST_FORCEINLINE
     typename detail::tuple_cat_result<
-        T0 , T1 , T2 , T3 , T4
+        typename remove_reference<T0>::type , typename remove_reference<T1>::type , typename remove_reference<T2>::type , typename remove_reference<T3>::type , typename remove_reference<T4>::type
     >::type
     tuple_cat(BOOST_FWD_REF(T0) t0 , BOOST_FWD_REF(T1) t1 , BOOST_FWD_REF(T2) t2 , BOOST_FWD_REF(T3) t3 , BOOST_FWD_REF(T4) t4)
     {
@@ -1337,6 +1562,9 @@ namespace hpx { namespace util
         
         
         tuple& operator=(tuple const& other)
+            BOOST_NOEXCEPT_IF(
+                true && BOOST_NOEXCEPT_EXPR(( _m0 = other._m0 )) && BOOST_NOEXCEPT_EXPR(( _m1 = other._m1 )) && BOOST_NOEXCEPT_EXPR(( _m2 = other._m2 )) && BOOST_NOEXCEPT_EXPR(( _m3 = other._m3 )) && BOOST_NOEXCEPT_EXPR(( _m4 = other._m4 )) && BOOST_NOEXCEPT_EXPR(( _m5 = other._m5 ))
+            )
         {
             _m0 = other._m0; _m1 = other._m1; _m2 = other._m2; _m3 = other._m3; _m4 = other._m4; _m5 = other._m5;;
             return *this;
@@ -1347,6 +1575,9 @@ namespace hpx { namespace util
         
         
         tuple& operator=(BOOST_RV_REF(tuple) other)
+            BOOST_NOEXCEPT_IF(
+                true && BOOST_NOEXCEPT_EXPR(( _m0 = boost::move(other._m0) )) && BOOST_NOEXCEPT_EXPR(( _m1 = boost::move(other._m1) )) && BOOST_NOEXCEPT_EXPR(( _m2 = boost::move(other._m2) )) && BOOST_NOEXCEPT_EXPR(( _m3 = boost::move(other._m3) )) && BOOST_NOEXCEPT_EXPR(( _m4 = boost::move(other._m4) )) && BOOST_NOEXCEPT_EXPR(( _m5 = boost::move(other._m5) ))
+            )
         {
             _m0 = boost::move(other._m0); _m1 = boost::move(other._m1); _m2 = boost::move(other._m2); _m3 = boost::move(other._m3); _m4 = boost::move(other._m4); _m5 = boost::move(other._m5);;
             return *this;
@@ -1368,6 +1599,9 @@ namespace hpx { namespace util
           , tuple&
         >::type
         operator=(BOOST_FWD_REF(UTuple) other)
+            BOOST_NOEXCEPT_IF(
+                true && BOOST_NOEXCEPT_EXPR(( _m0 = util::get< 0>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m1 = util::get< 1>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m2 = util::get< 2>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m3 = util::get< 3>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m4 = util::get< 4>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m5 = util::get< 5>(boost::forward<UTuple>(other)) ))
+            )
         {
             _m0 = util::get< 0>(boost::forward<UTuple>(other)); _m1 = util::get< 1>(boost::forward<UTuple>(other)); _m2 = util::get< 2>(boost::forward<UTuple>(other)); _m3 = util::get< 3>(boost::forward<UTuple>(other)); _m4 = util::get< 4>(boost::forward<UTuple>(other)); _m5 = util::get< 5>(boost::forward<UTuple>(other));;
             return *this;
@@ -1434,24 +1668,60 @@ namespace hpx { namespace util
     
     
     
+    namespace detail
+    {
+        template <typename Tuple>
+        struct tuple_cat_result<
+            Tuple
+          , typename boost::enable_if_c<tuple_size<Tuple>::value == 6>::type
+        >
+        {
+            typedef
+                tuple<typename tuple_element< 0, Tuple>::type , typename tuple_element< 1, Tuple>::type , typename tuple_element< 2, Tuple>::type , typename tuple_element< 3, Tuple>::type , typename tuple_element< 4, Tuple>::type , typename tuple_element< 5, Tuple>::type>
+                type;
+        };
+    }
+    template <typename Tuple>
+    BOOST_CONSTEXPR BOOST_FORCEINLINE
+    typename boost::lazy_enable_if_c<
+        tuple_size<typename remove_reference<Tuple>::type>::value == 6
+      , detail::tuple_cat_result<
+            typename remove_reference<Tuple>::type
+        >
+    >::type
+    tuple_cat(BOOST_FWD_REF(Tuple) t)
+    {
+        return
+            typename detail::tuple_cat_result<
+                typename remove_reference<Tuple>::type
+            >::type(
+                util::get< 0>(boost::forward<Tuple>(t)) , util::get< 1>(boost::forward<Tuple>(t)) , util::get< 2>(boost::forward<Tuple>(t)) , util::get< 3>(boost::forward<Tuple>(t)) , util::get< 4>(boost::forward<Tuple>(t)) , util::get< 5>(boost::forward<Tuple>(t))
+            );
+    }
     template <typename TTuple, typename UTuple>
     BOOST_CONSTEXPR BOOST_FORCEINLINE
     typename boost::lazy_enable_if_c<
         tuple_size<typename remove_reference<TTuple>::type>::value
       + tuple_size<typename remove_reference<UTuple>::type>::value == 6
-      , detail::tuple_cat_result<TTuple, UTuple>
+      , detail::tuple_cat_result<
+            typename remove_reference<TTuple>::type
+          , typename remove_reference<UTuple>::type
+        >
     >::type
     tuple_cat(BOOST_FWD_REF(TTuple) t, BOOST_FWD_REF(UTuple) u)
     {
         return
-            typename detail::tuple_cat_result<TTuple, UTuple>::type(
-                HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 0, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 1, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 2, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 3, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 4, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 5, _)
+            typename detail::tuple_cat_result<
+                typename remove_reference<TTuple>::type
+              , typename remove_reference<UTuple>::type
+            >::type(
+                detail::tuple_cat_element< 0, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 1, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 2, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 3, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 4, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 5, T0, T1>::call(t0, t1)
             );
     }
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5>
     BOOST_CONSTEXPR BOOST_FORCEINLINE
     typename detail::tuple_cat_result<
-        T0 , T1 , T2 , T3 , T4 , T5
+        typename remove_reference<T0>::type , typename remove_reference<T1>::type , typename remove_reference<T2>::type , typename remove_reference<T3>::type , typename remove_reference<T4>::type , typename remove_reference<T5>::type
     >::type
     tuple_cat(BOOST_FWD_REF(T0) t0 , BOOST_FWD_REF(T1) t1 , BOOST_FWD_REF(T2) t2 , BOOST_FWD_REF(T3) t3 , BOOST_FWD_REF(T4) t4 , BOOST_FWD_REF(T5) t5)
     {
@@ -1587,6 +1857,9 @@ namespace hpx { namespace util
         
         
         tuple& operator=(tuple const& other)
+            BOOST_NOEXCEPT_IF(
+                true && BOOST_NOEXCEPT_EXPR(( _m0 = other._m0 )) && BOOST_NOEXCEPT_EXPR(( _m1 = other._m1 )) && BOOST_NOEXCEPT_EXPR(( _m2 = other._m2 )) && BOOST_NOEXCEPT_EXPR(( _m3 = other._m3 )) && BOOST_NOEXCEPT_EXPR(( _m4 = other._m4 )) && BOOST_NOEXCEPT_EXPR(( _m5 = other._m5 )) && BOOST_NOEXCEPT_EXPR(( _m6 = other._m6 ))
+            )
         {
             _m0 = other._m0; _m1 = other._m1; _m2 = other._m2; _m3 = other._m3; _m4 = other._m4; _m5 = other._m5; _m6 = other._m6;;
             return *this;
@@ -1597,6 +1870,9 @@ namespace hpx { namespace util
         
         
         tuple& operator=(BOOST_RV_REF(tuple) other)
+            BOOST_NOEXCEPT_IF(
+                true && BOOST_NOEXCEPT_EXPR(( _m0 = boost::move(other._m0) )) && BOOST_NOEXCEPT_EXPR(( _m1 = boost::move(other._m1) )) && BOOST_NOEXCEPT_EXPR(( _m2 = boost::move(other._m2) )) && BOOST_NOEXCEPT_EXPR(( _m3 = boost::move(other._m3) )) && BOOST_NOEXCEPT_EXPR(( _m4 = boost::move(other._m4) )) && BOOST_NOEXCEPT_EXPR(( _m5 = boost::move(other._m5) )) && BOOST_NOEXCEPT_EXPR(( _m6 = boost::move(other._m6) ))
+            )
         {
             _m0 = boost::move(other._m0); _m1 = boost::move(other._m1); _m2 = boost::move(other._m2); _m3 = boost::move(other._m3); _m4 = boost::move(other._m4); _m5 = boost::move(other._m5); _m6 = boost::move(other._m6);;
             return *this;
@@ -1618,6 +1894,9 @@ namespace hpx { namespace util
           , tuple&
         >::type
         operator=(BOOST_FWD_REF(UTuple) other)
+            BOOST_NOEXCEPT_IF(
+                true && BOOST_NOEXCEPT_EXPR(( _m0 = util::get< 0>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m1 = util::get< 1>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m2 = util::get< 2>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m3 = util::get< 3>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m4 = util::get< 4>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m5 = util::get< 5>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m6 = util::get< 6>(boost::forward<UTuple>(other)) ))
+            )
         {
             _m0 = util::get< 0>(boost::forward<UTuple>(other)); _m1 = util::get< 1>(boost::forward<UTuple>(other)); _m2 = util::get< 2>(boost::forward<UTuple>(other)); _m3 = util::get< 3>(boost::forward<UTuple>(other)); _m4 = util::get< 4>(boost::forward<UTuple>(other)); _m5 = util::get< 5>(boost::forward<UTuple>(other)); _m6 = util::get< 6>(boost::forward<UTuple>(other));;
             return *this;
@@ -1684,24 +1963,60 @@ namespace hpx { namespace util
     
     
     
+    namespace detail
+    {
+        template <typename Tuple>
+        struct tuple_cat_result<
+            Tuple
+          , typename boost::enable_if_c<tuple_size<Tuple>::value == 7>::type
+        >
+        {
+            typedef
+                tuple<typename tuple_element< 0, Tuple>::type , typename tuple_element< 1, Tuple>::type , typename tuple_element< 2, Tuple>::type , typename tuple_element< 3, Tuple>::type , typename tuple_element< 4, Tuple>::type , typename tuple_element< 5, Tuple>::type , typename tuple_element< 6, Tuple>::type>
+                type;
+        };
+    }
+    template <typename Tuple>
+    BOOST_CONSTEXPR BOOST_FORCEINLINE
+    typename boost::lazy_enable_if_c<
+        tuple_size<typename remove_reference<Tuple>::type>::value == 7
+      , detail::tuple_cat_result<
+            typename remove_reference<Tuple>::type
+        >
+    >::type
+    tuple_cat(BOOST_FWD_REF(Tuple) t)
+    {
+        return
+            typename detail::tuple_cat_result<
+                typename remove_reference<Tuple>::type
+            >::type(
+                util::get< 0>(boost::forward<Tuple>(t)) , util::get< 1>(boost::forward<Tuple>(t)) , util::get< 2>(boost::forward<Tuple>(t)) , util::get< 3>(boost::forward<Tuple>(t)) , util::get< 4>(boost::forward<Tuple>(t)) , util::get< 5>(boost::forward<Tuple>(t)) , util::get< 6>(boost::forward<Tuple>(t))
+            );
+    }
     template <typename TTuple, typename UTuple>
     BOOST_CONSTEXPR BOOST_FORCEINLINE
     typename boost::lazy_enable_if_c<
         tuple_size<typename remove_reference<TTuple>::type>::value
       + tuple_size<typename remove_reference<UTuple>::type>::value == 7
-      , detail::tuple_cat_result<TTuple, UTuple>
+      , detail::tuple_cat_result<
+            typename remove_reference<TTuple>::type
+          , typename remove_reference<UTuple>::type
+        >
     >::type
     tuple_cat(BOOST_FWD_REF(TTuple) t, BOOST_FWD_REF(UTuple) u)
     {
         return
-            typename detail::tuple_cat_result<TTuple, UTuple>::type(
-                HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 0, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 1, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 2, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 3, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 4, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 5, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 6, _)
+            typename detail::tuple_cat_result<
+                typename remove_reference<TTuple>::type
+              , typename remove_reference<UTuple>::type
+            >::type(
+                detail::tuple_cat_element< 0, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 1, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 2, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 3, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 4, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 5, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 6, T0, T1>::call(t0, t1)
             );
     }
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6>
     BOOST_CONSTEXPR BOOST_FORCEINLINE
     typename detail::tuple_cat_result<
-        T0 , T1 , T2 , T3 , T4 , T5 , T6
+        typename remove_reference<T0>::type , typename remove_reference<T1>::type , typename remove_reference<T2>::type , typename remove_reference<T3>::type , typename remove_reference<T4>::type , typename remove_reference<T5>::type , typename remove_reference<T6>::type
     >::type
     tuple_cat(BOOST_FWD_REF(T0) t0 , BOOST_FWD_REF(T1) t1 , BOOST_FWD_REF(T2) t2 , BOOST_FWD_REF(T3) t3 , BOOST_FWD_REF(T4) t4 , BOOST_FWD_REF(T5) t5 , BOOST_FWD_REF(T6) t6)
     {
@@ -1839,6 +2154,9 @@ namespace hpx { namespace util
         
         
         tuple& operator=(tuple const& other)
+            BOOST_NOEXCEPT_IF(
+                true && BOOST_NOEXCEPT_EXPR(( _m0 = other._m0 )) && BOOST_NOEXCEPT_EXPR(( _m1 = other._m1 )) && BOOST_NOEXCEPT_EXPR(( _m2 = other._m2 )) && BOOST_NOEXCEPT_EXPR(( _m3 = other._m3 )) && BOOST_NOEXCEPT_EXPR(( _m4 = other._m4 )) && BOOST_NOEXCEPT_EXPR(( _m5 = other._m5 )) && BOOST_NOEXCEPT_EXPR(( _m6 = other._m6 )) && BOOST_NOEXCEPT_EXPR(( _m7 = other._m7 ))
+            )
         {
             _m0 = other._m0; _m1 = other._m1; _m2 = other._m2; _m3 = other._m3; _m4 = other._m4; _m5 = other._m5; _m6 = other._m6; _m7 = other._m7;;
             return *this;
@@ -1849,6 +2167,9 @@ namespace hpx { namespace util
         
         
         tuple& operator=(BOOST_RV_REF(tuple) other)
+            BOOST_NOEXCEPT_IF(
+                true && BOOST_NOEXCEPT_EXPR(( _m0 = boost::move(other._m0) )) && BOOST_NOEXCEPT_EXPR(( _m1 = boost::move(other._m1) )) && BOOST_NOEXCEPT_EXPR(( _m2 = boost::move(other._m2) )) && BOOST_NOEXCEPT_EXPR(( _m3 = boost::move(other._m3) )) && BOOST_NOEXCEPT_EXPR(( _m4 = boost::move(other._m4) )) && BOOST_NOEXCEPT_EXPR(( _m5 = boost::move(other._m5) )) && BOOST_NOEXCEPT_EXPR(( _m6 = boost::move(other._m6) )) && BOOST_NOEXCEPT_EXPR(( _m7 = boost::move(other._m7) ))
+            )
         {
             _m0 = boost::move(other._m0); _m1 = boost::move(other._m1); _m2 = boost::move(other._m2); _m3 = boost::move(other._m3); _m4 = boost::move(other._m4); _m5 = boost::move(other._m5); _m6 = boost::move(other._m6); _m7 = boost::move(other._m7);;
             return *this;
@@ -1870,6 +2191,9 @@ namespace hpx { namespace util
           , tuple&
         >::type
         operator=(BOOST_FWD_REF(UTuple) other)
+            BOOST_NOEXCEPT_IF(
+                true && BOOST_NOEXCEPT_EXPR(( _m0 = util::get< 0>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m1 = util::get< 1>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m2 = util::get< 2>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m3 = util::get< 3>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m4 = util::get< 4>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m5 = util::get< 5>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m6 = util::get< 6>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m7 = util::get< 7>(boost::forward<UTuple>(other)) ))
+            )
         {
             _m0 = util::get< 0>(boost::forward<UTuple>(other)); _m1 = util::get< 1>(boost::forward<UTuple>(other)); _m2 = util::get< 2>(boost::forward<UTuple>(other)); _m3 = util::get< 3>(boost::forward<UTuple>(other)); _m4 = util::get< 4>(boost::forward<UTuple>(other)); _m5 = util::get< 5>(boost::forward<UTuple>(other)); _m6 = util::get< 6>(boost::forward<UTuple>(other)); _m7 = util::get< 7>(boost::forward<UTuple>(other));;
             return *this;
@@ -1936,24 +2260,60 @@ namespace hpx { namespace util
     
     
     
+    namespace detail
+    {
+        template <typename Tuple>
+        struct tuple_cat_result<
+            Tuple
+          , typename boost::enable_if_c<tuple_size<Tuple>::value == 8>::type
+        >
+        {
+            typedef
+                tuple<typename tuple_element< 0, Tuple>::type , typename tuple_element< 1, Tuple>::type , typename tuple_element< 2, Tuple>::type , typename tuple_element< 3, Tuple>::type , typename tuple_element< 4, Tuple>::type , typename tuple_element< 5, Tuple>::type , typename tuple_element< 6, Tuple>::type , typename tuple_element< 7, Tuple>::type>
+                type;
+        };
+    }
+    template <typename Tuple>
+    BOOST_CONSTEXPR BOOST_FORCEINLINE
+    typename boost::lazy_enable_if_c<
+        tuple_size<typename remove_reference<Tuple>::type>::value == 8
+      , detail::tuple_cat_result<
+            typename remove_reference<Tuple>::type
+        >
+    >::type
+    tuple_cat(BOOST_FWD_REF(Tuple) t)
+    {
+        return
+            typename detail::tuple_cat_result<
+                typename remove_reference<Tuple>::type
+            >::type(
+                util::get< 0>(boost::forward<Tuple>(t)) , util::get< 1>(boost::forward<Tuple>(t)) , util::get< 2>(boost::forward<Tuple>(t)) , util::get< 3>(boost::forward<Tuple>(t)) , util::get< 4>(boost::forward<Tuple>(t)) , util::get< 5>(boost::forward<Tuple>(t)) , util::get< 6>(boost::forward<Tuple>(t)) , util::get< 7>(boost::forward<Tuple>(t))
+            );
+    }
     template <typename TTuple, typename UTuple>
     BOOST_CONSTEXPR BOOST_FORCEINLINE
     typename boost::lazy_enable_if_c<
         tuple_size<typename remove_reference<TTuple>::type>::value
       + tuple_size<typename remove_reference<UTuple>::type>::value == 8
-      , detail::tuple_cat_result<TTuple, UTuple>
+      , detail::tuple_cat_result<
+            typename remove_reference<TTuple>::type
+          , typename remove_reference<UTuple>::type
+        >
     >::type
     tuple_cat(BOOST_FWD_REF(TTuple) t, BOOST_FWD_REF(UTuple) u)
     {
         return
-            typename detail::tuple_cat_result<TTuple, UTuple>::type(
-                HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 0, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 1, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 2, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 3, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 4, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 5, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 6, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 7, _)
+            typename detail::tuple_cat_result<
+                typename remove_reference<TTuple>::type
+              , typename remove_reference<UTuple>::type
+            >::type(
+                detail::tuple_cat_element< 0, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 1, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 2, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 3, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 4, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 5, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 6, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 7, T0, T1>::call(t0, t1)
             );
     }
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7>
     BOOST_CONSTEXPR BOOST_FORCEINLINE
     typename detail::tuple_cat_result<
-        T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7
+        typename remove_reference<T0>::type , typename remove_reference<T1>::type , typename remove_reference<T2>::type , typename remove_reference<T3>::type , typename remove_reference<T4>::type , typename remove_reference<T5>::type , typename remove_reference<T6>::type , typename remove_reference<T7>::type
     >::type
     tuple_cat(BOOST_FWD_REF(T0) t0 , BOOST_FWD_REF(T1) t1 , BOOST_FWD_REF(T2) t2 , BOOST_FWD_REF(T3) t3 , BOOST_FWD_REF(T4) t4 , BOOST_FWD_REF(T5) t5 , BOOST_FWD_REF(T6) t6 , BOOST_FWD_REF(T7) t7)
     {
@@ -2089,6 +2449,9 @@ namespace hpx { namespace util
         
         
         tuple& operator=(tuple const& other)
+            BOOST_NOEXCEPT_IF(
+                true && BOOST_NOEXCEPT_EXPR(( _m0 = other._m0 )) && BOOST_NOEXCEPT_EXPR(( _m1 = other._m1 )) && BOOST_NOEXCEPT_EXPR(( _m2 = other._m2 )) && BOOST_NOEXCEPT_EXPR(( _m3 = other._m3 )) && BOOST_NOEXCEPT_EXPR(( _m4 = other._m4 )) && BOOST_NOEXCEPT_EXPR(( _m5 = other._m5 )) && BOOST_NOEXCEPT_EXPR(( _m6 = other._m6 )) && BOOST_NOEXCEPT_EXPR(( _m7 = other._m7 )) && BOOST_NOEXCEPT_EXPR(( _m8 = other._m8 ))
+            )
         {
             _m0 = other._m0; _m1 = other._m1; _m2 = other._m2; _m3 = other._m3; _m4 = other._m4; _m5 = other._m5; _m6 = other._m6; _m7 = other._m7; _m8 = other._m8;;
             return *this;
@@ -2099,6 +2462,9 @@ namespace hpx { namespace util
         
         
         tuple& operator=(BOOST_RV_REF(tuple) other)
+            BOOST_NOEXCEPT_IF(
+                true && BOOST_NOEXCEPT_EXPR(( _m0 = boost::move(other._m0) )) && BOOST_NOEXCEPT_EXPR(( _m1 = boost::move(other._m1) )) && BOOST_NOEXCEPT_EXPR(( _m2 = boost::move(other._m2) )) && BOOST_NOEXCEPT_EXPR(( _m3 = boost::move(other._m3) )) && BOOST_NOEXCEPT_EXPR(( _m4 = boost::move(other._m4) )) && BOOST_NOEXCEPT_EXPR(( _m5 = boost::move(other._m5) )) && BOOST_NOEXCEPT_EXPR(( _m6 = boost::move(other._m6) )) && BOOST_NOEXCEPT_EXPR(( _m7 = boost::move(other._m7) )) && BOOST_NOEXCEPT_EXPR(( _m8 = boost::move(other._m8) ))
+            )
         {
             _m0 = boost::move(other._m0); _m1 = boost::move(other._m1); _m2 = boost::move(other._m2); _m3 = boost::move(other._m3); _m4 = boost::move(other._m4); _m5 = boost::move(other._m5); _m6 = boost::move(other._m6); _m7 = boost::move(other._m7); _m8 = boost::move(other._m8);;
             return *this;
@@ -2120,6 +2486,9 @@ namespace hpx { namespace util
           , tuple&
         >::type
         operator=(BOOST_FWD_REF(UTuple) other)
+            BOOST_NOEXCEPT_IF(
+                true && BOOST_NOEXCEPT_EXPR(( _m0 = util::get< 0>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m1 = util::get< 1>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m2 = util::get< 2>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m3 = util::get< 3>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m4 = util::get< 4>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m5 = util::get< 5>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m6 = util::get< 6>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m7 = util::get< 7>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m8 = util::get< 8>(boost::forward<UTuple>(other)) ))
+            )
         {
             _m0 = util::get< 0>(boost::forward<UTuple>(other)); _m1 = util::get< 1>(boost::forward<UTuple>(other)); _m2 = util::get< 2>(boost::forward<UTuple>(other)); _m3 = util::get< 3>(boost::forward<UTuple>(other)); _m4 = util::get< 4>(boost::forward<UTuple>(other)); _m5 = util::get< 5>(boost::forward<UTuple>(other)); _m6 = util::get< 6>(boost::forward<UTuple>(other)); _m7 = util::get< 7>(boost::forward<UTuple>(other)); _m8 = util::get< 8>(boost::forward<UTuple>(other));;
             return *this;
@@ -2186,24 +2555,60 @@ namespace hpx { namespace util
     
     
     
+    namespace detail
+    {
+        template <typename Tuple>
+        struct tuple_cat_result<
+            Tuple
+          , typename boost::enable_if_c<tuple_size<Tuple>::value == 9>::type
+        >
+        {
+            typedef
+                tuple<typename tuple_element< 0, Tuple>::type , typename tuple_element< 1, Tuple>::type , typename tuple_element< 2, Tuple>::type , typename tuple_element< 3, Tuple>::type , typename tuple_element< 4, Tuple>::type , typename tuple_element< 5, Tuple>::type , typename tuple_element< 6, Tuple>::type , typename tuple_element< 7, Tuple>::type , typename tuple_element< 8, Tuple>::type>
+                type;
+        };
+    }
+    template <typename Tuple>
+    BOOST_CONSTEXPR BOOST_FORCEINLINE
+    typename boost::lazy_enable_if_c<
+        tuple_size<typename remove_reference<Tuple>::type>::value == 9
+      , detail::tuple_cat_result<
+            typename remove_reference<Tuple>::type
+        >
+    >::type
+    tuple_cat(BOOST_FWD_REF(Tuple) t)
+    {
+        return
+            typename detail::tuple_cat_result<
+                typename remove_reference<Tuple>::type
+            >::type(
+                util::get< 0>(boost::forward<Tuple>(t)) , util::get< 1>(boost::forward<Tuple>(t)) , util::get< 2>(boost::forward<Tuple>(t)) , util::get< 3>(boost::forward<Tuple>(t)) , util::get< 4>(boost::forward<Tuple>(t)) , util::get< 5>(boost::forward<Tuple>(t)) , util::get< 6>(boost::forward<Tuple>(t)) , util::get< 7>(boost::forward<Tuple>(t)) , util::get< 8>(boost::forward<Tuple>(t))
+            );
+    }
     template <typename TTuple, typename UTuple>
     BOOST_CONSTEXPR BOOST_FORCEINLINE
     typename boost::lazy_enable_if_c<
         tuple_size<typename remove_reference<TTuple>::type>::value
       + tuple_size<typename remove_reference<UTuple>::type>::value == 9
-      , detail::tuple_cat_result<TTuple, UTuple>
+      , detail::tuple_cat_result<
+            typename remove_reference<TTuple>::type
+          , typename remove_reference<UTuple>::type
+        >
     >::type
     tuple_cat(BOOST_FWD_REF(TTuple) t, BOOST_FWD_REF(UTuple) u)
     {
         return
-            typename detail::tuple_cat_result<TTuple, UTuple>::type(
-                HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 0, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 1, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 2, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 3, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 4, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 5, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 6, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 7, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 8, _)
+            typename detail::tuple_cat_result<
+                typename remove_reference<TTuple>::type
+              , typename remove_reference<UTuple>::type
+            >::type(
+                detail::tuple_cat_element< 0, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 1, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 2, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 3, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 4, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 5, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 6, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 7, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 8, T0, T1>::call(t0, t1)
             );
     }
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7 , typename T8>
     BOOST_CONSTEXPR BOOST_FORCEINLINE
     typename detail::tuple_cat_result<
-        T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7 , T8
+        typename remove_reference<T0>::type , typename remove_reference<T1>::type , typename remove_reference<T2>::type , typename remove_reference<T3>::type , typename remove_reference<T4>::type , typename remove_reference<T5>::type , typename remove_reference<T6>::type , typename remove_reference<T7>::type , typename remove_reference<T8>::type
     >::type
     tuple_cat(BOOST_FWD_REF(T0) t0 , BOOST_FWD_REF(T1) t1 , BOOST_FWD_REF(T2) t2 , BOOST_FWD_REF(T3) t3 , BOOST_FWD_REF(T4) t4 , BOOST_FWD_REF(T5) t5 , BOOST_FWD_REF(T6) t6 , BOOST_FWD_REF(T7) t7 , BOOST_FWD_REF(T8) t8)
     {
@@ -2341,6 +2746,9 @@ namespace hpx { namespace util
         
         
         tuple& operator=(tuple const& other)
+            BOOST_NOEXCEPT_IF(
+                true && BOOST_NOEXCEPT_EXPR(( _m0 = other._m0 )) && BOOST_NOEXCEPT_EXPR(( _m1 = other._m1 )) && BOOST_NOEXCEPT_EXPR(( _m2 = other._m2 )) && BOOST_NOEXCEPT_EXPR(( _m3 = other._m3 )) && BOOST_NOEXCEPT_EXPR(( _m4 = other._m4 )) && BOOST_NOEXCEPT_EXPR(( _m5 = other._m5 )) && BOOST_NOEXCEPT_EXPR(( _m6 = other._m6 )) && BOOST_NOEXCEPT_EXPR(( _m7 = other._m7 )) && BOOST_NOEXCEPT_EXPR(( _m8 = other._m8 )) && BOOST_NOEXCEPT_EXPR(( _m9 = other._m9 ))
+            )
         {
             _m0 = other._m0; _m1 = other._m1; _m2 = other._m2; _m3 = other._m3; _m4 = other._m4; _m5 = other._m5; _m6 = other._m6; _m7 = other._m7; _m8 = other._m8; _m9 = other._m9;;
             return *this;
@@ -2351,6 +2759,9 @@ namespace hpx { namespace util
         
         
         tuple& operator=(BOOST_RV_REF(tuple) other)
+            BOOST_NOEXCEPT_IF(
+                true && BOOST_NOEXCEPT_EXPR(( _m0 = boost::move(other._m0) )) && BOOST_NOEXCEPT_EXPR(( _m1 = boost::move(other._m1) )) && BOOST_NOEXCEPT_EXPR(( _m2 = boost::move(other._m2) )) && BOOST_NOEXCEPT_EXPR(( _m3 = boost::move(other._m3) )) && BOOST_NOEXCEPT_EXPR(( _m4 = boost::move(other._m4) )) && BOOST_NOEXCEPT_EXPR(( _m5 = boost::move(other._m5) )) && BOOST_NOEXCEPT_EXPR(( _m6 = boost::move(other._m6) )) && BOOST_NOEXCEPT_EXPR(( _m7 = boost::move(other._m7) )) && BOOST_NOEXCEPT_EXPR(( _m8 = boost::move(other._m8) )) && BOOST_NOEXCEPT_EXPR(( _m9 = boost::move(other._m9) ))
+            )
         {
             _m0 = boost::move(other._m0); _m1 = boost::move(other._m1); _m2 = boost::move(other._m2); _m3 = boost::move(other._m3); _m4 = boost::move(other._m4); _m5 = boost::move(other._m5); _m6 = boost::move(other._m6); _m7 = boost::move(other._m7); _m8 = boost::move(other._m8); _m9 = boost::move(other._m9);;
             return *this;
@@ -2372,6 +2783,9 @@ namespace hpx { namespace util
           , tuple&
         >::type
         operator=(BOOST_FWD_REF(UTuple) other)
+            BOOST_NOEXCEPT_IF(
+                true && BOOST_NOEXCEPT_EXPR(( _m0 = util::get< 0>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m1 = util::get< 1>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m2 = util::get< 2>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m3 = util::get< 3>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m4 = util::get< 4>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m5 = util::get< 5>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m6 = util::get< 6>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m7 = util::get< 7>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m8 = util::get< 8>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m9 = util::get< 9>(boost::forward<UTuple>(other)) ))
+            )
         {
             _m0 = util::get< 0>(boost::forward<UTuple>(other)); _m1 = util::get< 1>(boost::forward<UTuple>(other)); _m2 = util::get< 2>(boost::forward<UTuple>(other)); _m3 = util::get< 3>(boost::forward<UTuple>(other)); _m4 = util::get< 4>(boost::forward<UTuple>(other)); _m5 = util::get< 5>(boost::forward<UTuple>(other)); _m6 = util::get< 6>(boost::forward<UTuple>(other)); _m7 = util::get< 7>(boost::forward<UTuple>(other)); _m8 = util::get< 8>(boost::forward<UTuple>(other)); _m9 = util::get< 9>(boost::forward<UTuple>(other));;
             return *this;
@@ -2438,24 +2852,60 @@ namespace hpx { namespace util
     
     
     
+    namespace detail
+    {
+        template <typename Tuple>
+        struct tuple_cat_result<
+            Tuple
+          , typename boost::enable_if_c<tuple_size<Tuple>::value == 10>::type
+        >
+        {
+            typedef
+                tuple<typename tuple_element< 0, Tuple>::type , typename tuple_element< 1, Tuple>::type , typename tuple_element< 2, Tuple>::type , typename tuple_element< 3, Tuple>::type , typename tuple_element< 4, Tuple>::type , typename tuple_element< 5, Tuple>::type , typename tuple_element< 6, Tuple>::type , typename tuple_element< 7, Tuple>::type , typename tuple_element< 8, Tuple>::type , typename tuple_element< 9, Tuple>::type>
+                type;
+        };
+    }
+    template <typename Tuple>
+    BOOST_CONSTEXPR BOOST_FORCEINLINE
+    typename boost::lazy_enable_if_c<
+        tuple_size<typename remove_reference<Tuple>::type>::value == 10
+      , detail::tuple_cat_result<
+            typename remove_reference<Tuple>::type
+        >
+    >::type
+    tuple_cat(BOOST_FWD_REF(Tuple) t)
+    {
+        return
+            typename detail::tuple_cat_result<
+                typename remove_reference<Tuple>::type
+            >::type(
+                util::get< 0>(boost::forward<Tuple>(t)) , util::get< 1>(boost::forward<Tuple>(t)) , util::get< 2>(boost::forward<Tuple>(t)) , util::get< 3>(boost::forward<Tuple>(t)) , util::get< 4>(boost::forward<Tuple>(t)) , util::get< 5>(boost::forward<Tuple>(t)) , util::get< 6>(boost::forward<Tuple>(t)) , util::get< 7>(boost::forward<Tuple>(t)) , util::get< 8>(boost::forward<Tuple>(t)) , util::get< 9>(boost::forward<Tuple>(t))
+            );
+    }
     template <typename TTuple, typename UTuple>
     BOOST_CONSTEXPR BOOST_FORCEINLINE
     typename boost::lazy_enable_if_c<
         tuple_size<typename remove_reference<TTuple>::type>::value
       + tuple_size<typename remove_reference<UTuple>::type>::value == 10
-      , detail::tuple_cat_result<TTuple, UTuple>
+      , detail::tuple_cat_result<
+            typename remove_reference<TTuple>::type
+          , typename remove_reference<UTuple>::type
+        >
     >::type
     tuple_cat(BOOST_FWD_REF(TTuple) t, BOOST_FWD_REF(UTuple) u)
     {
         return
-            typename detail::tuple_cat_result<TTuple, UTuple>::type(
-                HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 0, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 1, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 2, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 3, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 4, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 5, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 6, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 7, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 8, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 9, _)
+            typename detail::tuple_cat_result<
+                typename remove_reference<TTuple>::type
+              , typename remove_reference<UTuple>::type
+            >::type(
+                detail::tuple_cat_element< 0, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 1, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 2, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 3, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 4, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 5, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 6, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 7, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 8, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 9, T0, T1>::call(t0, t1)
             );
     }
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7 , typename T8 , typename T9>
     BOOST_CONSTEXPR BOOST_FORCEINLINE
     typename detail::tuple_cat_result<
-        T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7 , T8 , T9
+        typename remove_reference<T0>::type , typename remove_reference<T1>::type , typename remove_reference<T2>::type , typename remove_reference<T3>::type , typename remove_reference<T4>::type , typename remove_reference<T5>::type , typename remove_reference<T6>::type , typename remove_reference<T7>::type , typename remove_reference<T8>::type , typename remove_reference<T9>::type
     >::type
     tuple_cat(BOOST_FWD_REF(T0) t0 , BOOST_FWD_REF(T1) t1 , BOOST_FWD_REF(T2) t2 , BOOST_FWD_REF(T3) t3 , BOOST_FWD_REF(T4) t4 , BOOST_FWD_REF(T5) t5 , BOOST_FWD_REF(T6) t6 , BOOST_FWD_REF(T7) t7 , BOOST_FWD_REF(T8) t8 , BOOST_FWD_REF(T9) t9)
     {
@@ -2591,6 +3041,9 @@ namespace hpx { namespace util
         
         
         tuple& operator=(tuple const& other)
+            BOOST_NOEXCEPT_IF(
+                true && BOOST_NOEXCEPT_EXPR(( _m0 = other._m0 )) && BOOST_NOEXCEPT_EXPR(( _m1 = other._m1 )) && BOOST_NOEXCEPT_EXPR(( _m2 = other._m2 )) && BOOST_NOEXCEPT_EXPR(( _m3 = other._m3 )) && BOOST_NOEXCEPT_EXPR(( _m4 = other._m4 )) && BOOST_NOEXCEPT_EXPR(( _m5 = other._m5 )) && BOOST_NOEXCEPT_EXPR(( _m6 = other._m6 )) && BOOST_NOEXCEPT_EXPR(( _m7 = other._m7 )) && BOOST_NOEXCEPT_EXPR(( _m8 = other._m8 )) && BOOST_NOEXCEPT_EXPR(( _m9 = other._m9 )) && BOOST_NOEXCEPT_EXPR(( _m10 = other._m10 ))
+            )
         {
             _m0 = other._m0; _m1 = other._m1; _m2 = other._m2; _m3 = other._m3; _m4 = other._m4; _m5 = other._m5; _m6 = other._m6; _m7 = other._m7; _m8 = other._m8; _m9 = other._m9; _m10 = other._m10;;
             return *this;
@@ -2601,6 +3054,9 @@ namespace hpx { namespace util
         
         
         tuple& operator=(BOOST_RV_REF(tuple) other)
+            BOOST_NOEXCEPT_IF(
+                true && BOOST_NOEXCEPT_EXPR(( _m0 = boost::move(other._m0) )) && BOOST_NOEXCEPT_EXPR(( _m1 = boost::move(other._m1) )) && BOOST_NOEXCEPT_EXPR(( _m2 = boost::move(other._m2) )) && BOOST_NOEXCEPT_EXPR(( _m3 = boost::move(other._m3) )) && BOOST_NOEXCEPT_EXPR(( _m4 = boost::move(other._m4) )) && BOOST_NOEXCEPT_EXPR(( _m5 = boost::move(other._m5) )) && BOOST_NOEXCEPT_EXPR(( _m6 = boost::move(other._m6) )) && BOOST_NOEXCEPT_EXPR(( _m7 = boost::move(other._m7) )) && BOOST_NOEXCEPT_EXPR(( _m8 = boost::move(other._m8) )) && BOOST_NOEXCEPT_EXPR(( _m9 = boost::move(other._m9) )) && BOOST_NOEXCEPT_EXPR(( _m10 = boost::move(other._m10) ))
+            )
         {
             _m0 = boost::move(other._m0); _m1 = boost::move(other._m1); _m2 = boost::move(other._m2); _m3 = boost::move(other._m3); _m4 = boost::move(other._m4); _m5 = boost::move(other._m5); _m6 = boost::move(other._m6); _m7 = boost::move(other._m7); _m8 = boost::move(other._m8); _m9 = boost::move(other._m9); _m10 = boost::move(other._m10);;
             return *this;
@@ -2622,6 +3078,9 @@ namespace hpx { namespace util
           , tuple&
         >::type
         operator=(BOOST_FWD_REF(UTuple) other)
+            BOOST_NOEXCEPT_IF(
+                true && BOOST_NOEXCEPT_EXPR(( _m0 = util::get< 0>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m1 = util::get< 1>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m2 = util::get< 2>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m3 = util::get< 3>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m4 = util::get< 4>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m5 = util::get< 5>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m6 = util::get< 6>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m7 = util::get< 7>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m8 = util::get< 8>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m9 = util::get< 9>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m10 = util::get< 10>(boost::forward<UTuple>(other)) ))
+            )
         {
             _m0 = util::get< 0>(boost::forward<UTuple>(other)); _m1 = util::get< 1>(boost::forward<UTuple>(other)); _m2 = util::get< 2>(boost::forward<UTuple>(other)); _m3 = util::get< 3>(boost::forward<UTuple>(other)); _m4 = util::get< 4>(boost::forward<UTuple>(other)); _m5 = util::get< 5>(boost::forward<UTuple>(other)); _m6 = util::get< 6>(boost::forward<UTuple>(other)); _m7 = util::get< 7>(boost::forward<UTuple>(other)); _m8 = util::get< 8>(boost::forward<UTuple>(other)); _m9 = util::get< 9>(boost::forward<UTuple>(other)); _m10 = util::get< 10>(boost::forward<UTuple>(other));;
             return *this;
@@ -2688,24 +3147,60 @@ namespace hpx { namespace util
     
     
     
+    namespace detail
+    {
+        template <typename Tuple>
+        struct tuple_cat_result<
+            Tuple
+          , typename boost::enable_if_c<tuple_size<Tuple>::value == 11>::type
+        >
+        {
+            typedef
+                tuple<typename tuple_element< 0, Tuple>::type , typename tuple_element< 1, Tuple>::type , typename tuple_element< 2, Tuple>::type , typename tuple_element< 3, Tuple>::type , typename tuple_element< 4, Tuple>::type , typename tuple_element< 5, Tuple>::type , typename tuple_element< 6, Tuple>::type , typename tuple_element< 7, Tuple>::type , typename tuple_element< 8, Tuple>::type , typename tuple_element< 9, Tuple>::type , typename tuple_element< 10, Tuple>::type>
+                type;
+        };
+    }
+    template <typename Tuple>
+    BOOST_CONSTEXPR BOOST_FORCEINLINE
+    typename boost::lazy_enable_if_c<
+        tuple_size<typename remove_reference<Tuple>::type>::value == 11
+      , detail::tuple_cat_result<
+            typename remove_reference<Tuple>::type
+        >
+    >::type
+    tuple_cat(BOOST_FWD_REF(Tuple) t)
+    {
+        return
+            typename detail::tuple_cat_result<
+                typename remove_reference<Tuple>::type
+            >::type(
+                util::get< 0>(boost::forward<Tuple>(t)) , util::get< 1>(boost::forward<Tuple>(t)) , util::get< 2>(boost::forward<Tuple>(t)) , util::get< 3>(boost::forward<Tuple>(t)) , util::get< 4>(boost::forward<Tuple>(t)) , util::get< 5>(boost::forward<Tuple>(t)) , util::get< 6>(boost::forward<Tuple>(t)) , util::get< 7>(boost::forward<Tuple>(t)) , util::get< 8>(boost::forward<Tuple>(t)) , util::get< 9>(boost::forward<Tuple>(t)) , util::get< 10>(boost::forward<Tuple>(t))
+            );
+    }
     template <typename TTuple, typename UTuple>
     BOOST_CONSTEXPR BOOST_FORCEINLINE
     typename boost::lazy_enable_if_c<
         tuple_size<typename remove_reference<TTuple>::type>::value
       + tuple_size<typename remove_reference<UTuple>::type>::value == 11
-      , detail::tuple_cat_result<TTuple, UTuple>
+      , detail::tuple_cat_result<
+            typename remove_reference<TTuple>::type
+          , typename remove_reference<UTuple>::type
+        >
     >::type
     tuple_cat(BOOST_FWD_REF(TTuple) t, BOOST_FWD_REF(UTuple) u)
     {
         return
-            typename detail::tuple_cat_result<TTuple, UTuple>::type(
-                HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 0, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 1, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 2, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 3, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 4, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 5, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 6, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 7, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 8, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 9, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 10, _)
+            typename detail::tuple_cat_result<
+                typename remove_reference<TTuple>::type
+              , typename remove_reference<UTuple>::type
+            >::type(
+                detail::tuple_cat_element< 0, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 1, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 2, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 3, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 4, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 5, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 6, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 7, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 8, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 9, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 10, T0, T1>::call(t0, t1)
             );
     }
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7 , typename T8 , typename T9 , typename T10>
     BOOST_CONSTEXPR BOOST_FORCEINLINE
     typename detail::tuple_cat_result<
-        T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7 , T8 , T9 , T10
+        typename remove_reference<T0>::type , typename remove_reference<T1>::type , typename remove_reference<T2>::type , typename remove_reference<T3>::type , typename remove_reference<T4>::type , typename remove_reference<T5>::type , typename remove_reference<T6>::type , typename remove_reference<T7>::type , typename remove_reference<T8>::type , typename remove_reference<T9>::type , typename remove_reference<T10>::type
     >::type
     tuple_cat(BOOST_FWD_REF(T0) t0 , BOOST_FWD_REF(T1) t1 , BOOST_FWD_REF(T2) t2 , BOOST_FWD_REF(T3) t3 , BOOST_FWD_REF(T4) t4 , BOOST_FWD_REF(T5) t5 , BOOST_FWD_REF(T6) t6 , BOOST_FWD_REF(T7) t7 , BOOST_FWD_REF(T8) t8 , BOOST_FWD_REF(T9) t9 , BOOST_FWD_REF(T10) t10)
     {
@@ -2843,6 +3338,9 @@ namespace hpx { namespace util
         
         
         tuple& operator=(tuple const& other)
+            BOOST_NOEXCEPT_IF(
+                true && BOOST_NOEXCEPT_EXPR(( _m0 = other._m0 )) && BOOST_NOEXCEPT_EXPR(( _m1 = other._m1 )) && BOOST_NOEXCEPT_EXPR(( _m2 = other._m2 )) && BOOST_NOEXCEPT_EXPR(( _m3 = other._m3 )) && BOOST_NOEXCEPT_EXPR(( _m4 = other._m4 )) && BOOST_NOEXCEPT_EXPR(( _m5 = other._m5 )) && BOOST_NOEXCEPT_EXPR(( _m6 = other._m6 )) && BOOST_NOEXCEPT_EXPR(( _m7 = other._m7 )) && BOOST_NOEXCEPT_EXPR(( _m8 = other._m8 )) && BOOST_NOEXCEPT_EXPR(( _m9 = other._m9 )) && BOOST_NOEXCEPT_EXPR(( _m10 = other._m10 )) && BOOST_NOEXCEPT_EXPR(( _m11 = other._m11 ))
+            )
         {
             _m0 = other._m0; _m1 = other._m1; _m2 = other._m2; _m3 = other._m3; _m4 = other._m4; _m5 = other._m5; _m6 = other._m6; _m7 = other._m7; _m8 = other._m8; _m9 = other._m9; _m10 = other._m10; _m11 = other._m11;;
             return *this;
@@ -2853,6 +3351,9 @@ namespace hpx { namespace util
         
         
         tuple& operator=(BOOST_RV_REF(tuple) other)
+            BOOST_NOEXCEPT_IF(
+                true && BOOST_NOEXCEPT_EXPR(( _m0 = boost::move(other._m0) )) && BOOST_NOEXCEPT_EXPR(( _m1 = boost::move(other._m1) )) && BOOST_NOEXCEPT_EXPR(( _m2 = boost::move(other._m2) )) && BOOST_NOEXCEPT_EXPR(( _m3 = boost::move(other._m3) )) && BOOST_NOEXCEPT_EXPR(( _m4 = boost::move(other._m4) )) && BOOST_NOEXCEPT_EXPR(( _m5 = boost::move(other._m5) )) && BOOST_NOEXCEPT_EXPR(( _m6 = boost::move(other._m6) )) && BOOST_NOEXCEPT_EXPR(( _m7 = boost::move(other._m7) )) && BOOST_NOEXCEPT_EXPR(( _m8 = boost::move(other._m8) )) && BOOST_NOEXCEPT_EXPR(( _m9 = boost::move(other._m9) )) && BOOST_NOEXCEPT_EXPR(( _m10 = boost::move(other._m10) )) && BOOST_NOEXCEPT_EXPR(( _m11 = boost::move(other._m11) ))
+            )
         {
             _m0 = boost::move(other._m0); _m1 = boost::move(other._m1); _m2 = boost::move(other._m2); _m3 = boost::move(other._m3); _m4 = boost::move(other._m4); _m5 = boost::move(other._m5); _m6 = boost::move(other._m6); _m7 = boost::move(other._m7); _m8 = boost::move(other._m8); _m9 = boost::move(other._m9); _m10 = boost::move(other._m10); _m11 = boost::move(other._m11);;
             return *this;
@@ -2874,6 +3375,9 @@ namespace hpx { namespace util
           , tuple&
         >::type
         operator=(BOOST_FWD_REF(UTuple) other)
+            BOOST_NOEXCEPT_IF(
+                true && BOOST_NOEXCEPT_EXPR(( _m0 = util::get< 0>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m1 = util::get< 1>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m2 = util::get< 2>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m3 = util::get< 3>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m4 = util::get< 4>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m5 = util::get< 5>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m6 = util::get< 6>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m7 = util::get< 7>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m8 = util::get< 8>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m9 = util::get< 9>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m10 = util::get< 10>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m11 = util::get< 11>(boost::forward<UTuple>(other)) ))
+            )
         {
             _m0 = util::get< 0>(boost::forward<UTuple>(other)); _m1 = util::get< 1>(boost::forward<UTuple>(other)); _m2 = util::get< 2>(boost::forward<UTuple>(other)); _m3 = util::get< 3>(boost::forward<UTuple>(other)); _m4 = util::get< 4>(boost::forward<UTuple>(other)); _m5 = util::get< 5>(boost::forward<UTuple>(other)); _m6 = util::get< 6>(boost::forward<UTuple>(other)); _m7 = util::get< 7>(boost::forward<UTuple>(other)); _m8 = util::get< 8>(boost::forward<UTuple>(other)); _m9 = util::get< 9>(boost::forward<UTuple>(other)); _m10 = util::get< 10>(boost::forward<UTuple>(other)); _m11 = util::get< 11>(boost::forward<UTuple>(other));;
             return *this;
@@ -2940,24 +3444,60 @@ namespace hpx { namespace util
     
     
     
+    namespace detail
+    {
+        template <typename Tuple>
+        struct tuple_cat_result<
+            Tuple
+          , typename boost::enable_if_c<tuple_size<Tuple>::value == 12>::type
+        >
+        {
+            typedef
+                tuple<typename tuple_element< 0, Tuple>::type , typename tuple_element< 1, Tuple>::type , typename tuple_element< 2, Tuple>::type , typename tuple_element< 3, Tuple>::type , typename tuple_element< 4, Tuple>::type , typename tuple_element< 5, Tuple>::type , typename tuple_element< 6, Tuple>::type , typename tuple_element< 7, Tuple>::type , typename tuple_element< 8, Tuple>::type , typename tuple_element< 9, Tuple>::type , typename tuple_element< 10, Tuple>::type , typename tuple_element< 11, Tuple>::type>
+                type;
+        };
+    }
+    template <typename Tuple>
+    BOOST_CONSTEXPR BOOST_FORCEINLINE
+    typename boost::lazy_enable_if_c<
+        tuple_size<typename remove_reference<Tuple>::type>::value == 12
+      , detail::tuple_cat_result<
+            typename remove_reference<Tuple>::type
+        >
+    >::type
+    tuple_cat(BOOST_FWD_REF(Tuple) t)
+    {
+        return
+            typename detail::tuple_cat_result<
+                typename remove_reference<Tuple>::type
+            >::type(
+                util::get< 0>(boost::forward<Tuple>(t)) , util::get< 1>(boost::forward<Tuple>(t)) , util::get< 2>(boost::forward<Tuple>(t)) , util::get< 3>(boost::forward<Tuple>(t)) , util::get< 4>(boost::forward<Tuple>(t)) , util::get< 5>(boost::forward<Tuple>(t)) , util::get< 6>(boost::forward<Tuple>(t)) , util::get< 7>(boost::forward<Tuple>(t)) , util::get< 8>(boost::forward<Tuple>(t)) , util::get< 9>(boost::forward<Tuple>(t)) , util::get< 10>(boost::forward<Tuple>(t)) , util::get< 11>(boost::forward<Tuple>(t))
+            );
+    }
     template <typename TTuple, typename UTuple>
     BOOST_CONSTEXPR BOOST_FORCEINLINE
     typename boost::lazy_enable_if_c<
         tuple_size<typename remove_reference<TTuple>::type>::value
       + tuple_size<typename remove_reference<UTuple>::type>::value == 12
-      , detail::tuple_cat_result<TTuple, UTuple>
+      , detail::tuple_cat_result<
+            typename remove_reference<TTuple>::type
+          , typename remove_reference<UTuple>::type
+        >
     >::type
     tuple_cat(BOOST_FWD_REF(TTuple) t, BOOST_FWD_REF(UTuple) u)
     {
         return
-            typename detail::tuple_cat_result<TTuple, UTuple>::type(
-                HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 0, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 1, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 2, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 3, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 4, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 5, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 6, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 7, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 8, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 9, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 10, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 11, _)
+            typename detail::tuple_cat_result<
+                typename remove_reference<TTuple>::type
+              , typename remove_reference<UTuple>::type
+            >::type(
+                detail::tuple_cat_element< 0, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 1, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 2, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 3, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 4, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 5, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 6, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 7, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 8, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 9, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 10, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 11, T0, T1>::call(t0, t1)
             );
     }
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7 , typename T8 , typename T9 , typename T10 , typename T11>
     BOOST_CONSTEXPR BOOST_FORCEINLINE
     typename detail::tuple_cat_result<
-        T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7 , T8 , T9 , T10 , T11
+        typename remove_reference<T0>::type , typename remove_reference<T1>::type , typename remove_reference<T2>::type , typename remove_reference<T3>::type , typename remove_reference<T4>::type , typename remove_reference<T5>::type , typename remove_reference<T6>::type , typename remove_reference<T7>::type , typename remove_reference<T8>::type , typename remove_reference<T9>::type , typename remove_reference<T10>::type , typename remove_reference<T11>::type
     >::type
     tuple_cat(BOOST_FWD_REF(T0) t0 , BOOST_FWD_REF(T1) t1 , BOOST_FWD_REF(T2) t2 , BOOST_FWD_REF(T3) t3 , BOOST_FWD_REF(T4) t4 , BOOST_FWD_REF(T5) t5 , BOOST_FWD_REF(T6) t6 , BOOST_FWD_REF(T7) t7 , BOOST_FWD_REF(T8) t8 , BOOST_FWD_REF(T9) t9 , BOOST_FWD_REF(T10) t10 , BOOST_FWD_REF(T11) t11)
     {
@@ -3093,6 +3633,9 @@ namespace hpx { namespace util
         
         
         tuple& operator=(tuple const& other)
+            BOOST_NOEXCEPT_IF(
+                true && BOOST_NOEXCEPT_EXPR(( _m0 = other._m0 )) && BOOST_NOEXCEPT_EXPR(( _m1 = other._m1 )) && BOOST_NOEXCEPT_EXPR(( _m2 = other._m2 )) && BOOST_NOEXCEPT_EXPR(( _m3 = other._m3 )) && BOOST_NOEXCEPT_EXPR(( _m4 = other._m4 )) && BOOST_NOEXCEPT_EXPR(( _m5 = other._m5 )) && BOOST_NOEXCEPT_EXPR(( _m6 = other._m6 )) && BOOST_NOEXCEPT_EXPR(( _m7 = other._m7 )) && BOOST_NOEXCEPT_EXPR(( _m8 = other._m8 )) && BOOST_NOEXCEPT_EXPR(( _m9 = other._m9 )) && BOOST_NOEXCEPT_EXPR(( _m10 = other._m10 )) && BOOST_NOEXCEPT_EXPR(( _m11 = other._m11 )) && BOOST_NOEXCEPT_EXPR(( _m12 = other._m12 ))
+            )
         {
             _m0 = other._m0; _m1 = other._m1; _m2 = other._m2; _m3 = other._m3; _m4 = other._m4; _m5 = other._m5; _m6 = other._m6; _m7 = other._m7; _m8 = other._m8; _m9 = other._m9; _m10 = other._m10; _m11 = other._m11; _m12 = other._m12;;
             return *this;
@@ -3103,6 +3646,9 @@ namespace hpx { namespace util
         
         
         tuple& operator=(BOOST_RV_REF(tuple) other)
+            BOOST_NOEXCEPT_IF(
+                true && BOOST_NOEXCEPT_EXPR(( _m0 = boost::move(other._m0) )) && BOOST_NOEXCEPT_EXPR(( _m1 = boost::move(other._m1) )) && BOOST_NOEXCEPT_EXPR(( _m2 = boost::move(other._m2) )) && BOOST_NOEXCEPT_EXPR(( _m3 = boost::move(other._m3) )) && BOOST_NOEXCEPT_EXPR(( _m4 = boost::move(other._m4) )) && BOOST_NOEXCEPT_EXPR(( _m5 = boost::move(other._m5) )) && BOOST_NOEXCEPT_EXPR(( _m6 = boost::move(other._m6) )) && BOOST_NOEXCEPT_EXPR(( _m7 = boost::move(other._m7) )) && BOOST_NOEXCEPT_EXPR(( _m8 = boost::move(other._m8) )) && BOOST_NOEXCEPT_EXPR(( _m9 = boost::move(other._m9) )) && BOOST_NOEXCEPT_EXPR(( _m10 = boost::move(other._m10) )) && BOOST_NOEXCEPT_EXPR(( _m11 = boost::move(other._m11) )) && BOOST_NOEXCEPT_EXPR(( _m12 = boost::move(other._m12) ))
+            )
         {
             _m0 = boost::move(other._m0); _m1 = boost::move(other._m1); _m2 = boost::move(other._m2); _m3 = boost::move(other._m3); _m4 = boost::move(other._m4); _m5 = boost::move(other._m5); _m6 = boost::move(other._m6); _m7 = boost::move(other._m7); _m8 = boost::move(other._m8); _m9 = boost::move(other._m9); _m10 = boost::move(other._m10); _m11 = boost::move(other._m11); _m12 = boost::move(other._m12);;
             return *this;
@@ -3124,6 +3670,9 @@ namespace hpx { namespace util
           , tuple&
         >::type
         operator=(BOOST_FWD_REF(UTuple) other)
+            BOOST_NOEXCEPT_IF(
+                true && BOOST_NOEXCEPT_EXPR(( _m0 = util::get< 0>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m1 = util::get< 1>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m2 = util::get< 2>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m3 = util::get< 3>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m4 = util::get< 4>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m5 = util::get< 5>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m6 = util::get< 6>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m7 = util::get< 7>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m8 = util::get< 8>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m9 = util::get< 9>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m10 = util::get< 10>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m11 = util::get< 11>(boost::forward<UTuple>(other)) )) && BOOST_NOEXCEPT_EXPR(( _m12 = util::get< 12>(boost::forward<UTuple>(other)) ))
+            )
         {
             _m0 = util::get< 0>(boost::forward<UTuple>(other)); _m1 = util::get< 1>(boost::forward<UTuple>(other)); _m2 = util::get< 2>(boost::forward<UTuple>(other)); _m3 = util::get< 3>(boost::forward<UTuple>(other)); _m4 = util::get< 4>(boost::forward<UTuple>(other)); _m5 = util::get< 5>(boost::forward<UTuple>(other)); _m6 = util::get< 6>(boost::forward<UTuple>(other)); _m7 = util::get< 7>(boost::forward<UTuple>(other)); _m8 = util::get< 8>(boost::forward<UTuple>(other)); _m9 = util::get< 9>(boost::forward<UTuple>(other)); _m10 = util::get< 10>(boost::forward<UTuple>(other)); _m11 = util::get< 11>(boost::forward<UTuple>(other)); _m12 = util::get< 12>(boost::forward<UTuple>(other));;
             return *this;
@@ -3190,24 +3739,60 @@ namespace hpx { namespace util
     
     
     
+    namespace detail
+    {
+        template <typename Tuple>
+        struct tuple_cat_result<
+            Tuple
+          , typename boost::enable_if_c<tuple_size<Tuple>::value == 13>::type
+        >
+        {
+            typedef
+                tuple<typename tuple_element< 0, Tuple>::type , typename tuple_element< 1, Tuple>::type , typename tuple_element< 2, Tuple>::type , typename tuple_element< 3, Tuple>::type , typename tuple_element< 4, Tuple>::type , typename tuple_element< 5, Tuple>::type , typename tuple_element< 6, Tuple>::type , typename tuple_element< 7, Tuple>::type , typename tuple_element< 8, Tuple>::type , typename tuple_element< 9, Tuple>::type , typename tuple_element< 10, Tuple>::type , typename tuple_element< 11, Tuple>::type , typename tuple_element< 12, Tuple>::type>
+                type;
+        };
+    }
+    template <typename Tuple>
+    BOOST_CONSTEXPR BOOST_FORCEINLINE
+    typename boost::lazy_enable_if_c<
+        tuple_size<typename remove_reference<Tuple>::type>::value == 13
+      , detail::tuple_cat_result<
+            typename remove_reference<Tuple>::type
+        >
+    >::type
+    tuple_cat(BOOST_FWD_REF(Tuple) t)
+    {
+        return
+            typename detail::tuple_cat_result<
+                typename remove_reference<Tuple>::type
+            >::type(
+                util::get< 0>(boost::forward<Tuple>(t)) , util::get< 1>(boost::forward<Tuple>(t)) , util::get< 2>(boost::forward<Tuple>(t)) , util::get< 3>(boost::forward<Tuple>(t)) , util::get< 4>(boost::forward<Tuple>(t)) , util::get< 5>(boost::forward<Tuple>(t)) , util::get< 6>(boost::forward<Tuple>(t)) , util::get< 7>(boost::forward<Tuple>(t)) , util::get< 8>(boost::forward<Tuple>(t)) , util::get< 9>(boost::forward<Tuple>(t)) , util::get< 10>(boost::forward<Tuple>(t)) , util::get< 11>(boost::forward<Tuple>(t)) , util::get< 12>(boost::forward<Tuple>(t))
+            );
+    }
     template <typename TTuple, typename UTuple>
     BOOST_CONSTEXPR BOOST_FORCEINLINE
     typename boost::lazy_enable_if_c<
         tuple_size<typename remove_reference<TTuple>::type>::value
       + tuple_size<typename remove_reference<UTuple>::type>::value == 13
-      , detail::tuple_cat_result<TTuple, UTuple>
+      , detail::tuple_cat_result<
+            typename remove_reference<TTuple>::type
+          , typename remove_reference<UTuple>::type
+        >
     >::type
     tuple_cat(BOOST_FWD_REF(TTuple) t, BOOST_FWD_REF(UTuple) u)
     {
         return
-            typename detail::tuple_cat_result<TTuple, UTuple>::type(
-                HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 0, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 1, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 2, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 3, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 4, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 5, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 6, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 7, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 8, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 9, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 10, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 11, _) , HPX_UTIL_TUPLE_CAT_ELEM_CALL(2, 12, _)
+            typename detail::tuple_cat_result<
+                typename remove_reference<TTuple>::type
+              , typename remove_reference<UTuple>::type
+            >::type(
+                detail::tuple_cat_element< 0, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 1, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 2, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 3, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 4, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 5, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 6, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 7, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 8, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 9, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 10, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 11, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 12, T0, T1>::call(t0, t1)
             );
     }
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7 , typename T8 , typename T9 , typename T10 , typename T11 , typename T12>
     BOOST_CONSTEXPR BOOST_FORCEINLINE
     typename detail::tuple_cat_result<
-        T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7 , T8 , T9 , T10 , T11 , T12
+        typename remove_reference<T0>::type , typename remove_reference<T1>::type , typename remove_reference<T2>::type , typename remove_reference<T3>::type , typename remove_reference<T4>::type , typename remove_reference<T5>::type , typename remove_reference<T6>::type , typename remove_reference<T7>::type , typename remove_reference<T8>::type , typename remove_reference<T9>::type , typename remove_reference<T10>::type , typename remove_reference<T11>::type , typename remove_reference<T12>::type
     >::type
     tuple_cat(BOOST_FWD_REF(T0) t0 , BOOST_FWD_REF(T1) t1 , BOOST_FWD_REF(T2) t2 , BOOST_FWD_REF(T3) t3 , BOOST_FWD_REF(T4) t4 , BOOST_FWD_REF(T5) t5 , BOOST_FWD_REF(T6) t6 , BOOST_FWD_REF(T7) t7 , BOOST_FWD_REF(T8) t8 , BOOST_FWD_REF(T9) t9 , BOOST_FWD_REF(T10) t10 , BOOST_FWD_REF(T11) t11 , BOOST_FWD_REF(T12) t12)
     {
