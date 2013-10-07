@@ -240,7 +240,6 @@ namespace hpx { namespace util
         }
 
         // tuple& operator=(tuple&& u) noexcept(see below );
-        //  Remark: The expression inside noexcept is equivalent to the logical and of the following expressions: is_nothrow_move_assignable<Ti>::value where Ti is the ith type in Types.
         //  Requires: is_move_assignable<Ti>::value is true for all i.
         //  Effects: For all i, assigns std::forward<Ti>(get<i>(u)) to get<i>(*this).
         //  Returns: *this.
@@ -252,7 +251,6 @@ namespace hpx { namespace util
         // 20.4.2.3, tuple swap
 
         // void swap(tuple& rhs) noexcept(see below );
-        //  Remark: The expression inside noexcept is equivalent to the logical and of the following expressions: noexcept(swap(declval<Ti &>>(), declval<Ti &>())) where Ti is the ith type in Types.
         //  Requires: Each element in *this shall be swappable with (17.6.3.2) the corresponding element in rhs.
         //  Effects: Calls swap for each element in *this and its corresponding element in rhs.
         //  Throws: Nothing unless one of the element-wise swap calls throws an exception.
@@ -303,11 +301,6 @@ namespace hpx { namespace util
     // template<class... Types>
     // tuple<Types&...> tie(Types&... t) noexcept;
     //  Returns: tuple<Types&>(t...). When an argument in t is ignore, assigning any value to the corresponding tuple element has no effect.
-    //  [ Example: tie functions allow one to create tuples that unpack tuples into variables. ignore can be used for elements that are not needed:
-    //      int i; std::string s;
-    //      tie(i, ignore, s) = make_tuple(42, 3.14, "C++");
-    //      // i == 42, s == "C++"
-    //  —end example ]
     BOOST_FORCEINLINE
     tuple<>
     tie() BOOST_NOEXCEPT
@@ -321,9 +314,7 @@ namespace hpx { namespace util
     //tuple_cat(Tuples&&...);
     //  In the following paragraphs, let Ti be the ith type in Tuples, Ui be remove_reference<Ti>::type, and tpi be the ith parameter in the function parameter pack tpls, where all indexing is zero-based.
     //  Requires: For all i, Ui shall be the type cvi tuple<Argsi...>, where cvi is the (possibly empty) ith cv-qualifier-seq and Argsi is the parameter pack representing the element types in Ui . Let Aik be the kith type in Argsi. For all Aik the following requirements shall be satisfied: If Ti is deduced as an lvalue reference type, then is_constructible<Aik, cvi Aik&>::value == true, otherwise is_constructible<Aik, cvi Aik&&>::value == true.
-    //  Remarks: The types in Ctypes shall be equal to the ordered sequence of the extended types Args0...,Args1..., ... Argsn?1..., where n is equal to sizeof...(Tuples). Let ei... be the ith ordered sequence of tuple elements of the resulting tuple object corresponding to the type sequence Argsi.
     //  Returns: A tuple object constructed by initializing the kith type element eik in ei... with get<ki>(std::forward<Ti>(tpi)) for each valid ki and each group ei in order.
-    //  Note: An implementation may support additional types in the parameter pack Tuples that support the tuple-like protocol, such as pair and array.
     namespace detail
     {
         template <std::size_t I, typename T0, typename T1, typename Enable = void>
@@ -385,7 +376,9 @@ namespace hpx { namespace util
             }
         };
 
-#       define HPX_UTIL_TUPLE_TRAILING_PARAMS(Z, N, D) , BOOST_PP_CAT(T, N)
+#       define HPX_UTIL_TUPLE_TRAILING_PARAMS(Z, N, D)                        \
+          , BOOST_PP_CAT(T, N)                                                \
+        /**/
         template <
             BOOST_PP_ENUM_BINARY_PARAMS(N, typename T, = void BOOST_PP_INTERCEPT)
           , typename Dummy = void
@@ -410,7 +403,9 @@ namespace hpx { namespace util
             typedef Tuple type;
         };
         
-#       define HPX_UTIL_TUPLE_CAT_ELEMENT(Z, N, D) typename tuple_cat_element<N, TTuple, UTuple>::type
+#       define HPX_UTIL_TUPLE_CAT_ELEMENT(Z, N, D)                            \
+        typename tuple_cat_element<N, TTuple, UTuple>::type                   \
+        /**/
         template <typename TTuple, typename UTuple>
         struct tuple_cat_result<TTuple, UTuple>
         {
@@ -476,7 +471,6 @@ namespace hpx { namespace util
     // template <size_t I, class Tuple>
     // class tuple_element
     //  Requires: I < sizeof...(Types). The program is ill-formed if I is out of bounds.
-    //  Type: TI is the type of the Ith element of Types, where indexing is zero-based.
     template <std::size_t I, typename T>
     struct tuple_element
     {};
@@ -545,7 +539,6 @@ namespace hpx { namespace util
     // constexpr typename tuple_element<I, tuple<Types...> >::type const& get(const tuple<Types...>& t) noexcept;
     //  Requires: I < sizeof...(Types). The program is ill-formed if I is out of bounds.
     //  Returns: A const reference to the Ith element of t, where indexing is zero-based.
-    //  [ Note: Constness is shallow. If a T in Types is some reference type X&, the return type is X&, not const X&. However, if the element type is non-reference type T, the return type is const T&. This is consistent with how constness is defined to work for member variables of reference type. —end note ]
     template <std::size_t I, typename Tuple>
     BOOST_CONSTEXPR BOOST_FORCEINLINE
     typename detail::qualify_as<
@@ -560,7 +553,6 @@ namespace hpx { namespace util
     // template <size_t I, class... Types>
     // constexpr typename tuple_element<I, tuple<Types...> >::type&& get(tuple<Types...>&& t) noexcept;
     //  Effects: Equivalent to return std::forward<typename tuple_element<I, tuple<Types...> >::type&&>(get<I>(t));
-    //  Note: if a T in Types is some reference type X&, the return type is X&, not X&&. However, if the element type is a non-reference type T, the return type is T&&.
     template <std::size_t I, typename Tuple>
     BOOST_CONSTEXPR BOOST_FORCEINLINE
     typename detail::qualify_as<
@@ -769,8 +761,7 @@ namespace hpx { namespace util
     // 20.4.2.9, specialized algorithms
 
     // template <class... Types>
-    // void swap(tuple<Types...>& x, tuple<Types...>& y) noexcept(see below );
-    //  Remark: The expression inside noexcept is equivalent to: noexcept(x.swap(y))
+    // void swap(tuple<Types...>& x, tuple<Types...>& y) noexcept(x.swap(y));
     //  Effects: x.swap(y)
     template <
         BOOST_PP_ENUM_PARAMS(N, typename T)
@@ -791,7 +782,10 @@ namespace hpx { namespace util
 namespace boost { namespace serialization
 {
     ///////////////////////////////////////////////////////////////////////////
-#   define HPX_UTIL_TUPLE_IS_BITWISE_SERIALIZABLE(Z, N, D) && (boost::is_void<BOOST_PP_CAT(T, N)>::value || boost::serialization::is_bitwise_serializable<BOOST_PP_CAT(T, N)>::value)
+#   define HPX_UTIL_TUPLE_IS_BITWISE_SERIALIZABLE(Z, N, D)                    \
+     && (boost::is_void<BOOST_PP_CAT(T, N)>::value                            \
+      || boost::serialization::is_bitwise_serializable<BOOST_PP_CAT(T, N)>::value)\
+    /**/
     template <BOOST_PP_ENUM_PARAMS(N, typename T)>
     struct is_bitwise_serializable<
         ::hpx::util::tuple<BOOST_PP_ENUM_PARAMS(N, T)>
@@ -865,7 +859,9 @@ namespace hpx { namespace util
             static no_type call(...);
             static yes_type call(BOOST_PP_ENUM_PARAMS(N, T));
 
-#           define HPX_UTIL_TUPLE_GET(Z, N, D) util::get<N>(boost::declval<UTuple>())
+#           define HPX_UTIL_TUPLE_GET(Z, N, D)                                \
+            util::get<N>(boost::declval<UTuple>())                            \
+            /**/
             static bool const value =
                 sizeof(
                     call(BOOST_PP_ENUM(N, HPX_UTIL_TUPLE_GET, _))
@@ -886,7 +882,9 @@ namespace hpx { namespace util
         // constexpr tuple();
         //  Requires: is_default_constructible<Ti>::value is true for all i.
         //  Effects: Value initializes each element.
-#       define HPX_UTIL_TUPLE_DEFAULT_CONSTRUCT(Z, N, D) BOOST_PP_CAT(_m, N)()
+#       define HPX_UTIL_TUPLE_DEFAULT_CONSTRUCT(Z, N, D)                      \
+        BOOST_PP_CAT(_m, N)()                                                 \
+        /**/
         BOOST_CONSTEXPR tuple()
           : BOOST_PP_ENUM(N, HPX_UTIL_TUPLE_DEFAULT_CONSTRUCT, _)
         {}
@@ -895,8 +893,14 @@ namespace hpx { namespace util
         // explicit constexpr tuple(const Types&...);
         //  Requires: is_copy_constructible<Ti>::value is true for all i.
         //  Effects: Initializes each element with the value of the corresponding parameter.
-#       define HPX_UTIL_TUPLE_CONST_LV_PARAM(Z, N, D) typename add_lvalue_reference<typename boost::add_const<BOOST_PP_CAT(T, N)>::type>::type BOOST_PP_CAT(v, N)
-#       define HPX_UTIL_TUPLE_COPY_CONSTRUCT(Z, N, D) BOOST_PP_CAT(_m, N)(BOOST_PP_CAT(v, N))
+#       define HPX_UTIL_TUPLE_CONST_LV_PARAM(Z, N, D)                         \
+        typename add_lvalue_reference<                                        \
+            typename boost::add_const<BOOST_PP_CAT(T, N)>::type               \
+        >::type BOOST_PP_CAT(v, N)                                            \
+        /**/
+#       define HPX_UTIL_TUPLE_COPY_CONSTRUCT(Z, N, D)                         \
+        BOOST_PP_CAT(_m, N)(BOOST_PP_CAT(v, N))                               \
+        /**/
         BOOST_CONSTEXPR explicit tuple(
             BOOST_PP_ENUM(N, HPX_UTIL_TUPLE_CONST_LV_PARAM, _)
         ) : BOOST_PP_ENUM(N, HPX_UTIL_TUPLE_COPY_CONSTRUCT, _)
@@ -909,8 +913,13 @@ namespace hpx { namespace util
         //  Requires: sizeof...(Types) == sizeof...( UTypes). is_constructible<Ti, Ui&&>::value is true for all i.
         //  Effects: Initializes the elements in the tuple with the corresponding value in std::forward<UTypes>(u).
         //  Remark: This constructor shall not participate in overload resolution unless each type in UTypes is implicitly convertible to its corresponding type in Types.
-#       define HPX_UTIL_TUPLE_FWD_REF_PARAM(Z, N, D) BOOST_FWD_REF(BOOST_PP_CAT(U, N)) BOOST_PP_CAT(u, N)
-#       define HPX_UTIL_TUPLE_FORWARD_CONSTRUCT(Z, N, D) BOOST_PP_CAT(_m, N)(boost::forward<BOOST_PP_CAT(U, N)>(BOOST_PP_CAT(u, N)))
+#       define HPX_UTIL_TUPLE_FWD_REF_PARAM(Z, N, D)                          \
+        BOOST_FWD_REF(BOOST_PP_CAT(U, N)) BOOST_PP_CAT(u, N)                  \
+        /**/
+#       define HPX_UTIL_TUPLE_FORWARD_CONSTRUCT(Z, N, D)                      \
+        BOOST_PP_CAT(_m, N)                                                   \
+            (boost::forward<BOOST_PP_CAT(U, N)>(BOOST_PP_CAT(u, N)))          \
+        /**/
         template <BOOST_PP_ENUM_PARAMS(N, typename U)>
         BOOST_CONSTEXPR explicit tuple(
             BOOST_PP_ENUM(N, HPX_UTIL_TUPLE_FWD_REF_PARAM, _)
@@ -930,7 +939,9 @@ namespace hpx { namespace util
         // tuple(const tuple& u) = default;
         //  Requires: is_copy_constructible<Ti>::value is true for all i.
         //  Effects: Initializes each element of *this with the corresponding element of u.
-#       define HPX_UTIL_TUPLE_COPY_CONSTRUCT(Z, N, D) BOOST_PP_CAT(_m, N)(BOOST_PP_CAT(other._m, N))
+#       define HPX_UTIL_TUPLE_COPY_CONSTRUCT(Z, N, D)                         \
+        BOOST_PP_CAT(_m, N)(BOOST_PP_CAT(other._m, N))                        \
+        /**/
         BOOST_CONSTEXPR tuple(tuple const& other)
           : BOOST_PP_ENUM(N, HPX_UTIL_TUPLE_COPY_CONSTRUCT, _)
         {}
@@ -939,7 +950,9 @@ namespace hpx { namespace util
         // tuple(tuple&& u) = default;
         //  Requires: is_move_constructible<Ti>::value is true for all i.
         //  Effects: For all i, initializes the ith element of *this with std::forward<Ti>(get<i>(u)).
-#       define HPX_UTIL_TUPLE_MOVE_CONSTRUCT(Z, N, D) BOOST_PP_CAT(_m, N)(boost::forward<BOOST_PP_CAT(T, N)>(BOOST_PP_CAT(other._m, N)))
+#       define HPX_UTIL_TUPLE_MOVE_CONSTRUCT(Z, N, D)                         \
+        BOOST_PP_CAT(_m, N)(boost::move(BOOST_PP_CAT(other._m, N)))           \
+        /**/
         BOOST_CONSTEXPR tuple(BOOST_RV_REF(tuple) other)
           : BOOST_PP_ENUM(N, HPX_UTIL_TUPLE_MOVE_CONSTRUCT, _)
         {}
@@ -954,7 +967,9 @@ namespace hpx { namespace util
         //  Requires: sizeof...(Types) == sizeof...(UTypes). is_constructible<Ti, Ui&&>::value is true for all i.
         //  Effects: For all i, initializes the ith element of *this with std::forward<Ui>(get<i>(u)).
         //  Remark: This constructor shall not participate in overload resolution unless each type in UTypes is implicitly convertible to its corresponding type in Types
-#       define HPX_UTIL_TUPLE_GET_CONSTRUCT(Z, N, D) BOOST_PP_CAT(_m, N)(util::get<N>(boost::forward<UTuple>(other)))
+#       define HPX_UTIL_TUPLE_GET_CONSTRUCT(Z, N, D)                          \
+        BOOST_PP_CAT(_m, N)(util::get<N>(boost::forward<UTuple>(other)))      \
+        /**/
         template <typename UTuple>
         BOOST_CONSTEXPR tuple(
             BOOST_FWD_REF(UTuple) other
@@ -974,7 +989,9 @@ namespace hpx { namespace util
         //  Requires: is_copy_assignable<Ti>::value is true for all i.
         //  Effects: Assigns each element of u to the corresponding element of *this.
         //  Returns: *this.
-#       define HPX_UTIL_TUPLE_COPY_ASSIGN(Z, N, D) BOOST_PP_CAT(_m, N) = BOOST_PP_CAT(other._m, N);
+#       define HPX_UTIL_TUPLE_COPY_ASSIGN(Z, N, D)                            \
+        BOOST_PP_CAT(_m, N) = BOOST_PP_CAT(other._m, N);                      \
+        /**/
         tuple& operator=(tuple const& other)
         {
             BOOST_PP_REPEAT(N, HPX_UTIL_TUPLE_COPY_ASSIGN, _);
@@ -987,7 +1004,9 @@ namespace hpx { namespace util
         //  Requires: is_move_assignable<Ti>::value is true for all i.
         //  Effects: For all i, assigns std::forward<Ti>(get<i>(u)) to get<i>(*this).
         //  Returns: *this.
-#       define HPX_UTIL_TUPLE_MOVE_ASSIGN(Z, N, D) BOOST_PP_CAT(_m, N) = boost::move(BOOST_PP_CAT(other._m, N));
+#       define HPX_UTIL_TUPLE_MOVE_ASSIGN(Z, N, D)                            \
+        BOOST_PP_CAT(_m, N) = boost::move(BOOST_PP_CAT(other._m, N));         \
+        /**/
         tuple& operator=(BOOST_RV_REF(tuple) other)
         {
             BOOST_PP_REPEAT(N, HPX_UTIL_TUPLE_MOVE_ASSIGN, _);
@@ -1006,7 +1025,9 @@ namespace hpx { namespace util
         //  Requires: is_assignable<Ti&, Ui&&>::value == true for all i. sizeof...(Types) == sizeof...(UTypes).
         //  Effects: For all i, assigns std::forward<Ui>(get<i)>(u)) to get<i>(*this).
         //  Returns: *this.
-#       define HPX_UTIL_TUPLE_GET_ASSIGN(Z, N, D) BOOST_PP_CAT(_m, N) = util::get<N>(boost::forward<UTuple>(other));
+#       define HPX_UTIL_TUPLE_GET_ASSIGN(Z, N, D)                             \
+        BOOST_PP_CAT(_m, N) = util::get<N>(boost::forward<UTuple>(other));    \
+        /**/
         template <typename UTuple>
         typename boost::enable_if_c<
             tuple_size<typename remove_reference<UTuple>::type>::value == N
@@ -1022,12 +1043,22 @@ namespace hpx { namespace util
         // 20.4.2.3, tuple swap
 
         // void swap(tuple& rhs) noexcept(see below );
-        //  Remark: The expression inside noexcept is equivalent to the logical and of the following expressions: noexcept(swap(declval<Ti &>>(), declval<Ti &>())) where Ti is the ith type in Types.
         //  Requires: Each element in *this shall be swappable with (17.6.3.2) the corresponding element in rhs.
         //  Effects: Calls swap for each element in *this and its corresponding element in rhs.
         //  Throws: Nothing unless one of the element-wise swap calls throws an exception.
-#       define HPX_UTIL_TUPLE_SWAP_NOEXCEPT(Z, N, D) && BOOST_NOEXCEPT_EXPR((boost::swap(BOOST_PP_CAT(_m, N)._value, BOOST_PP_CAT(other._m, N)._value)))
-#       define HPX_UTIL_TUPLE_SWAP(Z, N, D) boost::swap(BOOST_PP_CAT(_m, N)._value, BOOST_PP_CAT(other._m, N)._value);
+#       define HPX_UTIL_TUPLE_SWAP_NOEXCEPT(Z, N, D)                          \
+         && BOOST_NOEXCEPT_EXPR((                                             \
+                boost::swap(                                                  \
+                    BOOST_PP_CAT(_m, N)._value                                \
+                  , BOOST_PP_CAT(other._m, N)._value)                         \
+                ))                                                            \
+        /**/
+#       define HPX_UTIL_TUPLE_SWAP(Z, N, D)                                   \
+        boost::swap(                                                          \
+            BOOST_PP_CAT(_m, N)._value                                        \
+          , BOOST_PP_CAT(other._m, N)._value                                  \
+        );                                                                    \
+        /**/
         void swap(tuple& other)
             BOOST_NOEXCEPT_IF(
                 true BOOST_PP_REPEAT(N, HPX_UTIL_TUPLE_SWAP_NOEXCEPT, _)
@@ -1039,7 +1070,9 @@ namespace hpx { namespace util
 #       undef HPX_UTIL_TUPLE_SWAP
 
     public: // exposition-only
-#       define HPX_UTIL_TUPLE_MEMBER(Z, N, D) detail::tuple_member<BOOST_PP_CAT(T, N)> BOOST_PP_CAT(_m, N);
+#       define HPX_UTIL_TUPLE_MEMBER(Z, N, D)                                 \
+        detail::tuple_member<BOOST_PP_CAT(T, N)> BOOST_PP_CAT(_m, N);         \
+        /**/
         BOOST_PP_REPEAT(N, HPX_UTIL_TUPLE_MEMBER, _);
 #       undef HPX_UTIL_TUPLE_MEMBER
     };
@@ -1048,7 +1081,9 @@ namespace hpx { namespace util
     // constexpr tuple<VTypes...> make_tuple(Types&&... t);
     //  Let Ui be decay<Ti>::type for each Ti in Types. Then each Vi in VTypes is X& if Ui equals reference_wrapper<X>, otherwise Vi is Ui.
     //  Returns: tuple<VTypes...>(std::forward<Types>(t)...).
-#   define HPX_UTIL_TUPLE_MAKE_ELEMENT(Z, N, D) typename detail::make_tuple_element<BOOST_PP_CAT(T, N)>::type
+#   define HPX_UTIL_TUPLE_MAKE_ELEMENT(Z, N, D)                               \
+    typename detail::make_tuple_element<BOOST_PP_CAT(T, N)>::type             \
+    /**/
     template <BOOST_PP_ENUM_PARAMS(N, typename T)>
     BOOST_CONSTEXPR BOOST_FORCEINLINE
     tuple<BOOST_PP_ENUM(N, HPX_UTIL_TUPLE_MAKE_ELEMENT, _)>
@@ -1065,7 +1100,9 @@ namespace hpx { namespace util
     // tuple<Types&&...> forward_as_tuple(Types&&... t) noexcept;
     //  Effects: Constructs a tuple of references to the arguments in t suitable for forwarding as arguments to a function. Because the result may contain references to temporary variables, a program shall ensure that the return value of this function does not outlive any of its arguments. (e.g., the program should typically not store the result in a named variable).
     //  Returns: tuple<Types&&...>(std::forward<Types>(t)...)
-#   define HPX_UTIL_FORWARD_AS_TUPLE_ELEMENT(Z, N, D) typename add_rvalue_reference<BOOST_PP_CAT(T, N)>::type
+#   define HPX_UTIL_FORWARD_AS_TUPLE_ELEMENT(Z, N, D)                         \
+    typename add_rvalue_reference<BOOST_PP_CAT(T, N)>::type                   \
+    /**/
     template <BOOST_PP_ENUM_PARAMS(N, typename T)>
     BOOST_FORCEINLINE
     tuple<BOOST_PP_ENUM(N, HPX_UTIL_FORWARD_AS_TUPLE_ELEMENT, _)>
@@ -1080,13 +1117,9 @@ namespace hpx { namespace util
 
     // template<class... Types>
     // tuple<Types&...> tie(Types&... t) noexcept;
-    //  Returns: tuple<Types&>(t...). When an argument in t is ignore, assigning any value to the corresponding tuple element has no effect.
-    //  [ Example: tie functions allow one to create tuples that unpack tuples into variables. ignore can be used for elements that are not needed:
-    //      int i; std::string s;
-    //      tie(i, ignore, s) = make_tuple(42, 3.14, "C++");
-    //      // i == 42, s == "C++"
-    //  —end example ]
-#   define HPX_UTIL_TIE_ELEMENT(Z, N, D) typename util::add_lvalue_reference<BOOST_PP_CAT(T, N)>::type
+#   define HPX_UTIL_TIE_ELEMENT(Z, N, D)                                      \
+    typename util::add_lvalue_reference<BOOST_PP_CAT(T, N)>::type             \
+    /**/
     template <BOOST_PP_ENUM_PARAMS(N, typename T)>
     BOOST_FORCEINLINE
     tuple<BOOST_PP_ENUM(N, HPX_UTIL_TIE_ELEMENT, _)>
@@ -1103,6 +1136,9 @@ namespace hpx { namespace util
     //BOOST_CONSTEXPR BOOST_FORCEINLINE
     //tuple<Ctypes ...>
     //tuple_cat(Tuples&&...);
+    //  In the following paragraphs, let Ti be the ith type in Tuples, Ui be remove_reference<Ti>::type, and tpi be the ith parameter in the function parameter pack tpls, where all indexing is zero-based.
+    //  Requires: For all i, Ui shall be the type cvi tuple<Argsi...>, where cvi is the (possibly empty) ith cv-qualifier-seq and Argsi is the parameter pack representing the element types in Ui . Let Aik be the kith type in Argsi. For all Aik the following requirements shall be satisfied: If Ti is deduced as an lvalue reference type, then is_constructible<Aik, cvi Aik&>::value == true, otherwise is_constructible<Aik, cvi Aik&&>::value == true.
+    //  Returns: A tuple object constructed by initializing the kith type element eik in ei... with get<ki>(std::forward<Ti>(tpi)) for each valid ki and each group ei in order.
 #   define HPX_UTIL_TUPLE_CAT_ELEMENT_CALL(Z, N, D)                           \
     detail::tuple_cat_element<N, T0, T1>::call(t0, t1)                        \
     /**/
