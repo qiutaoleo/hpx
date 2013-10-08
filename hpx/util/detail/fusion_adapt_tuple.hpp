@@ -29,7 +29,9 @@ namespace boost { namespace fusion
     namespace traits
     {
         template <BOOST_PP_ENUM_PARAMS(HPX_TUPLE_MAX, typename T)>
-        struct tag_of<hpx::util::tuple<BOOST_PP_ENUM_PARAMS(HPX_TUPLE_MAX, T)>>
+        struct tag_of<
+            hpx::util::tuple<BOOST_PP_ENUM_PARAMS(HPX_TUPLE_MAX, T)>
+        >
         {
             typedef hpx::util::detail::tuple_tag type;
         };
@@ -42,13 +44,17 @@ namespace boost { namespace mpl
     struct sequence_tag;
 
     template <BOOST_PP_ENUM_PARAMS(HPX_TUPLE_MAX, typename T)>
-    struct sequence_tag<hpx::util::tuple<BOOST_PP_ENUM_PARAMS(HPX_TUPLE_MAX, T)>>
+    struct sequence_tag<hpx::util::tuple<
+        BOOST_PP_ENUM_PARAMS(HPX_TUPLE_MAX, T)>
+    >
     {
         typedef fusion::fusion_sequence_tag type;
     };
 
     template <BOOST_PP_ENUM_PARAMS(HPX_TUPLE_MAX, typename T)>
-    struct sequence_tag<hpx::util::tuple<BOOST_PP_ENUM_PARAMS(HPX_TUPLE_MAX, T)> const>
+    struct sequence_tag<hpx::util::tuple<
+        BOOST_PP_ENUM_PARAMS(HPX_TUPLE_MAX, T)> const
+    >
     {
         typedef fusion::fusion_sequence_tag type;
     };
@@ -195,12 +201,12 @@ namespace boost { namespace fusion
 
         template <typename Iterator>
         struct next
-          : advance<Iterator, mpl::int_<1>>
+          : advance<Iterator, mpl::int_<1> >
         {};
 
         template <typename Iterator>
         struct prior
-          : advance<Iterator, mpl::int_<-1>>
+          : advance<Iterator, mpl::int_<-1> >
         {};
 
         template <typename I1, typename I2>
