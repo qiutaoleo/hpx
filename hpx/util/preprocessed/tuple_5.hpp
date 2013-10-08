@@ -171,6 +171,36 @@ namespace hpx { namespace util
     
     
     
+    template <typename T0>
+    struct tuple_size<tuple<T0> >
+      : boost::mpl::size_t<1>
+    {};
+    
+    
+    
+    
+    template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7>
+    struct tuple_element<
+        0
+      , tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7>
+    > : boost::mpl::identity<T0>
+    {
+        template <typename Tuple>
+        static BOOST_CONSTEXPR BOOST_FORCEINLINE
+        typename detail::qualify_as<
+            T0
+          , Tuple&
+        >::type
+        get(Tuple& tuple) BOOST_NOEXCEPT
+        {
+            return tuple._m0._value;
+        }
+    };
+    
+    
+    
+    
+    
     
     template <typename T0>
     BOOST_CONSTEXPR BOOST_FORCEINLINE
@@ -265,34 +295,6 @@ namespace hpx { namespace util
                 detail::tuple_cat_element< 0, T0, T1>::call(t0, t1)
             );
     }
-    
-    
-    
-    template <typename T0>
-    struct tuple_size<tuple<T0> >
-      : boost::mpl::size_t<1>
-    {};
-    
-    
-    
-    
-    template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7>
-    struct tuple_element<
-        0
-      , tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7>
-    > : boost::mpl::identity<T0>
-    {
-        template <typename Tuple>
-        static BOOST_CONSTEXPR BOOST_FORCEINLINE
-        typename detail::qualify_as<
-            T0
-          , Tuple&
-        >::type
-        get(Tuple& tuple) BOOST_NOEXCEPT
-        {
-            return tuple._m0._value;
-        }
-    };
 }}
 namespace hpx { namespace util
 {
@@ -455,6 +457,36 @@ namespace hpx { namespace util
     
     
     
+    template <typename T0 , typename T1>
+    struct tuple_size<tuple<T0 , T1> >
+      : boost::mpl::size_t<2>
+    {};
+    
+    
+    
+    
+    template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7>
+    struct tuple_element<
+        1
+      , tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7>
+    > : boost::mpl::identity<T1>
+    {
+        template <typename Tuple>
+        static BOOST_CONSTEXPR BOOST_FORCEINLINE
+        typename detail::qualify_as<
+            T1
+          , Tuple&
+        >::type
+        get(Tuple& tuple) BOOST_NOEXCEPT
+        {
+            return tuple._m1._value;
+        }
+    };
+    
+    
+    
+    
+    
     
     template <typename T0 , typename T1>
     BOOST_CONSTEXPR BOOST_FORCEINLINE
@@ -549,34 +581,6 @@ namespace hpx { namespace util
                 detail::tuple_cat_element< 0, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 1, T0, T1>::call(t0, t1)
             );
     }
-    
-    
-    
-    template <typename T0 , typename T1>
-    struct tuple_size<tuple<T0 , T1> >
-      : boost::mpl::size_t<2>
-    {};
-    
-    
-    
-    
-    template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7>
-    struct tuple_element<
-        1
-      , tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7>
-    > : boost::mpl::identity<T1>
-    {
-        template <typename Tuple>
-        static BOOST_CONSTEXPR BOOST_FORCEINLINE
-        typename detail::qualify_as<
-            T1
-          , Tuple&
-        >::type
-        get(Tuple& tuple) BOOST_NOEXCEPT
-        {
-            return tuple._m1._value;
-        }
-    };
 }}
 namespace hpx { namespace util
 {
@@ -739,6 +743,36 @@ namespace hpx { namespace util
     
     
     
+    template <typename T0 , typename T1 , typename T2>
+    struct tuple_size<tuple<T0 , T1 , T2> >
+      : boost::mpl::size_t<3>
+    {};
+    
+    
+    
+    
+    template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7>
+    struct tuple_element<
+        2
+      , tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7>
+    > : boost::mpl::identity<T2>
+    {
+        template <typename Tuple>
+        static BOOST_CONSTEXPR BOOST_FORCEINLINE
+        typename detail::qualify_as<
+            T2
+          , Tuple&
+        >::type
+        get(Tuple& tuple) BOOST_NOEXCEPT
+        {
+            return tuple._m2._value;
+        }
+    };
+    
+    
+    
+    
+    
     
     template <typename T0 , typename T1 , typename T2>
     BOOST_CONSTEXPR BOOST_FORCEINLINE
@@ -847,34 +881,6 @@ namespace hpx { namespace util
                     (t2)
             );
     }
-    
-    
-    
-    template <typename T0 , typename T1 , typename T2>
-    struct tuple_size<tuple<T0 , T1 , T2> >
-      : boost::mpl::size_t<3>
-    {};
-    
-    
-    
-    
-    template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7>
-    struct tuple_element<
-        2
-      , tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7>
-    > : boost::mpl::identity<T2>
-    {
-        template <typename Tuple>
-        static BOOST_CONSTEXPR BOOST_FORCEINLINE
-        typename detail::qualify_as<
-            T2
-          , Tuple&
-        >::type
-        get(Tuple& tuple) BOOST_NOEXCEPT
-        {
-            return tuple._m2._value;
-        }
-    };
 }}
 namespace hpx { namespace util
 {
@@ -1037,6 +1043,36 @@ namespace hpx { namespace util
     
     
     
+    template <typename T0 , typename T1 , typename T2 , typename T3>
+    struct tuple_size<tuple<T0 , T1 , T2 , T3> >
+      : boost::mpl::size_t<4>
+    {};
+    
+    
+    
+    
+    template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7>
+    struct tuple_element<
+        3
+      , tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7>
+    > : boost::mpl::identity<T3>
+    {
+        template <typename Tuple>
+        static BOOST_CONSTEXPR BOOST_FORCEINLINE
+        typename detail::qualify_as<
+            T3
+          , Tuple&
+        >::type
+        get(Tuple& tuple) BOOST_NOEXCEPT
+        {
+            return tuple._m3._value;
+        }
+    };
+    
+    
+    
+    
+    
     
     template <typename T0 , typename T1 , typename T2 , typename T3>
     BOOST_CONSTEXPR BOOST_FORCEINLINE
@@ -1143,34 +1179,6 @@ namespace hpx { namespace util
                 util::tuple_cat( boost::forward<T0> (t0) , boost::forward<T1> (t1)) , util::tuple_cat( boost::forward<T2> (t2) , boost::forward<T3> (t3))
             );
     }
-    
-    
-    
-    template <typename T0 , typename T1 , typename T2 , typename T3>
-    struct tuple_size<tuple<T0 , T1 , T2 , T3> >
-      : boost::mpl::size_t<4>
-    {};
-    
-    
-    
-    
-    template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7>
-    struct tuple_element<
-        3
-      , tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7>
-    > : boost::mpl::identity<T3>
-    {
-        template <typename Tuple>
-        static BOOST_CONSTEXPR BOOST_FORCEINLINE
-        typename detail::qualify_as<
-            T3
-          , Tuple&
-        >::type
-        get(Tuple& tuple) BOOST_NOEXCEPT
-        {
-            return tuple._m3._value;
-        }
-    };
 }}
 namespace hpx { namespace util
 {
@@ -1333,6 +1341,36 @@ namespace hpx { namespace util
     
     
     
+    template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4>
+    struct tuple_size<tuple<T0 , T1 , T2 , T3 , T4> >
+      : boost::mpl::size_t<5>
+    {};
+    
+    
+    
+    
+    template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7>
+    struct tuple_element<
+        4
+      , tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7>
+    > : boost::mpl::identity<T4>
+    {
+        template <typename Tuple>
+        static BOOST_CONSTEXPR BOOST_FORCEINLINE
+        typename detail::qualify_as<
+            T4
+          , Tuple&
+        >::type
+        get(Tuple& tuple) BOOST_NOEXCEPT
+        {
+            return tuple._m4._value;
+        }
+    };
+    
+    
+    
+    
+    
     
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4>
     BOOST_CONSTEXPR BOOST_FORCEINLINE
@@ -1441,34 +1479,6 @@ namespace hpx { namespace util
                     (t4)
             );
     }
-    
-    
-    
-    template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4>
-    struct tuple_size<tuple<T0 , T1 , T2 , T3 , T4> >
-      : boost::mpl::size_t<5>
-    {};
-    
-    
-    
-    
-    template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7>
-    struct tuple_element<
-        4
-      , tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7>
-    > : boost::mpl::identity<T4>
-    {
-        template <typename Tuple>
-        static BOOST_CONSTEXPR BOOST_FORCEINLINE
-        typename detail::qualify_as<
-            T4
-          , Tuple&
-        >::type
-        get(Tuple& tuple) BOOST_NOEXCEPT
-        {
-            return tuple._m4._value;
-        }
-    };
 }}
 namespace hpx { namespace util
 {
@@ -1631,6 +1641,36 @@ namespace hpx { namespace util
     
     
     
+    template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5>
+    struct tuple_size<tuple<T0 , T1 , T2 , T3 , T4 , T5> >
+      : boost::mpl::size_t<6>
+    {};
+    
+    
+    
+    
+    template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7>
+    struct tuple_element<
+        5
+      , tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7>
+    > : boost::mpl::identity<T5>
+    {
+        template <typename Tuple>
+        static BOOST_CONSTEXPR BOOST_FORCEINLINE
+        typename detail::qualify_as<
+            T5
+          , Tuple&
+        >::type
+        get(Tuple& tuple) BOOST_NOEXCEPT
+        {
+            return tuple._m5._value;
+        }
+    };
+    
+    
+    
+    
+    
     
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5>
     BOOST_CONSTEXPR BOOST_FORCEINLINE
@@ -1737,34 +1777,6 @@ namespace hpx { namespace util
                 util::tuple_cat( boost::forward<T0> (t0) , boost::forward<T1> (t1)) , util::tuple_cat( boost::forward<T2> (t2) , boost::forward<T3> (t3)) , util::tuple_cat( boost::forward<T4> (t4) , boost::forward<T5> (t5))
             );
     }
-    
-    
-    
-    template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5>
-    struct tuple_size<tuple<T0 , T1 , T2 , T3 , T4 , T5> >
-      : boost::mpl::size_t<6>
-    {};
-    
-    
-    
-    
-    template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7>
-    struct tuple_element<
-        5
-      , tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7>
-    > : boost::mpl::identity<T5>
-    {
-        template <typename Tuple>
-        static BOOST_CONSTEXPR BOOST_FORCEINLINE
-        typename detail::qualify_as<
-            T5
-          , Tuple&
-        >::type
-        get(Tuple& tuple) BOOST_NOEXCEPT
-        {
-            return tuple._m5._value;
-        }
-    };
 }}
 namespace hpx { namespace util
 {
@@ -1927,6 +1939,36 @@ namespace hpx { namespace util
     
     
     
+    template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6>
+    struct tuple_size<tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6> >
+      : boost::mpl::size_t<7>
+    {};
+    
+    
+    
+    
+    template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7>
+    struct tuple_element<
+        6
+      , tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7>
+    > : boost::mpl::identity<T6>
+    {
+        template <typename Tuple>
+        static BOOST_CONSTEXPR BOOST_FORCEINLINE
+        typename detail::qualify_as<
+            T6
+          , Tuple&
+        >::type
+        get(Tuple& tuple) BOOST_NOEXCEPT
+        {
+            return tuple._m6._value;
+        }
+    };
+    
+    
+    
+    
+    
     
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6>
     BOOST_CONSTEXPR BOOST_FORCEINLINE
@@ -2035,34 +2077,6 @@ namespace hpx { namespace util
                     (t6)
             );
     }
-    
-    
-    
-    template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6>
-    struct tuple_size<tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6> >
-      : boost::mpl::size_t<7>
-    {};
-    
-    
-    
-    
-    template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7>
-    struct tuple_element<
-        6
-      , tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7>
-    > : boost::mpl::identity<T6>
-    {
-        template <typename Tuple>
-        static BOOST_CONSTEXPR BOOST_FORCEINLINE
-        typename detail::qualify_as<
-            T6
-          , Tuple&
-        >::type
-        get(Tuple& tuple) BOOST_NOEXCEPT
-        {
-            return tuple._m6._value;
-        }
-    };
 }}
 namespace hpx { namespace util
 {
@@ -2225,6 +2239,36 @@ namespace hpx { namespace util
     
     
     
+    template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7>
+    struct tuple_size<tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7> >
+      : boost::mpl::size_t<8>
+    {};
+    
+    
+    
+    
+    template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7>
+    struct tuple_element<
+        7
+      , tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7>
+    > : boost::mpl::identity<T7>
+    {
+        template <typename Tuple>
+        static BOOST_CONSTEXPR BOOST_FORCEINLINE
+        typename detail::qualify_as<
+            T7
+          , Tuple&
+        >::type
+        get(Tuple& tuple) BOOST_NOEXCEPT
+        {
+            return tuple._m7._value;
+        }
+    };
+    
+    
+    
+    
+    
     
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7>
     BOOST_CONSTEXPR BOOST_FORCEINLINE
@@ -2331,32 +2375,4 @@ namespace hpx { namespace util
                 util::tuple_cat( boost::forward<T0> (t0) , boost::forward<T1> (t1)) , util::tuple_cat( boost::forward<T2> (t2) , boost::forward<T3> (t3)) , util::tuple_cat( boost::forward<T4> (t4) , boost::forward<T5> (t5)) , util::tuple_cat( boost::forward<T6> (t6) , boost::forward<T7> (t7))
             );
     }
-    
-    
-    
-    template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7>
-    struct tuple_size<tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7> >
-      : boost::mpl::size_t<8>
-    {};
-    
-    
-    
-    
-    template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7>
-    struct tuple_element<
-        7
-      , tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7>
-    > : boost::mpl::identity<T7>
-    {
-        template <typename Tuple>
-        static BOOST_CONSTEXPR BOOST_FORCEINLINE
-        typename detail::qualify_as<
-            T7
-          , Tuple&
-        >::type
-        get(Tuple& tuple) BOOST_NOEXCEPT
-        {
-            return tuple._m7._value;
-        }
-    };
 }}

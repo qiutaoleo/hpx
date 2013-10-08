@@ -291,6 +291,130 @@ namespace hpx { namespace util
     public: // exposition-only
     };
 
+    // 20.4.2.5, tuple helper classes
+
+    // template <class Tuple>
+    // class tuple_size
+    template <class T>
+    struct tuple_size
+    {};
+
+    template <>
+    struct tuple_size<tuple<> >
+      : boost::mpl::size_t<0>
+    {};
+
+    template <class T>
+    struct tuple_size<const T>
+      : tuple_size<T>
+    {};
+
+    template <typename T0, typename T1>
+    struct tuple_size<std::pair<T0, T1> >
+      : boost::mpl::size_t<2>
+    {};
+
+    template <typename Type, std::size_t Size>
+    struct tuple_size<boost::array<Type, Size> >
+      : boost::mpl::size_t<Size>
+    {};
+
+    // template <size_t I, class Tuple>
+    // class tuple_element
+    //  Requires: I < sizeof...(Types). The program is ill-formed if I is out of bounds.
+    template <std::size_t I, typename T>
+    struct tuple_element
+    {};
+
+    template <std::size_t I, typename T>
+    struct tuple_element<I, const T>
+      : boost::add_const<typename tuple_element<I, T>::type>
+    {};
+
+    template <typename T0, typename T1>
+    struct tuple_element<0, std::pair<T0, T1> >
+      : boost::mpl::identity<T0>
+    {
+        template <typename Tuple>
+        static BOOST_CONSTEXPR BOOST_FORCEINLINE
+        typename detail::qualify_as<T0, Tuple&>::type
+        get(Tuple& tuple) BOOST_NOEXCEPT
+        {
+            return tuple.first;
+        }
+    };
+    template <typename T0, typename T1>
+    struct tuple_element<1, std::pair<T0, T1> >
+      : boost::mpl::identity<T1>
+    {
+        template <typename Tuple>
+        static BOOST_CONSTEXPR BOOST_FORCEINLINE
+        typename detail::qualify_as<T1, Tuple&>::type
+        get(Tuple& tuple) BOOST_NOEXCEPT
+        {
+            return tuple.second;
+        }
+    };
+
+    template <std::size_t I, typename Type, std::size_t Size>
+    struct tuple_element<I, boost::array<Type, Size> >
+      : boost::mpl::identity<Type>
+    {
+        template <typename Tuple>
+        static BOOST_CONSTEXPR BOOST_FORCEINLINE
+        typename detail::qualify_as<Type, Tuple&>::type
+        get(Tuple& tuple) BOOST_NOEXCEPT
+        {
+            return tuple[I];
+        }
+    };
+
+    // 20.4.2.6, element access
+
+    // template <size_t I, class... Types>
+    // constexpr typename tuple_element<I, tuple<Types...> >::type& get(tuple<Types...>& t) noexcept;
+    //  Requires: I < sizeof...(Types). The program is ill-formed if I is out of bounds.
+    //  Returns: A reference to the Ith element of t, where indexing is zero-based.
+    template <std::size_t I, typename Tuple>
+    BOOST_CONSTEXPR BOOST_FORCEINLINE
+    typename detail::qualify_as<
+        typename tuple_element<I, Tuple>::type
+      , Tuple&
+    >::type
+    get(Tuple& t) BOOST_NOEXCEPT
+    {
+        return tuple_element<I, Tuple>::get(t);
+    }
+
+    // template <size_t I, class... Types>
+    // constexpr typename tuple_element<I, tuple<Types...> >::type const& get(const tuple<Types...>& t) noexcept;
+    //  Requires: I < sizeof...(Types). The program is ill-formed if I is out of bounds.
+    //  Returns: A const reference to the Ith element of t, where indexing is zero-based.
+    template <std::size_t I, typename Tuple>
+    BOOST_CONSTEXPR BOOST_FORCEINLINE
+    typename detail::qualify_as<
+        typename tuple_element<I, Tuple>::type
+      , Tuple const&
+    >::type
+    get(Tuple const& t) BOOST_NOEXCEPT
+    {
+        return tuple_element<I, Tuple>::get(t);
+    }
+
+    // template <size_t I, class... Types>
+    // constexpr typename tuple_element<I, tuple<Types...> >::type&& get(tuple<Types...>&& t) noexcept;
+    //  Effects: Equivalent to return std::forward<typename tuple_element<I, tuple<Types...> >::type&&>(get<I>(t));
+    template <std::size_t I, typename Tuple>
+    BOOST_CONSTEXPR BOOST_FORCEINLINE
+    typename detail::qualify_as<
+        typename tuple_element<I, Tuple>::type
+      , BOOST_RV_REF(Tuple)
+    >::type
+    get(BOOST_RV_REF(Tuple) t) BOOST_NOEXCEPT
+    {
+        return boost::forward<typename tuple_element<I, Tuple>::type>(util::get<I>(t));
+    }
+
     // 20.4.2.4, tuple creation functions
     detail::ignore_type const ignore = {};
 
@@ -486,130 +610,6 @@ namespace hpx { namespace util
     tuple_cat(BOOST_FWD_REF(TTuple) /*t*/, BOOST_FWD_REF(UTuple) /*u*/)
     {
         return tuple<>();
-    }
-
-    // 20.4.2.5, tuple helper classes
-
-    // template <class Tuple>
-    // class tuple_size
-    template <class T>
-    struct tuple_size
-    {};
-
-    template <>
-    struct tuple_size<tuple<> >
-      : boost::mpl::size_t<0>
-    {};
-
-    template <class T>
-    struct tuple_size<const T>
-      : tuple_size<T>
-    {};
-
-    template <typename T0, typename T1>
-    struct tuple_size<std::pair<T0, T1> >
-      : boost::mpl::size_t<2>
-    {};
-
-    template <typename Type, std::size_t Size>
-    struct tuple_size<boost::array<Type, Size> >
-      : boost::mpl::size_t<Size>
-    {};
-
-    // template <size_t I, class Tuple>
-    // class tuple_element
-    //  Requires: I < sizeof...(Types). The program is ill-formed if I is out of bounds.
-    template <std::size_t I, typename T>
-    struct tuple_element
-    {};
-
-    template <std::size_t I, typename T>
-    struct tuple_element<I, const T>
-      : boost::add_const<typename tuple_element<I, T>::type>
-    {};
-
-    template <typename T0, typename T1>
-    struct tuple_element<0, std::pair<T0, T1> >
-      : boost::mpl::identity<T0>
-    {
-        template <typename Tuple>
-        static BOOST_CONSTEXPR BOOST_FORCEINLINE
-        typename detail::qualify_as<T0, Tuple&>::type
-        get(Tuple& tuple) BOOST_NOEXCEPT
-        {
-            return tuple.first;
-        }
-    };
-    template <typename T0, typename T1>
-    struct tuple_element<1, std::pair<T0, T1> >
-      : boost::mpl::identity<T1>
-    {
-        template <typename Tuple>
-        static BOOST_CONSTEXPR BOOST_FORCEINLINE
-        typename detail::qualify_as<T1, Tuple&>::type
-        get(Tuple& tuple) BOOST_NOEXCEPT
-        {
-            return tuple.second;
-        }
-    };
-
-    template <std::size_t I, typename Type, std::size_t Size>
-    struct tuple_element<I, boost::array<Type, Size> >
-      : boost::mpl::identity<Type>
-    {
-        template <typename Tuple>
-        static BOOST_CONSTEXPR BOOST_FORCEINLINE
-        typename detail::qualify_as<Type, Tuple&>::type
-        get(Tuple& tuple) BOOST_NOEXCEPT
-        {
-            return tuple[I];
-        }
-    };
-
-    // 20.4.2.6, element access
-
-    // template <size_t I, class... Types>
-    // constexpr typename tuple_element<I, tuple<Types...> >::type& get(tuple<Types...>& t) noexcept;
-    //  Requires: I < sizeof...(Types). The program is ill-formed if I is out of bounds.
-    //  Returns: A reference to the Ith element of t, where indexing is zero-based.
-    template <std::size_t I, typename Tuple>
-    BOOST_CONSTEXPR BOOST_FORCEINLINE
-    typename detail::qualify_as<
-        typename tuple_element<I, Tuple>::type
-      , Tuple&
-    >::type
-    get(Tuple& t) BOOST_NOEXCEPT
-    {
-        return tuple_element<I, Tuple>::get(t);
-    }
-
-    // template <size_t I, class... Types>
-    // constexpr typename tuple_element<I, tuple<Types...> >::type const& get(const tuple<Types...>& t) noexcept;
-    //  Requires: I < sizeof...(Types). The program is ill-formed if I is out of bounds.
-    //  Returns: A const reference to the Ith element of t, where indexing is zero-based.
-    template <std::size_t I, typename Tuple>
-    BOOST_CONSTEXPR BOOST_FORCEINLINE
-    typename detail::qualify_as<
-        typename tuple_element<I, Tuple>::type
-      , Tuple const&
-    >::type
-    get(Tuple const& t) BOOST_NOEXCEPT
-    {
-        return tuple_element<I, Tuple>::get(t);
-    }
-
-    // template <size_t I, class... Types>
-    // constexpr typename tuple_element<I, tuple<Types...> >::type&& get(tuple<Types...>&& t) noexcept;
-    //  Effects: Equivalent to return std::forward<typename tuple_element<I, tuple<Types...> >::type&&>(get<I>(t));
-    template <std::size_t I, typename Tuple>
-    BOOST_CONSTEXPR BOOST_FORCEINLINE
-    typename detail::qualify_as<
-        typename tuple_element<I, Tuple>::type
-      , BOOST_RV_REF(Tuple)
-    >::type
-    get(BOOST_RV_REF(Tuple) t) BOOST_NOEXCEPT
-    {
-        return boost::forward<typename tuple_element<I, Tuple>::type>(util::get<I>(t));
     }
 
     // 20.4.2.7, relational operators
@@ -1168,6 +1168,39 @@ namespace hpx { namespace util
 #       undef HPX_UTIL_TUPLE_SWAP
     };
 
+    // 20.4.2.5, tuple helper classes
+
+    // template <class Tuple>
+    // class tuple_size
+    template <BOOST_PP_ENUM_PARAMS(N, typename T)>
+    struct tuple_size<tuple<BOOST_PP_ENUM_PARAMS(N, T)> >
+      : boost::mpl::size_t<N>
+    {};
+
+    // template <size_t I, class Tuple>
+    // class tuple_element
+    //  Requires: I < sizeof...(Types). The program is ill-formed if I is out of bounds.
+    //  Type: TI is the type of the Ith element of Types, where indexing is zero-based.
+    template <BOOST_PP_ENUM_PARAMS(HPX_TUPLE_LIMIT, typename T)>
+    struct tuple_element<
+        BOOST_PP_DEC(N)
+      , tuple<BOOST_PP_ENUM_PARAMS(HPX_TUPLE_LIMIT, T)>
+    > : boost::mpl::identity<BOOST_PP_CAT(T, BOOST_PP_DEC(N))>
+    {
+        template <typename Tuple>
+        static BOOST_CONSTEXPR BOOST_FORCEINLINE
+        typename detail::qualify_as<
+            BOOST_PP_CAT(T, BOOST_PP_DEC(N))
+          , Tuple&
+        >::type
+        get(Tuple& tuple) BOOST_NOEXCEPT
+        {
+            return tuple.BOOST_PP_CAT(_m, BOOST_PP_DEC(N))._value;
+        }
+    };
+    
+    // 20.4.2.4, tuple creation functions
+
     // template<class... Types>
     // constexpr tuple<VTypes...> make_tuple(Types&&... t);
     //  Let Ui be decay<Ti>::type for each Ti in Types. Then each Vi in VTypes is X& if Ui equals reference_wrapper<X>, otherwise Vi is Ui.
@@ -1325,37 +1358,6 @@ namespace hpx { namespace util
 #   undef HPX_UTIL_TUPLE_CAT_RESULT_ELEMENT
 #   undef HPX_UTIL_TUPLE_CAT
 #   endif
-
-    // 20.4.2.5, tuple helper classes
-
-    // template <class Tuple>
-    // class tuple_size
-    template <BOOST_PP_ENUM_PARAMS(N, typename T)>
-    struct tuple_size<tuple<BOOST_PP_ENUM_PARAMS(N, T)> >
-      : boost::mpl::size_t<N>
-    {};
-
-    // template <size_t I, class Tuple>
-    // class tuple_element
-    //  Requires: I < sizeof...(Types). The program is ill-formed if I is out of bounds.
-    //  Type: TI is the type of the Ith element of Types, where indexing is zero-based.
-    template <BOOST_PP_ENUM_PARAMS(HPX_TUPLE_LIMIT, typename T)>
-    struct tuple_element<
-        BOOST_PP_DEC(N)
-      , tuple<BOOST_PP_ENUM_PARAMS(HPX_TUPLE_LIMIT, T)>
-    > : boost::mpl::identity<BOOST_PP_CAT(T, BOOST_PP_DEC(N))>
-    {
-        template <typename Tuple>
-        static BOOST_CONSTEXPR BOOST_FORCEINLINE
-        typename detail::qualify_as<
-            BOOST_PP_CAT(T, BOOST_PP_DEC(N))
-          , Tuple&
-        >::type
-        get(Tuple& tuple) BOOST_NOEXCEPT
-        {
-            return tuple.BOOST_PP_CAT(_m, BOOST_PP_DEC(N))._value;
-        }
-    };
 }}
 
 #undef N
