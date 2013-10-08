@@ -32,7 +32,9 @@
 
 namespace hpx { namespace util
 {
-#if !defined(HPX_GCC_VERSION) || HPX_GCC_VERSION >= 40300 || BOOST_INTEL
+#if HPX_GCC_VERSION >= 40300 \
+ || (BOOST_INTEL_CXX_VERSION > 1200 && !defined(BOOST_WINDOWS)) \
+ || (HPX_CLANG_VERSION >= 20900) 
     //
     // C++11 requires thread-safe initialization of function-scope statics.
     // For conforming compilers, we utilize this feature.

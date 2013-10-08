@@ -44,9 +44,9 @@ set(CMAKE_CONFIGURATION_TYPES "${CMAKE_BUILD_TYPE}" CACHE INTERNAL "Configuratio
 ################################################################################
 project(hpx CXX C)
 
-set(HPX_MAJOR_VERSION 1)
-set(HPX_MINOR_VERSION 0)
-set(HPX_PATCH_LEVEL   0)
+set(HPX_MAJOR_VERSION 0)
+set(HPX_MINOR_VERSION 9)
+set(HPX_PATCH_LEVEL   7)
 set(HPX_VERSION "${HPX_MAJOR_VERSION}.${HPX_MINOR_VERSION}.${HPX_PATCH_LEVEL}")
 set(HPX_SOVERSION ${HPX_MAJOR_VERSION})
 
@@ -803,45 +803,47 @@ endif()
 ################################################################################
 # Scheduler configuration
 ################################################################################
+hpx_option(HPX_ALL_SCHEDULERS BOOL "Enables all schedulers, overrides individual configuration options (default: OFF)" OFF ADVANCED)
+
 hpx_option(HPX_GLOBAL_SCHEDULER BOOL "Enable the use of --queueing=global (default: OFF)" OFF ADVANCED)
 
-if(HPX_GLOBAL_SCHEDULER)
+if(HPX_GLOBAL_SCHEDULER OR HPX_ALL_SCHEDULERS)
   hpx_add_config_define(HPX_GLOBAL_SCHEDULER)
 endif()
 
 hpx_option(HPX_LOCAL_SCHEDULER BOOL "Enable the use of --queueing=local (default: OFF)" OFF ADVANCED)
 
-if(HPX_LOCAL_SCHEDULER)
+if(HPX_LOCAL_SCHEDULER OR HPX_ALL_SCHEDULERS)
   hpx_add_config_define(HPX_LOCAL_SCHEDULER)
 endif()
 
-hpx_option(HPX_STATIC_PRIORITY_SCHEDULER BOOL "Enable the use of --queueing=static (default: On)" On ADVANCED)
+hpx_option(HPX_STATIC_PRIORITY_SCHEDULER BOOL "Enable the use of --queueing=static (default: OFF)" OFF ADVANCED)
 
-if(HPX_STATIC_PRIORITY_SCHEDULER)
+if(HPX_STATIC_PRIORITY_SCHEDULER OR HPX_ALL_SCHEDULERS)
   hpx_add_config_define(HPX_STATIC_PRIORITY_SCHEDULER)
 endif()
 
 hpx_option(HPX_ABP_SCHEDULER BOOL "Enable the use of --queueing=abp (default: OFF)" OFF ADVANCED)
 
-if(HPX_ABP_SCHEDULER)
+if(HPX_ABP_SCHEDULER OR HPX_ALL_SCHEDULERS)
   hpx_add_config_define(HPX_ABP_SCHEDULER)
 endif()
 
 hpx_option(HPX_ABP_PRIORITY_SCHEDULER BOOL "Enable the use of --queueing=priority_abp (default: OFF)" OFF ADVANCED)
 
-if(HPX_ABP_PRIORITY_SCHEDULER)
+if(HPX_ABP_PRIORITY_SCHEDULER OR HPX_ALL_SCHEDULERS)
   hpx_add_config_define(HPX_ABP_PRIORITY_SCHEDULER)
 endif()
 
 hpx_option(HPX_HIERARCHY_SCHEDULER BOOL "Enable the use of --queueing=hierarchy (default: OFF)" OFF ADVANCED)
 
-if(HPX_HIERARCHY_SCHEDULER)
+if(HPX_HIERARCHY_SCHEDULER OR HPX_ALL_SCHEDULERS)
   hpx_add_config_define(HPX_HIERARCHY_SCHEDULER)
 endif()
 
 hpx_option(HPX_PERIODIC_PRIORITY_SCHEDULER BOOL "Enable the use of --queueing=periodic (default: OFF)" OFF ADVANCED)
 
-if(HPX_PERIODIC_PRIORITY_SCHEDULER)
+if(HPX_PERIODIC_PRIORITY_SCHEDULER OR HPX_ALL_SCHEDULERS)
   hpx_add_config_define(HPX_PERIODIC_PRIORITY_SCHEDULER)
 endif()
 
@@ -1473,16 +1475,7 @@ endif()
 hpx_option(HPX_BUILD_DOCUMENTATION BOOL "The HPX documentation toolchain is available (default OFF)." OFF)
 if(HPX_BUILD_DOCUMENTATION)
   hpx_option(HPX_BUILD_DOCUMENTATION_SINGLEPAGE BOOL "The HPX documentation should be build as a single page HTML (default OFF)." OFF)
-
   add_subdirectory(docs)
-
-  add_custom_target(git_docs
-    COMMAND ${CMAKE_COMMAND} -DHPX_SOURCE_DIR="${CMAKE_SOURCE_DIR}" -P ${CMAKE_SOURCE_DIR}/cmake/HPX_UpdateGitDocs.cmake)
-
-  add_dependencies(git_docs docs)
-  if(${HPX_BUILD_DOCUMENTATION_SINGLEPAGE})
-    add_dependencies(git_docs singlepage_docs)
-  endif()
 endif()
 
 if(${BOOST_MINOR_VERSION} GREATER 50)
@@ -1527,38 +1520,57 @@ if(NOT HPX_NO_INSTALL)
     PATTERN "CMakeFiles" EXCLUDE
     PATTERN "CTestFiles" EXCLUDE)
 
-  install( # install all hpx header files
-    DIRECTORY hpx
-    DESTINATION share/hpx-${HPX_VERSION}/doc/html/code
-    COMPONENT core
-    FILES_MATCHING PATTERN "*.hpp"
-    PATTERN ".git" EXCLUDE
-    PATTERN "CMakeFiles" EXCLUDE
-    PATTERN "CTestFiles" EXCLUDE)
+  file(COPY hpx
+      DESTINATION share/hpx-${HPX_VERSION}/docs/html/code
+      FILES_MATCHING PATTERN "*.hpp")
 
-  install( # install all hpx source files
-    DIRECTORY src
-    DESTINATION share/hpx-${HPX_VERSION}/doc/html/code
-    COMPONENT core
-    PATTERN ".git" EXCLUDE
-    PATTERN "CMakeFiles" EXCLUDE
-    PATTERN "CTestFiles" EXCLUDE)
+#  install( # install all hpx header files
+#    DIRECTORY hpx
+#    DESTINATION share/hpx-${HPX_VERSION}/docs/html/code
+#    COMPONENT core
+#    FILES_MATCHING PATTERN "*.hpp"
+#    PATTERN ".git" EXCLUDE
+#    PATTERN "CMakeFiles" EXCLUDE
+#    PATTERN "CTestFiles" EXCLUDE)
 
-  install( # install all hpx examples source files
-    DIRECTORY examples
-    DESTINATION share/hpx-${HPX_VERSION}/doc/html/code
-    COMPONENT core
-    PATTERN ".git" EXCLUDE
-    PATTERN "CMakeFiles" EXCLUDE
-    PATTERN "CTestFiles" EXCLUDE)
+  file(COPY src
+      DESTINATION share/hpx-${HPX_VERSION}/docs/html/code
+      PATTERN "CMakeFiles" EXCLUDE
+      PATTERN "CTestFiles" EXCLUDE)
 
-  install( # install all hpx tests source files
-    DIRECTORY tests
-    DESTINATION share/hpx-${HPX_VERSION}/doc/html/code
-    COMPONENT core
-    PATTERN ".git" EXCLUDE
-    PATTERN "CMakeFiles" EXCLUDE
-    PATTERN "CTestFiles" EXCLUDE)
+#  install( # install all hpx source files
+#    DIRECTORY src
+#    DESTINATION share/hpx-${HPX_VERSION}/docs/html/code
+#    COMPONENT core
+#    PATTERN ".git" EXCLUDE
+#    PATTERN "CMakeFiles" EXCLUDE
+#    PATTERN "CTestFiles" EXCLUDE)
+  
+  file(COPY examples
+      DESTINATION share/hpx-${HPX_VERSION}/docs/html/code
+      PATTERN "CMakeFiles" EXCLUDE
+      PATTERN "CTestFiles" EXCLUDE)
+
+#  install( # install all hpx examples source files
+#    DIRECTORY examples
+#    DESTINATION share/hpx-${HPX_VERSION}/docs/html/code
+#    COMPONENT core
+#    PATTERN ".git" EXCLUDE
+#    PATTERN "CMakeFiles" EXCLUDE
+#    PATTERN "CTestFiles" EXCLUDE)
+
+  file(COPY tests
+      DESTINATION share/hpx-${HPX_VERSION}/docs/html/code
+      PATTERN "CMakeFiles" EXCLUDE
+      PATTERN "CTestFiles" EXCLUDE)
+
+#  install( # install all hpx tests source files
+#    DIRECTORY tests
+#    DESTINATION share/hpx-${HPX_VERSION}/docs/html/code
+#    COMPONENT core
+#    PATTERN ".git" EXCLUDE
+#    PATTERN "CMakeFiles" EXCLUDE
+#    PATTERN "CTestFiles" EXCLUDE)
 
   install( # install all hpx cmake utility files
     DIRECTORY cmake/
@@ -1688,30 +1700,41 @@ if(NOT HPX_NO_INSTALL)
 
     install(
       DIRECTORY ${doc_dir}/share/hpx-${HPX_VERSION}/docs/
-      DESTINATION share/hpx-${HPX_VERSION}/doc
+      DESTINATION share/hpx-${HPX_VERSION}/docs
       COMPONENT docs
       OPTIONAL
       FILES_MATCHING PATTERN "*.html"
       PATTERN ".git" EXCLUDE)
 
-    install(
-      FILES ${hpx_SOURCE_DIR}/docs/index.html
-      DESTINATION share/hpx-${HPX_VERSION}/
-      COMPONENT docs)
+    file(COPY ${hpx_SOURCE_DIR}/docs/index.html
+      DESTINATION ${doc_dir}/share/hpx-${HPX_VERSION}/)
 
-    install(
-      DIRECTORY ${hpx_SOURCE_DIR}/docs/html/src/
-      DESTINATION share/hpx-${HPX_VERSION}/doc/html/src
-      COMPONENT docs
-      FILES_MATCHING PATTERN "*.css"
-      PATTERN ".git" EXCLUDE)
+#    install(
+#      FILES ${hpx_SOURCE_DIR}/docs/index.html
+#      DESTINATION share/hpx-${HPX_VERSION}/
+#      COMPONENT docs)
 
-    install(
-      DIRECTORY ${hpx_SOURCE_DIR}/docs/html/images/
-      DESTINATION share/hpx-${HPX_VERSION}/doc/html/images
-      COMPONENT docs
-      FILES_MATCHING PATTERN "*.png"
-      PATTERN ".git" EXCLUDE)
+    file(COPY ${hpx_SOURCE_DIR}/docs/html/src/
+      DESTINATION ${doc_dir}/share/hpx-${HPX_VERSION}/docs/html/src
+      FILES_MATCHING PATTERN "*.css")
+
+#    install(
+#      DIRECTORY ${hpx_SOURCE_DIR}/docs/html/src/
+#      DESTINATION share/hpx-${HPX_VERSION}/docs/html/src
+#      COMPONENT docs
+#      FILES_MATCHING PATTERN "*.css"
+#      PATTERN ".git" EXCLUDE)
+
+    file(COPY ${hpx_SOURCE_DIR}/docs/html/images/
+      DESTINATION ${doc_dir}/share/hpx-${HPX_VERSION}/docs/html/images
+      FILES_MATCHING PATTERN "*.png")
+
+#    install(
+#      DIRECTORY ${hpx_SOURCE_DIR}/docs/html/images/
+#      DESTINATION share/hpx-${HPX_VERSION}/docs/html/images
+#      COMPONENT docs
+#      FILES_MATCHING PATTERN "*.png"
+#      PATTERN ".git" EXCLUDE)
   endif()
 endif()
 

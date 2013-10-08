@@ -14,7 +14,6 @@ set(documentation_files
     ${manual_files} ${tutorial_files} ${base_files} ${index_files})
 
 set(documentation_dependencies
-    ${documentation_files}
     ${hpx_SOURCE_DIR}/examples/quickstart/hello_world.cpp
     ${hpx_SOURCE_DIR}/examples/quickstart/simplest_hello_world.cpp
     ${hpx_SOURCE_DIR}/examples/quickstart/error_handling.cpp
@@ -29,6 +28,10 @@ set(documentation_dependencies
     ${hpx_SOURCE_DIR}/examples/performance_counters/sine/server/sine.hpp
     ${hpx_SOURCE_DIR}/hpx/performance_counters/performance_counter.hpp
     ${hpx_SOURCE_DIR}/hpx/performance_counters/base_performance_counter.hpp)
+
+set(all_documentation_dependencies
+    ${documentation_files}
+    ${documentation_dependencies})
 
 # Add all files here which should be passed to doxygen
 set(doxygen_dependencies
@@ -86,7 +89,7 @@ configure_file(${hpx_SOURCE_DIR}/cmake/templates/autodoc.doxy.in
                 @ONLY)
 
 #############################################################################
-set(documentation_dependencies ${documentation_dependencies}
+set(all_documentation_dependencies ${all_documentation_dependencies}
     ${CMAKE_CURRENT_BINARY_DIR}/hpx_autodoc.xml)
 
 # Generate Doxygen from the source code.
@@ -110,7 +113,7 @@ set(image
 hpx_quickbook_to_html(hpx
   SOURCE hpx.qbk
   INDEX hpx.idx
-  DEPENDENCIES ${documentation_dependencies}
+  DEPENDENCIES ${all_documentation_dependencies}
   CATALOG ${CMAKE_CURRENT_BINARY_DIR}/boostbook_catalog.xml
   XSLTPROC_ARGS --stringparam chunk.section.depth 4
                 --stringparam chunk.first.sections 1
@@ -118,17 +121,32 @@ hpx_quickbook_to_html(hpx
                 --stringparam toc.max.depth 4
                 --stringparam generate.section.toc.level 4
                 --stringparam boost.image.src ${image}
-                --stringparam boost.image.w 470
-                --stringparam boost.image.h 120
+                --stringparam boost.image.w 461
+                --stringparam boost.image.h 106
                 --stringparam boost.image.alt "HPX - High Performance ParalleX"
                 ${auto_index_xsl_param}
   QUICKBOOK_ARGS ${quickbook_fixme_mode} ${auto_index_mode}
   AUTOINDEX_ARGS --internal-index
   SINGLEPAGE ${HPX_BUILD_DOCUMENTATION_SINGLEPAGE})
 
-add_custom_target(docs
-  DEPENDS hpx_HTML.manifest
-  SOURCES ${documentation_files})
+if(FOP_FOUND)
+  # This assumes that Quickbook -> BoostBook succeeded above.
+  hpx_quickbook_to_boostbook(hpx_pdf SOURCE hpx.qbk
+    DEPENDENCIES ${all_documentation_dependencies}
+    NODOXYGEN)
+  hpx_boostbook_to_xslfo(hpx SOURCE hpx_pdf.xml)
+  hpx_xslfo_to_pdf(hpx SOURCE hpx.fo)
+endif()
+
+if(FOP_FOUND)
+  add_custom_target(docs
+    DEPENDS hpx_HTML.manifest hpx.pdf
+    SOURCES ${documentation_files})
+else()
+  add_custom_target(docs
+    DEPENDS hpx_HTML.manifest
+    SOURCES ${documentation_files})
+endif()
 
 if(${HPX_BUILD_DOCUMENTATION_SINGLEPAGE})
   add_custom_target(singlepage_docs
@@ -146,3 +164,26 @@ endif()
 set_source_files_properties(${documentation_files}
   PROPERTIES HEADER_FILE_ONLY TRUE)
 
+###############################################################################
+# handle generating docs for github pages
+if(MSVC)
+  add_custom_target(git_docs
+    COMMAND ${CMAKE_COMMAND}
+      -DHPX_BUILD_TYPE="${CMAKE_BUILD_TYPE}"
+      -DHPX_SOURCE_DIR="${CMAKE_SOURCE_DIR}"
+      -DHPX_VERSION="${HPX_VERSION}"
+      -DHPX_DOCUMENTATION_FILES=\"${documentation_dependencies}\"
+      -P ${CMAKE_SOURCE_DIR}/cmake/HPX_UpdateGitDocs.cmake)
+else()
+  add_custom_target(git_docs
+    COMMAND ${CMAKE_COMMAND}
+      -DHPX_SOURCE_DIR="${CMAKE_SOURCE_DIR}"
+      -DHPX_VERSION="${HPX_VERSION}"
+      -DHPX_DOCUMENTATION_FILES=\"${documentation_dependencies}\"
+      -P ${CMAKE_SOURCE_DIR}/cmake/HPX_UpdateGitDocs.cmake)
+endif()
+
+add_dependencies(git_docs docs)
+if(${HPX_BUILD_DOCUMENTATION_SINGLEPAGE})
+  add_dependencies(git_docs singlepage_docs)
+endif()

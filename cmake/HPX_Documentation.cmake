@@ -14,22 +14,25 @@ find_package(HPX_DocBook)
 find_package(HPX_BoostQuickBook)
 find_package(HPX_Doxygen)
 find_package(HPX_Xsltproc)
+find_package(HPX_FOP)
 find_package(HPX_BoostAutoIndex)
 
 # issue a meaningful warning if part of the documentation toolchain is not available
 if((NOT DOCBOOK_DTD_PATH_FOUND) OR (NOT DOCBOOK_XSL_PATH_FOUND))
-  hpx_warn("documentation" "DocBook DTD or XSL is unavailable, documentation generation disabled. Set DOCBOOK_ROOT pointing to your DocBook installation directory.")
+  hpx_warn("documentation" "DocBook DTD or XSL is unavailable, documentation generation disabled. Set DOCBOOK_ROOT to your DocBook installation directory.")
   set(HPX_BUILD_DOCUMENTATION OFF CACHE BOOL "True if the HPX documentation toolchain is available." FORCE)
 elseif(NOT BOOSTQUICKBOOK_FOUND)
-  hpx_warn("documentation" "Boost QuickBook tool is unavailable, documentation generation disabled. Set BOOSTQUICKBOOK_ROOT pointing to your Boost QuickBook installation directory.")
+  hpx_warn("documentation" "Boost QuickBook tool is unavailable, documentation generation disabled. Set BOOSTQUICKBOOK_ROOT to your Boost QuickBook installation directory.")
   set(HPX_BUILD_DOCUMENTATION OFF CACHE BOOL "True if the HPX documentation toolchain is available." FORCE)
 elseif(NOT XSLTPROC_FOUND)
-  hpx_warn("documentation" "xsltproc tool is unavailable, documentation generation disabled. Set XSLTPROC_ROOT pointing to your xsltproc installation directory.")
+  hpx_warn("documentation" "xsltproc tool is unavailable, documentation generation disabled. Set XSLTPROC_ROOT to your xsltproc installation directory.")
   set(HPX_BUILD_DOCUMENTATION OFF CACHE BOOL "True if the HPX documentation toolchain is available." FORCE)
 elseif(NOT DOXYGEN_FOUND)
-  hpx_warn("documentation" "Doxygen tool is unavailable, API reference will be unavailable. Set DOXYGEN_ROOT pointing to your Doxygen installation directory.")
+  hpx_warn("documentation" "Doxygen tool is unavailable, API reference will be unavailable. Set DOXYGEN_ROOT to your Doxygen installation directory.")
 elseif(NOT BOOSTAUTOINDEX_FOUND)
-  hpx_warn("documentation" "Boost auto_index tool is unavailable, index generation will be disabled. Set BOOSTAUTOINDEX_ROOT pointing to your Boost auto_index installation directory.")
+  hpx_warn("documentation" "Boost auto_index tool is unavailable, index generation will be disabled. Set BOOSTAUTOINDEX_ROOT to your Boost auto_index installation directory.")
+elseif(NOT FOP_FOUND)
+  hpx_warn("documentation" "FOP is unavailable, PDF generation will be disabled. Set FOP_ROOT to your FOP installation directory.")
 else()
   set(HPX_BUILD_DOCUMENTATION ON CACHE BOOL "True if the HPX documentation toolchain is available.")
 endif()
@@ -47,6 +50,14 @@ if(NOT HPX_BUILD_DOCUMENTATION)
 
   macro(hpx_boostbook_to_docbook name)
     hpx_error("boostbook_to_docbook" "Documentation toolchain is unavailable.")
+  endmacro()
+
+  macro(hpx_boostbook_to_xslfo name)
+    hpx_error("boostbook_to_xslfo" "Documentation toolchain is unavailable.")
+  endmacro()
+
+  macro(hpx_xslfo_to_pdf name)
+    hpx_error("xslfo_to_pdf" "Documentation toolchain is unavailable.")
   endmacro()
 
   macro(hpx_quickbook_to_docbook name)
@@ -126,7 +137,7 @@ else()
 
   # Quickbook -> BoostBook XML
   macro(hpx_quickbook_to_boostbook name)
-    hpx_parse_arguments(${name} "SOURCE;DEPENDENCIES;QUICKBOOK_ARGS" "" ${ARGN})
+    hpx_parse_arguments(${name} "SOURCE;DEPENDENCIES;QUICKBOOK_ARGS" "NODOXYGEN" ${ARGN})
 
     hpx_print_list("DEBUG"
       "quickbook_to_boostbook.${name}" "Quickbook arguments"
@@ -147,7 +158,7 @@ else()
     endif()
 
     set(doxygen_option "")
-    if(DOXYGEN_FOUND)
+    if(DOXYGEN_FOUND AND NOT ${name}_NODOXYGEN)
       set(doxygen_option "-D__hpx_doxygen__")
     endif()
 
@@ -208,6 +219,50 @@ else()
     endif()
   endmacro()
 
+  # BoostBook XML -> XSL-FO
+  macro(hpx_boostbook_to_xslfo name)
+    hpx_parse_arguments(${name} "SOURCE;DEPENDENCIES;CATALOG;XSLTPROC_ARGS" "" ${ARGN})
+
+    if(NOT BOOST_ROOT)
+      set(BOOST_ROOT_FOR_DOCS ".")
+    else()
+      set(BOOST_ROOT_FOR_DOCS ${BOOST_ROOT})
+    endif()
+
+    if(WIN32)
+      add_custom_command(OUTPUT ${name}.fo
+        COMMAND set XML_CATALOG_FILES=${${name}_CATALOG}
+        COMMAND ${XSLTPROC_PROGRAM} ${${name}_XSLTPROC_ARGS}
+                "--stringparam" "img.src.path" "${hpx_SOURCE_DIR}/docs/html/"
+                "--xinclude" "-o" ${name}.fo
+                "--path" ${CMAKE_CURRENT_BINARY_DIR}
+                ${BOOSTBOOK_XSL_PATH}/fo.xsl ${${name}_SOURCE}
+        COMMENT "Generating XSL-FO file ${name}.fo from ${${name}_SOURCE}."
+        DEPENDS ${${name}_SOURCE} ${${name}_DEPENDENCIES})
+    else()
+      add_custom_command(OUTPUT ${name}.fo
+        COMMAND "XML_CATALOG_FILES=${${name}_CATALOG}" ${XSLTPROC_PROGRAM}
+                ${${name}_XSLTPROC_ARGS}
+                "--stringparam" "img.src.path" "${hpx_SOURCE_DIR}/docs/html/"
+                "--xinclude" "-o" ${name}.fo
+                "--path" ${CMAKE_CURRENT_BINARY_DIR}
+                ${BOOSTBOOK_XSL_PATH}/fo.xsl ${${name}_SOURCE}
+        COMMENT "Generating XSL-FO file ${name}.fo from ${${name}_SOURCE}."
+        DEPENDS ${${name}_SOURCE} ${${name}_DEPENDENCIES})
+    endif()
+  endmacro()
+
+  # BoostBook XML -> XSL-FO
+  macro(hpx_xslfo_to_pdf name)
+    hpx_parse_arguments(${name} "SOURCE;DEPENDENCIES;FOP_ARGS" "" ${ARGN})
+
+    add_custom_command(OUTPUT ${name}.pdf
+      COMMAND ${FOP_PROGRAM} ${${name}_FOP_ARGS}
+              ${${name}_SOURCE} ${name}.pdf
+      COMMENT "Generating PDF file ${name}.pdf from ${${name}_SOURCE}."
+      DEPENDS ${${name}_SOURCE} ${${name}_DEPENDENCIES})
+  endmacro()
+
   # DocBook -> HTML
   macro(hpx_docbook_to_html name)
     hpx_parse_arguments(${name} "SOURCE;DEPENDENCIES;CATALOG;XSLTPROC_ARGS;SINGLEPAGE" "" ${ARGN})
@@ -218,7 +273,7 @@ else()
       set(BOOST_ROOT_FOR_DOCS ${BOOST_ROOT})
     endif()
 
-    hpx_debug("hpx_docbook_to_html.${name}" "SINGLEPAGE:${${name}_SINGLEPAGE}")
+    hpx_debug("hpx_docbook_to_html.${name}" "SINGLEPAGE: ${${name}_SINGLEPAGE}")
 
     if(WIN32)
       set(DOCS_OUTPUT_DIR "file:///${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}/share/hpx-${HPX_VERSION}/docs/html")
@@ -236,8 +291,8 @@ else()
       set(main_xsl_script_manifest ${name}_HTML.manifest)
     endif()
 
-    hpx_debug("hpx_docbook_to_html.${name}" "main_xsl_script:${main_xsl_script}")
-    hpx_debug("hpx_docbook_to_html.${name}" "main_xsl_script_output:${main_xsl_script_output}")
+    hpx_debug("hpx_docbook_to_html.${name}" "main_xsl_script: ${main_xsl_script}")
+    hpx_debug("hpx_docbook_to_html.${name}" "main_xsl_script_output: ${main_xsl_script_output}")
 
     if(WIN32)
       add_custom_command(OUTPUT ${main_xsl_script_manifest}
@@ -298,10 +353,10 @@ else()
         INDEX ${${name}_INDEX}
         SOURCE ${name}.dbk
         AUTOINDEX_ARGS ${${name}_AUTOINDEX_ARGS})
-      set(docbook_source ${name}.auto_index.dbk)
+      set(docbook_source ${name}_auto_index.dbk)
     endif()
 
-    hpx_debug("hpx_quickbook_to_html.${name}" "SINGLEPAGE:${${name}_SINGLEPAGE}")
+    hpx_debug("hpx_quickbook_to_html.${name}" "SINGLEPAGE: ${${name}_SINGLEPAGE}")
 
     if(${${name}_SINGLEPAGE})
       hpx_docbook_to_html(${name}
@@ -433,10 +488,10 @@ else()
       "" ${ARGN})
 
     hpx_print_list("DEBUG"
-      "hpx_generate_auto_index.${name}" "AutoIndex arguments"
+      "hpx_generate_auto_index.${name}" "auto_index arguments"
       ${name}_AUTOINDEX_ARGS)
     hpx_debug("hpx_generate_auto_index.${name}"
-      "INDEX:${${name}_INDEX}, SOURCE:${${name}_SOURCE}")
+      "INDEX: ${${name}_INDEX}, SOURCE: ${${name}_SOURCE}")
 
     # If input is not a full path, it's in the current source directory.
     get_filename_component(input_path ${${name}_INDEX} PATH)
@@ -447,11 +502,11 @@ else()
       set(input_path ${${name}_INDEX})
     endif()
 
-    add_custom_command(OUTPUT ${name}.auto_index.dbk
+    add_custom_command(OUTPUT ${name}_auto_index.dbk
       COMMAND ${BOOSTAUTOINDEX_PROGRAM} ${${name}_AUTOINDEX_ARGS}
               "--script=${input_path}"
               "--in=${${name}_SOURCE}"
-              "--out=${name}.auto_index.dbk"
+              "--out=${name}_auto_index.dbk"
       COMMENT "Collecting Generating auto index."
       DEPENDS ${${name}_SOURCE} ${${name}_INDEX})
   endmacro()
