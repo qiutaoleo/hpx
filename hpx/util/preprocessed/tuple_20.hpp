@@ -292,7 +292,7 @@ namespace hpx { namespace util
                 typename remove_reference<TTuple>::type
               , typename remove_reference<UTuple>::type
             >::type(
-                detail::tuple_cat_element< 0, TTuple, UTuple>::call(t, u)
+                detail::tuple_cat_element< 0 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u))
             );
     }
 }}
@@ -578,7 +578,7 @@ namespace hpx { namespace util
                 typename remove_reference<TTuple>::type
               , typename remove_reference<UTuple>::type
             >::type(
-                detail::tuple_cat_element< 0, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 1, TTuple, UTuple>::call(t, u)
+                detail::tuple_cat_element< 0 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 1 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u))
             );
     }
 }}
@@ -819,6 +819,13 @@ namespace hpx { namespace util
     
     namespace detail
     {
+        template <typename T0 , typename T1 , typename T2>
+        struct tuple_cat_result<T0 , T1 , T2>
+          : tuple_cat_result<
+                typename tuple_cat_result< T0 , T1 >::type
+              , T2
+            >
+        {};
         template <typename Tuple>
         struct tuple_cat_result<
             Tuple
@@ -864,7 +871,7 @@ namespace hpx { namespace util
                 typename remove_reference<TTuple>::type
               , typename remove_reference<UTuple>::type
             >::type(
-                detail::tuple_cat_element< 0, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 1, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 2, TTuple, UTuple>::call(t, u)
+                detail::tuple_cat_element< 0 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 1 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 2 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u))
             );
     }
     template <typename T0 , typename T1 , typename T2>
@@ -1119,6 +1126,12 @@ namespace hpx { namespace util
     
     namespace detail
     {
+        template <typename T0 , typename T1 , typename T2 , typename T3>
+        struct tuple_cat_result<T0 , T1 , T2 , T3>
+          : tuple_cat_result<
+                typename tuple_cat_result< T0 , T1 >::type , typename tuple_cat_result< T2 , T3 >::type
+            >
+        {};
         template <typename Tuple>
         struct tuple_cat_result<
             Tuple
@@ -1164,7 +1177,7 @@ namespace hpx { namespace util
                 typename remove_reference<TTuple>::type
               , typename remove_reference<UTuple>::type
             >::type(
-                detail::tuple_cat_element< 0, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 1, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 2, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 3, TTuple, UTuple>::call(t, u)
+                detail::tuple_cat_element< 0 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 1 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 2 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 3 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u))
             );
     }
     template <typename T0 , typename T1 , typename T2 , typename T3>
@@ -1417,6 +1430,13 @@ namespace hpx { namespace util
     
     namespace detail
     {
+        template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4>
+        struct tuple_cat_result<T0 , T1 , T2 , T3 , T4>
+          : tuple_cat_result<
+                typename tuple_cat_result< T0 , T1 >::type , typename tuple_cat_result< T2 , T3 >::type
+              , T4
+            >
+        {};
         template <typename Tuple>
         struct tuple_cat_result<
             Tuple
@@ -1462,7 +1482,7 @@ namespace hpx { namespace util
                 typename remove_reference<TTuple>::type
               , typename remove_reference<UTuple>::type
             >::type(
-                detail::tuple_cat_element< 0, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 1, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 2, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 3, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 4, TTuple, UTuple>::call(t, u)
+                detail::tuple_cat_element< 0 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 1 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 2 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 3 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 4 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u))
             );
     }
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4>
@@ -1717,6 +1737,12 @@ namespace hpx { namespace util
     
     namespace detail
     {
+        template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5>
+        struct tuple_cat_result<T0 , T1 , T2 , T3 , T4 , T5>
+          : tuple_cat_result<
+                typename tuple_cat_result< T0 , T1 >::type , typename tuple_cat_result< T2 , T3 >::type , typename tuple_cat_result< T4 , T5 >::type
+            >
+        {};
         template <typename Tuple>
         struct tuple_cat_result<
             Tuple
@@ -1762,7 +1788,7 @@ namespace hpx { namespace util
                 typename remove_reference<TTuple>::type
               , typename remove_reference<UTuple>::type
             >::type(
-                detail::tuple_cat_element< 0, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 1, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 2, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 3, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 4, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 5, TTuple, UTuple>::call(t, u)
+                detail::tuple_cat_element< 0 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 1 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 2 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 3 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 4 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 5 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u))
             );
     }
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5>
@@ -2015,6 +2041,13 @@ namespace hpx { namespace util
     
     namespace detail
     {
+        template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6>
+        struct tuple_cat_result<T0 , T1 , T2 , T3 , T4 , T5 , T6>
+          : tuple_cat_result<
+                typename tuple_cat_result< T0 , T1 >::type , typename tuple_cat_result< T2 , T3 >::type , typename tuple_cat_result< T4 , T5 >::type
+              , T6
+            >
+        {};
         template <typename Tuple>
         struct tuple_cat_result<
             Tuple
@@ -2060,7 +2093,7 @@ namespace hpx { namespace util
                 typename remove_reference<TTuple>::type
               , typename remove_reference<UTuple>::type
             >::type(
-                detail::tuple_cat_element< 0, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 1, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 2, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 3, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 4, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 5, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 6, TTuple, UTuple>::call(t, u)
+                detail::tuple_cat_element< 0 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 1 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 2 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 3 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 4 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 5 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 6 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u))
             );
     }
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6>
@@ -2315,6 +2348,12 @@ namespace hpx { namespace util
     
     namespace detail
     {
+        template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7>
+        struct tuple_cat_result<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7>
+          : tuple_cat_result<
+                typename tuple_cat_result< T0 , T1 >::type , typename tuple_cat_result< T2 , T3 >::type , typename tuple_cat_result< T4 , T5 >::type , typename tuple_cat_result< T6 , T7 >::type
+            >
+        {};
         template <typename Tuple>
         struct tuple_cat_result<
             Tuple
@@ -2360,7 +2399,7 @@ namespace hpx { namespace util
                 typename remove_reference<TTuple>::type
               , typename remove_reference<UTuple>::type
             >::type(
-                detail::tuple_cat_element< 0, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 1, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 2, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 3, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 4, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 5, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 6, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 7, TTuple, UTuple>::call(t, u)
+                detail::tuple_cat_element< 0 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 1 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 2 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 3 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 4 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 5 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 6 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 7 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u))
             );
     }
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7>
@@ -2613,6 +2652,13 @@ namespace hpx { namespace util
     
     namespace detail
     {
+        template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7 , typename T8>
+        struct tuple_cat_result<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7 , T8>
+          : tuple_cat_result<
+                typename tuple_cat_result< T0 , T1 >::type , typename tuple_cat_result< T2 , T3 >::type , typename tuple_cat_result< T4 , T5 >::type , typename tuple_cat_result< T6 , T7 >::type
+              , T8
+            >
+        {};
         template <typename Tuple>
         struct tuple_cat_result<
             Tuple
@@ -2658,7 +2704,7 @@ namespace hpx { namespace util
                 typename remove_reference<TTuple>::type
               , typename remove_reference<UTuple>::type
             >::type(
-                detail::tuple_cat_element< 0, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 1, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 2, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 3, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 4, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 5, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 6, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 7, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 8, TTuple, UTuple>::call(t, u)
+                detail::tuple_cat_element< 0 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 1 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 2 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 3 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 4 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 5 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 6 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 7 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 8 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u))
             );
     }
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7 , typename T8>
@@ -2913,6 +2959,12 @@ namespace hpx { namespace util
     
     namespace detail
     {
+        template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7 , typename T8 , typename T9>
+        struct tuple_cat_result<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7 , T8 , T9>
+          : tuple_cat_result<
+                typename tuple_cat_result< T0 , T1 >::type , typename tuple_cat_result< T2 , T3 >::type , typename tuple_cat_result< T4 , T5 >::type , typename tuple_cat_result< T6 , T7 >::type , typename tuple_cat_result< T8 , T9 >::type
+            >
+        {};
         template <typename Tuple>
         struct tuple_cat_result<
             Tuple
@@ -2958,7 +3010,7 @@ namespace hpx { namespace util
                 typename remove_reference<TTuple>::type
               , typename remove_reference<UTuple>::type
             >::type(
-                detail::tuple_cat_element< 0, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 1, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 2, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 3, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 4, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 5, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 6, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 7, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 8, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 9, TTuple, UTuple>::call(t, u)
+                detail::tuple_cat_element< 0 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 1 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 2 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 3 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 4 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 5 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 6 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 7 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 8 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 9 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u))
             );
     }
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7 , typename T8 , typename T9>
@@ -3211,6 +3263,13 @@ namespace hpx { namespace util
     
     namespace detail
     {
+        template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7 , typename T8 , typename T9 , typename T10>
+        struct tuple_cat_result<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7 , T8 , T9 , T10>
+          : tuple_cat_result<
+                typename tuple_cat_result< T0 , T1 >::type , typename tuple_cat_result< T2 , T3 >::type , typename tuple_cat_result< T4 , T5 >::type , typename tuple_cat_result< T6 , T7 >::type , typename tuple_cat_result< T8 , T9 >::type
+              , T10
+            >
+        {};
         template <typename Tuple>
         struct tuple_cat_result<
             Tuple
@@ -3256,7 +3315,7 @@ namespace hpx { namespace util
                 typename remove_reference<TTuple>::type
               , typename remove_reference<UTuple>::type
             >::type(
-                detail::tuple_cat_element< 0, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 1, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 2, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 3, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 4, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 5, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 6, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 7, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 8, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 9, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 10, TTuple, UTuple>::call(t, u)
+                detail::tuple_cat_element< 0 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 1 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 2 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 3 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 4 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 5 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 6 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 7 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 8 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 9 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 10 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u))
             );
     }
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7 , typename T8 , typename T9 , typename T10>
@@ -3511,6 +3570,12 @@ namespace hpx { namespace util
     
     namespace detail
     {
+        template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7 , typename T8 , typename T9 , typename T10 , typename T11>
+        struct tuple_cat_result<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7 , T8 , T9 , T10 , T11>
+          : tuple_cat_result<
+                typename tuple_cat_result< T0 , T1 >::type , typename tuple_cat_result< T2 , T3 >::type , typename tuple_cat_result< T4 , T5 >::type , typename tuple_cat_result< T6 , T7 >::type , typename tuple_cat_result< T8 , T9 >::type , typename tuple_cat_result< T10 , T11 >::type
+            >
+        {};
         template <typename Tuple>
         struct tuple_cat_result<
             Tuple
@@ -3556,7 +3621,7 @@ namespace hpx { namespace util
                 typename remove_reference<TTuple>::type
               , typename remove_reference<UTuple>::type
             >::type(
-                detail::tuple_cat_element< 0, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 1, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 2, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 3, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 4, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 5, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 6, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 7, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 8, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 9, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 10, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 11, TTuple, UTuple>::call(t, u)
+                detail::tuple_cat_element< 0 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 1 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 2 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 3 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 4 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 5 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 6 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 7 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 8 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 9 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 10 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 11 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u))
             );
     }
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7 , typename T8 , typename T9 , typename T10 , typename T11>
@@ -3809,6 +3874,13 @@ namespace hpx { namespace util
     
     namespace detail
     {
+        template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7 , typename T8 , typename T9 , typename T10 , typename T11 , typename T12>
+        struct tuple_cat_result<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7 , T8 , T9 , T10 , T11 , T12>
+          : tuple_cat_result<
+                typename tuple_cat_result< T0 , T1 >::type , typename tuple_cat_result< T2 , T3 >::type , typename tuple_cat_result< T4 , T5 >::type , typename tuple_cat_result< T6 , T7 >::type , typename tuple_cat_result< T8 , T9 >::type , typename tuple_cat_result< T10 , T11 >::type
+              , T12
+            >
+        {};
         template <typename Tuple>
         struct tuple_cat_result<
             Tuple
@@ -3854,7 +3926,7 @@ namespace hpx { namespace util
                 typename remove_reference<TTuple>::type
               , typename remove_reference<UTuple>::type
             >::type(
-                detail::tuple_cat_element< 0, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 1, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 2, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 3, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 4, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 5, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 6, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 7, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 8, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 9, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 10, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 11, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 12, TTuple, UTuple>::call(t, u)
+                detail::tuple_cat_element< 0 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 1 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 2 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 3 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 4 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 5 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 6 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 7 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 8 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 9 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 10 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 11 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 12 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u))
             );
     }
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7 , typename T8 , typename T9 , typename T10 , typename T11 , typename T12>
@@ -4109,6 +4181,12 @@ namespace hpx { namespace util
     
     namespace detail
     {
+        template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7 , typename T8 , typename T9 , typename T10 , typename T11 , typename T12 , typename T13>
+        struct tuple_cat_result<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7 , T8 , T9 , T10 , T11 , T12 , T13>
+          : tuple_cat_result<
+                typename tuple_cat_result< T0 , T1 >::type , typename tuple_cat_result< T2 , T3 >::type , typename tuple_cat_result< T4 , T5 >::type , typename tuple_cat_result< T6 , T7 >::type , typename tuple_cat_result< T8 , T9 >::type , typename tuple_cat_result< T10 , T11 >::type , typename tuple_cat_result< T12 , T13 >::type
+            >
+        {};
         template <typename Tuple>
         struct tuple_cat_result<
             Tuple
@@ -4154,7 +4232,7 @@ namespace hpx { namespace util
                 typename remove_reference<TTuple>::type
               , typename remove_reference<UTuple>::type
             >::type(
-                detail::tuple_cat_element< 0, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 1, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 2, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 3, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 4, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 5, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 6, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 7, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 8, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 9, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 10, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 11, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 12, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 13, TTuple, UTuple>::call(t, u)
+                detail::tuple_cat_element< 0 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 1 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 2 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 3 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 4 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 5 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 6 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 7 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 8 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 9 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 10 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 11 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 12 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 13 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u))
             );
     }
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7 , typename T8 , typename T9 , typename T10 , typename T11 , typename T12 , typename T13>
@@ -4407,6 +4485,13 @@ namespace hpx { namespace util
     
     namespace detail
     {
+        template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7 , typename T8 , typename T9 , typename T10 , typename T11 , typename T12 , typename T13 , typename T14>
+        struct tuple_cat_result<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7 , T8 , T9 , T10 , T11 , T12 , T13 , T14>
+          : tuple_cat_result<
+                typename tuple_cat_result< T0 , T1 >::type , typename tuple_cat_result< T2 , T3 >::type , typename tuple_cat_result< T4 , T5 >::type , typename tuple_cat_result< T6 , T7 >::type , typename tuple_cat_result< T8 , T9 >::type , typename tuple_cat_result< T10 , T11 >::type , typename tuple_cat_result< T12 , T13 >::type
+              , T14
+            >
+        {};
         template <typename Tuple>
         struct tuple_cat_result<
             Tuple
@@ -4452,7 +4537,7 @@ namespace hpx { namespace util
                 typename remove_reference<TTuple>::type
               , typename remove_reference<UTuple>::type
             >::type(
-                detail::tuple_cat_element< 0, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 1, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 2, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 3, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 4, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 5, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 6, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 7, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 8, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 9, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 10, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 11, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 12, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 13, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 14, TTuple, UTuple>::call(t, u)
+                detail::tuple_cat_element< 0 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 1 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 2 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 3 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 4 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 5 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 6 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 7 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 8 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 9 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 10 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 11 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 12 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 13 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 14 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u))
             );
     }
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7 , typename T8 , typename T9 , typename T10 , typename T11 , typename T12 , typename T13 , typename T14>
@@ -4707,6 +4792,12 @@ namespace hpx { namespace util
     
     namespace detail
     {
+        template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7 , typename T8 , typename T9 , typename T10 , typename T11 , typename T12 , typename T13 , typename T14 , typename T15>
+        struct tuple_cat_result<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7 , T8 , T9 , T10 , T11 , T12 , T13 , T14 , T15>
+          : tuple_cat_result<
+                typename tuple_cat_result< T0 , T1 >::type , typename tuple_cat_result< T2 , T3 >::type , typename tuple_cat_result< T4 , T5 >::type , typename tuple_cat_result< T6 , T7 >::type , typename tuple_cat_result< T8 , T9 >::type , typename tuple_cat_result< T10 , T11 >::type , typename tuple_cat_result< T12 , T13 >::type , typename tuple_cat_result< T14 , T15 >::type
+            >
+        {};
         template <typename Tuple>
         struct tuple_cat_result<
             Tuple
@@ -4752,7 +4843,7 @@ namespace hpx { namespace util
                 typename remove_reference<TTuple>::type
               , typename remove_reference<UTuple>::type
             >::type(
-                detail::tuple_cat_element< 0, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 1, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 2, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 3, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 4, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 5, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 6, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 7, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 8, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 9, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 10, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 11, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 12, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 13, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 14, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 15, TTuple, UTuple>::call(t, u)
+                detail::tuple_cat_element< 0 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 1 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 2 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 3 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 4 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 5 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 6 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 7 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 8 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 9 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 10 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 11 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 12 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 13 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 14 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 15 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u))
             );
     }
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7 , typename T8 , typename T9 , typename T10 , typename T11 , typename T12 , typename T13 , typename T14 , typename T15>
@@ -5005,6 +5096,13 @@ namespace hpx { namespace util
     
     namespace detail
     {
+        template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7 , typename T8 , typename T9 , typename T10 , typename T11 , typename T12 , typename T13 , typename T14 , typename T15 , typename T16>
+        struct tuple_cat_result<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7 , T8 , T9 , T10 , T11 , T12 , T13 , T14 , T15 , T16>
+          : tuple_cat_result<
+                typename tuple_cat_result< T0 , T1 >::type , typename tuple_cat_result< T2 , T3 >::type , typename tuple_cat_result< T4 , T5 >::type , typename tuple_cat_result< T6 , T7 >::type , typename tuple_cat_result< T8 , T9 >::type , typename tuple_cat_result< T10 , T11 >::type , typename tuple_cat_result< T12 , T13 >::type , typename tuple_cat_result< T14 , T15 >::type
+              , T16
+            >
+        {};
         template <typename Tuple>
         struct tuple_cat_result<
             Tuple
@@ -5050,7 +5148,7 @@ namespace hpx { namespace util
                 typename remove_reference<TTuple>::type
               , typename remove_reference<UTuple>::type
             >::type(
-                detail::tuple_cat_element< 0, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 1, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 2, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 3, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 4, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 5, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 6, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 7, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 8, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 9, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 10, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 11, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 12, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 13, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 14, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 15, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 16, TTuple, UTuple>::call(t, u)
+                detail::tuple_cat_element< 0 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 1 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 2 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 3 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 4 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 5 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 6 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 7 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 8 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 9 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 10 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 11 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 12 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 13 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 14 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 15 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 16 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u))
             );
     }
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7 , typename T8 , typename T9 , typename T10 , typename T11 , typename T12 , typename T13 , typename T14 , typename T15 , typename T16>
@@ -5305,6 +5403,12 @@ namespace hpx { namespace util
     
     namespace detail
     {
+        template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7 , typename T8 , typename T9 , typename T10 , typename T11 , typename T12 , typename T13 , typename T14 , typename T15 , typename T16 , typename T17>
+        struct tuple_cat_result<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7 , T8 , T9 , T10 , T11 , T12 , T13 , T14 , T15 , T16 , T17>
+          : tuple_cat_result<
+                typename tuple_cat_result< T0 , T1 >::type , typename tuple_cat_result< T2 , T3 >::type , typename tuple_cat_result< T4 , T5 >::type , typename tuple_cat_result< T6 , T7 >::type , typename tuple_cat_result< T8 , T9 >::type , typename tuple_cat_result< T10 , T11 >::type , typename tuple_cat_result< T12 , T13 >::type , typename tuple_cat_result< T14 , T15 >::type , typename tuple_cat_result< T16 , T17 >::type
+            >
+        {};
         template <typename Tuple>
         struct tuple_cat_result<
             Tuple
@@ -5350,7 +5454,7 @@ namespace hpx { namespace util
                 typename remove_reference<TTuple>::type
               , typename remove_reference<UTuple>::type
             >::type(
-                detail::tuple_cat_element< 0, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 1, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 2, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 3, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 4, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 5, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 6, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 7, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 8, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 9, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 10, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 11, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 12, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 13, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 14, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 15, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 16, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 17, TTuple, UTuple>::call(t, u)
+                detail::tuple_cat_element< 0 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 1 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 2 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 3 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 4 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 5 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 6 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 7 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 8 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 9 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 10 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 11 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 12 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 13 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 14 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 15 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 16 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 17 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u))
             );
     }
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7 , typename T8 , typename T9 , typename T10 , typename T11 , typename T12 , typename T13 , typename T14 , typename T15 , typename T16 , typename T17>
@@ -5603,6 +5707,13 @@ namespace hpx { namespace util
     
     namespace detail
     {
+        template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7 , typename T8 , typename T9 , typename T10 , typename T11 , typename T12 , typename T13 , typename T14 , typename T15 , typename T16 , typename T17 , typename T18>
+        struct tuple_cat_result<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7 , T8 , T9 , T10 , T11 , T12 , T13 , T14 , T15 , T16 , T17 , T18>
+          : tuple_cat_result<
+                typename tuple_cat_result< T0 , T1 >::type , typename tuple_cat_result< T2 , T3 >::type , typename tuple_cat_result< T4 , T5 >::type , typename tuple_cat_result< T6 , T7 >::type , typename tuple_cat_result< T8 , T9 >::type , typename tuple_cat_result< T10 , T11 >::type , typename tuple_cat_result< T12 , T13 >::type , typename tuple_cat_result< T14 , T15 >::type , typename tuple_cat_result< T16 , T17 >::type
+              , T18
+            >
+        {};
         template <typename Tuple>
         struct tuple_cat_result<
             Tuple
@@ -5648,7 +5759,7 @@ namespace hpx { namespace util
                 typename remove_reference<TTuple>::type
               , typename remove_reference<UTuple>::type
             >::type(
-                detail::tuple_cat_element< 0, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 1, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 2, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 3, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 4, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 5, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 6, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 7, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 8, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 9, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 10, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 11, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 12, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 13, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 14, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 15, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 16, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 17, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 18, TTuple, UTuple>::call(t, u)
+                detail::tuple_cat_element< 0 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 1 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 2 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 3 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 4 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 5 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 6 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 7 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 8 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 9 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 10 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 11 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 12 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 13 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 14 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 15 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 16 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 17 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 18 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u))
             );
     }
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7 , typename T8 , typename T9 , typename T10 , typename T11 , typename T12 , typename T13 , typename T14 , typename T15 , typename T16 , typename T17 , typename T18>
@@ -5903,6 +6014,12 @@ namespace hpx { namespace util
     
     namespace detail
     {
+        template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7 , typename T8 , typename T9 , typename T10 , typename T11 , typename T12 , typename T13 , typename T14 , typename T15 , typename T16 , typename T17 , typename T18 , typename T19>
+        struct tuple_cat_result<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7 , T8 , T9 , T10 , T11 , T12 , T13 , T14 , T15 , T16 , T17 , T18 , T19>
+          : tuple_cat_result<
+                typename tuple_cat_result< T0 , T1 >::type , typename tuple_cat_result< T2 , T3 >::type , typename tuple_cat_result< T4 , T5 >::type , typename tuple_cat_result< T6 , T7 >::type , typename tuple_cat_result< T8 , T9 >::type , typename tuple_cat_result< T10 , T11 >::type , typename tuple_cat_result< T12 , T13 >::type , typename tuple_cat_result< T14 , T15 >::type , typename tuple_cat_result< T16 , T17 >::type , typename tuple_cat_result< T18 , T19 >::type
+            >
+        {};
         template <typename Tuple>
         struct tuple_cat_result<
             Tuple
@@ -5948,7 +6065,7 @@ namespace hpx { namespace util
                 typename remove_reference<TTuple>::type
               , typename remove_reference<UTuple>::type
             >::type(
-                detail::tuple_cat_element< 0, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 1, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 2, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 3, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 4, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 5, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 6, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 7, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 8, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 9, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 10, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 11, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 12, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 13, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 14, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 15, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 16, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 17, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 18, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 19, TTuple, UTuple>::call(t, u)
+                detail::tuple_cat_element< 0 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 1 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 2 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 3 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 4 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 5 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 6 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 7 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 8 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 9 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 10 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 11 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 12 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 13 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 14 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 15 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 16 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 17 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 18 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u)) , detail::tuple_cat_element< 19 , typename remove_reference<TTuple>::type , typename remove_reference<UTuple>::type >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u))
             );
     }
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7 , typename T8 , typename T9 , typename T10 , typename T11 , typename T12 , typename T13 , typename T14 , typename T15 , typename T16 , typename T17 , typename T18 , typename T19>

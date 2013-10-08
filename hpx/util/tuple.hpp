@@ -452,24 +452,12 @@ namespace hpx { namespace util
             }
         };
 
-#       define HPX_UTIL_TUPLE_CAT_RESULT(Z, N, D)                             \
-        BOOST_PP_COMMA_IF(N) tuple_cat_result<                                \
-            BOOST_PP_CAT(T, BOOST_PP_MUL(N, 2))                               \
-          , BOOST_PP_CAT(T, BOOST_PP_INC(BOOST_PP_MUL(N, 2)))>                \
-        /**/
+        ///////////////////////////////////////////////////////////////////////
         template <
             BOOST_PP_ENUM_BINARY_PARAMS(N, typename T, = void BOOST_PP_INTERCEPT)
           , typename Enable = void
         >
-        struct tuple_cat_result
-          : tuple_cat_result<
-                BOOST_PP_REPEAT(BOOST_PP_DIV(N, 2), HPX_UTIL_TUPLE_CAT_RESULT, _)
-#           if N % 2 != 0
-              , BOOST_PP_CAT(T, BOOST_PP_DEC(N))
-#           endif
-            >
-        {};
-#       undef HPX_UTIL_TUPLE_CAT_RESULT
+        struct tuple_cat_result;
 
         template <>
         struct tuple_cat_result<>
@@ -477,10 +465,13 @@ namespace hpx { namespace util
             typedef tuple<> type;
         };
 
-        template <BOOST_PP_ENUM_PARAMS(N, typename T)>
-        struct tuple_cat_result<tuple<BOOST_PP_ENUM_PARAMS(N, T)> >
+        template <typename Tuple>
+        struct tuple_cat_result<
+            Tuple
+          , typename boost::enable_if_c<tuple_size<Tuple>::value == 0>::type
+        >
         {
-            typedef tuple<BOOST_PP_ENUM_PARAMS(N, T)> type;
+            typedef tuple<> type;
         };
         
 #       define HPX_UTIL_TUPLE_CAT_ELEMENT(Z, N, D)                            \
@@ -516,9 +507,20 @@ namespace hpx { namespace util
         return boost::move(t);
     }
 
+    template <typename Tuple>
+    BOOST_CONSTEXPR BOOST_FORCEINLINE
+    typename boost::enable_if_c<
+        tuple_size<typename remove_reference<Tuple>::type>::value == 0
+      , tuple<>
+    >::type
+    tuple_cat(BOOST_FWD_REF(Tuple) t)
+    {
+        return tuple<>();
+    }
+
     template <typename TTuple, typename UTuple>
     BOOST_CONSTEXPR BOOST_FORCEINLINE
-    typename boost::lazy_enable_if_c<
+    typename boost::enable_if_c<
         tuple_size<typename remove_reference<TTuple>::type>::value
       + tuple_size<typename remove_reference<UTuple>::type>::value == 0
       , tuple<>
@@ -1185,10 +1187,29 @@ namespace hpx { namespace util
     //tuple<Ctypes ...>
     //tuple_cat(Tuples&&...);
     //  In the following paragraphs, let Ti be the ith type in Tuples, Ui be remove_reference<Ti>::type, and tpi be the ith parameter in the function parameter pack tpls, where all indexing is zero-based.
-    //  Requires: For all i, Ui shall be the type cvi tuple<Argsi...>, where cvi is the (possibly empty) ith cv-qualifier-seq and Argsi is the parameter pack representing the element types in Ui . Let Aik be the kith type in Argsi. For all Aik the following requirements shall be satisfied: If Ti is deduced as an lvalue reference type, then is_constructible<Aik, cvi Aik&>::value == true, otherwise is_constructible<Aik, cvi Aik&&>::value == true.
+    //  Requires: For all i, Ui shall be the type cvi tuple<Argsi...>, where cvi is the (possibly empty) ith cv-qualifier-seq and Argsi is the parameter pack representing the element types in Ui . Let Aik be the kith type                 r all Aik the following requirements shall be satisfied: If Ti is deduced as an lvalue reference type, then is_constructible<Aik, cvi Aik&>::value == true, otherwise is_constructible<Aik, cvi Aik&&>::value == true.
     //  Returns: A tuple object constructed by initializing the kith type element eik in ei... with get<ki>(std::forward<Ti>(tpi)) for each valid ki and each group ei in order.
     namespace detail
     {
+#       if N > 2
+#       define HPX_UTIL_TUPLE_CAT_RESULT(Z, N, D)                             \
+        BOOST_PP_COMMA_IF(N) typename tuple_cat_result<                       \
+            BOOST_PP_CAT(T, BOOST_PP_MUL(N, 2))                               \
+          , BOOST_PP_CAT(T, BOOST_PP_INC(BOOST_PP_MUL(N, 2)))                 \
+        >::type                                                               \
+        /**/
+        template <BOOST_PP_ENUM_PARAMS(N, typename T)>
+        struct tuple_cat_result<BOOST_PP_ENUM_PARAMS(N, T)>
+          : tuple_cat_result<
+                BOOST_PP_REPEAT(BOOST_PP_DIV(N, 2), HPX_UTIL_TUPLE_CAT_RESULT, _)
+#           if N % 2 != 0
+              , BOOST_PP_CAT(T, BOOST_PP_DEC(N))
+#           endif
+            >
+        {};
+#       undef HPX_UTIL_TUPLE_CAT_RESULT
+#       endif
+
 #       define HPX_UTIL_TUPLE_CAT_ELEMENT_TYPE(Z, N, D)                       \
         typename tuple_element<N, Tuple>::type                                \
         /**/
@@ -1228,7 +1249,11 @@ namespace hpx { namespace util
 #   undef HPX_UTIL_TUPLE_CAT_ELEMENT_CALL
 
 #   define HPX_UTIL_TUPLE_CAT_ELEMENT_CALL(Z, N, D)                           \
-    detail::tuple_cat_element<N, TTuple, UTuple>::call(t, u)                  \
+    detail::tuple_cat_element<                                                \
+        N                                                                     \
+      , typename remove_reference<TTuple>::type                               \
+      , typename remove_reference<UTuple>::type                               \
+    >::call(boost::forward<TTuple>(t), boost::forward<UTuple>(u))             \
     /**/
     template <typename TTuple, typename UTuple>
     BOOST_CONSTEXPR BOOST_FORCEINLINE
