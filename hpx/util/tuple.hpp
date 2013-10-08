@@ -40,6 +40,7 @@
 #include <boost/ref.hpp>
 #include <boost/serialization/is_bitwise_serializable.hpp>
 #include <boost/type_traits/add_const.hpp>
+#include <boost/type_traits/is_base_of.hpp>
 #include <boost/type_traits/is_reference.hpp>
 #include <boost/type_traits/remove_cv.hpp>
 #include <boost/utility/enable_if.hpp>
@@ -905,7 +906,8 @@ namespace hpx { namespace util
         struct are_tuples_compatible<
             tuple<BOOST_PP_ENUM_PARAMS(N, T)>, UTuple
           , typename boost::enable_if_c<
-                tuple_size<typename remove_reference<UTuple>::type>::value == N
+                tuple_size<typename remove_reference<tuple<BOOST_PP_ENUM_PARAMS(N, T)>>::type>::value == N
+             && tuple_size<typename remove_reference<UTuple>::type>::value == N
             >::type
         >
         {
@@ -986,6 +988,9 @@ namespace hpx { namespace util
                         tuple<BOOST_PP_ENUM_PARAMS(N, U)>
                     >::type
                 >::value
+#       if N == 1
+             && !boost::is_base_of<tuple, typename remove_reference<U0>::type>::value
+#       endif
             >::type* = 0
         ) : BOOST_PP_ENUM(N, HPX_UTIL_TUPLE_FORWARD_CONSTRUCT, _)
         {}
