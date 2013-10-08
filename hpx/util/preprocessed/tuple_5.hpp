@@ -37,6 +37,8 @@ namespace hpx { namespace util
     template <typename T0>
     class tuple<T0>
     {
+    public: 
+        detail::tuple_member<T0> _m0;;
     public:
         
         
@@ -165,8 +167,6 @@ namespace hpx { namespace util
         {
             boost::swap( _m0._value , other._m0._value );;
         }
-    public: 
-        detail::tuple_member<T0> _m0;;
     };
     
     
@@ -322,6 +322,8 @@ namespace hpx { namespace util
     template <typename T0 , typename T1>
     class tuple<T0 , T1>
     {
+    public: 
+        detail::tuple_member<T0> _m0; detail::tuple_member<T1> _m1;;
     public:
         
         
@@ -449,8 +451,6 @@ namespace hpx { namespace util
         {
             boost::swap( _m0._value , other._m0._value ); boost::swap( _m1._value , other._m1._value );;
         }
-    public: 
-        detail::tuple_member<T0> _m0; detail::tuple_member<T1> _m1;;
     };
     
     
@@ -606,6 +606,8 @@ namespace hpx { namespace util
     template <typename T0 , typename T1 , typename T2>
     class tuple<T0 , T1 , T2>
     {
+    public: 
+        detail::tuple_member<T0> _m0; detail::tuple_member<T1> _m1; detail::tuple_member<T2> _m2;;
     public:
         
         
@@ -733,8 +735,6 @@ namespace hpx { namespace util
         {
             boost::swap( _m0._value , other._m0._value ); boost::swap( _m1._value , other._m1._value ); boost::swap( _m2._value , other._m2._value );;
         }
-    public: 
-        detail::tuple_member<T0> _m0; detail::tuple_member<T1> _m1; detail::tuple_member<T2> _m2;;
     };
     
     
@@ -904,6 +904,8 @@ namespace hpx { namespace util
     template <typename T0 , typename T1 , typename T2 , typename T3>
     class tuple<T0 , T1 , T2 , T3>
     {
+    public: 
+        detail::tuple_member<T0> _m0; detail::tuple_member<T1> _m1; detail::tuple_member<T2> _m2; detail::tuple_member<T3> _m3;;
     public:
         
         
@@ -1031,8 +1033,6 @@ namespace hpx { namespace util
         {
             boost::swap( _m0._value , other._m0._value ); boost::swap( _m1._value , other._m1._value ); boost::swap( _m2._value , other._m2._value ); boost::swap( _m3._value , other._m3._value );;
         }
-    public: 
-        detail::tuple_member<T0> _m0; detail::tuple_member<T1> _m1; detail::tuple_member<T2> _m2; detail::tuple_member<T3> _m3;;
     };
     
     
@@ -1200,6 +1200,8 @@ namespace hpx { namespace util
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4>
     class tuple<T0 , T1 , T2 , T3 , T4>
     {
+    public: 
+        detail::tuple_member<T0> _m0; detail::tuple_member<T1> _m1; detail::tuple_member<T2> _m2; detail::tuple_member<T3> _m3; detail::tuple_member<T4> _m4;;
     public:
         
         
@@ -1327,8 +1329,6 @@ namespace hpx { namespace util
         {
             boost::swap( _m0._value , other._m0._value ); boost::swap( _m1._value , other._m1._value ); boost::swap( _m2._value , other._m2._value ); boost::swap( _m3._value , other._m3._value ); boost::swap( _m4._value , other._m4._value );;
         }
-    public: 
-        detail::tuple_member<T0> _m0; detail::tuple_member<T1> _m1; detail::tuple_member<T2> _m2; detail::tuple_member<T3> _m3; detail::tuple_member<T4> _m4;;
     };
     
     
@@ -1498,6 +1498,8 @@ namespace hpx { namespace util
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5>
     class tuple<T0 , T1 , T2 , T3 , T4 , T5>
     {
+    public: 
+        detail::tuple_member<T0> _m0; detail::tuple_member<T1> _m1; detail::tuple_member<T2> _m2; detail::tuple_member<T3> _m3; detail::tuple_member<T4> _m4; detail::tuple_member<T5> _m5;;
     public:
         
         
@@ -1625,8 +1627,6 @@ namespace hpx { namespace util
         {
             boost::swap( _m0._value , other._m0._value ); boost::swap( _m1._value , other._m1._value ); boost::swap( _m2._value , other._m2._value ); boost::swap( _m3._value , other._m3._value ); boost::swap( _m4._value , other._m4._value ); boost::swap( _m5._value , other._m5._value );;
         }
-    public: 
-        detail::tuple_member<T0> _m0; detail::tuple_member<T1> _m1; detail::tuple_member<T2> _m2; detail::tuple_member<T3> _m3; detail::tuple_member<T4> _m4; detail::tuple_member<T5> _m5;;
     };
     
     
@@ -1794,6 +1794,8 @@ namespace hpx { namespace util
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6>
     class tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6>
     {
+    public: 
+        detail::tuple_member<T0> _m0; detail::tuple_member<T1> _m1; detail::tuple_member<T2> _m2; detail::tuple_member<T3> _m3; detail::tuple_member<T4> _m4; detail::tuple_member<T5> _m5; detail::tuple_member<T6> _m6;;
     public:
         
         
@@ -1921,8 +1923,6 @@ namespace hpx { namespace util
         {
             boost::swap( _m0._value , other._m0._value ); boost::swap( _m1._value , other._m1._value ); boost::swap( _m2._value , other._m2._value ); boost::swap( _m3._value , other._m3._value ); boost::swap( _m4._value , other._m4._value ); boost::swap( _m5._value , other._m5._value ); boost::swap( _m6._value , other._m6._value );;
         }
-    public: 
-        detail::tuple_member<T0> _m0; detail::tuple_member<T1> _m1; detail::tuple_member<T2> _m2; detail::tuple_member<T3> _m3; detail::tuple_member<T4> _m4; detail::tuple_member<T5> _m5; detail::tuple_member<T6> _m6;;
     };
     
     
@@ -2092,6 +2092,8 @@ namespace hpx { namespace util
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7>
     class tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7>
     {
+    public: 
+        detail::tuple_member<T0> _m0; detail::tuple_member<T1> _m1; detail::tuple_member<T2> _m2; detail::tuple_member<T3> _m3; detail::tuple_member<T4> _m4; detail::tuple_member<T5> _m5; detail::tuple_member<T6> _m6; detail::tuple_member<T7> _m7;;
     public:
         
         
@@ -2219,8 +2221,6 @@ namespace hpx { namespace util
         {
             boost::swap( _m0._value , other._m0._value ); boost::swap( _m1._value , other._m1._value ); boost::swap( _m2._value , other._m2._value ); boost::swap( _m3._value , other._m3._value ); boost::swap( _m4._value , other._m4._value ); boost::swap( _m5._value , other._m5._value ); boost::swap( _m6._value , other._m6._value ); boost::swap( _m7._value , other._m7._value );;
         }
-    public: 
-        detail::tuple_member<T0> _m0; detail::tuple_member<T1> _m1; detail::tuple_member<T2> _m2; detail::tuple_member<T3> _m3; detail::tuple_member<T4> _m4; detail::tuple_member<T5> _m5; detail::tuple_member<T6> _m6; detail::tuple_member<T7> _m7;;
     };
     
     

@@ -70,6 +70,10 @@ namespace hpx { namespace util
         template <typename T>
         struct tuple_member
         {
+        public: // exposition-only
+            T _value;
+
+        public:
             // 20.4.2.1, tuple construction
             BOOST_CONSTEXPR tuple_member()
               : _value()
@@ -114,14 +118,15 @@ namespace hpx { namespace util
                 _value = boost::forward<T>(other._value);
                 return *this;
             }
-
-        public: // exposition-only
-            T _value;
         };
 
         template <typename T>
         struct tuple_member<T&>
         {
+        public: // exposition-only
+            T& _value;
+
+        public:
             // 20.4.2.1, tuple construction
             BOOST_CONSTEXPR explicit tuple_member(T& value)
               : _value(value)
@@ -158,14 +163,15 @@ namespace hpx { namespace util
                 _value = boost::forward<T>(other._value);
                 return *this;
             }
-
-        public: // exposition-only
-            T& _value;
         };
 
         template <typename T>
         struct tuple_member<BOOST_RV_REF(T)>
         {
+        public: // exposition-only
+            BOOST_RV_REF(T) _value;
+
+        public:
             // 20.4.2.1, tuple construction
             BOOST_CONSTEXPR explicit tuple_member(BOOST_RV_REF(T) value)
               : _value(boost::forward<T>(value))
@@ -202,9 +208,6 @@ namespace hpx { namespace util
                 _value = boost::forward<T>(other._value);
                 return *this;
             }
-
-        public: // exposition-only
-            BOOST_RV_REF(T) _value;
         };
 
         ///////////////////////////////////////////////////////////////////////
@@ -934,6 +937,13 @@ namespace hpx { namespace util
     template <BOOST_PP_ENUM_PARAMS(N, typename T)>
     class tuple<BOOST_PP_ENUM_PARAMS(N, T)>
     {
+    public: // exposition-only
+#       define HPX_UTIL_TUPLE_MEMBER(Z, N, D)                                 \
+        detail::tuple_member<BOOST_PP_CAT(T, N)> BOOST_PP_CAT(_m, N);         \
+        /**/
+        BOOST_PP_REPEAT(N, HPX_UTIL_TUPLE_MEMBER, _);
+#       undef HPX_UTIL_TUPLE_MEMBER
+
     public:
         // 20.4.2.1, tuple construction
 
@@ -1156,13 +1166,6 @@ namespace hpx { namespace util
         }
 #       undef HPX_UTIL_TUPLE_SWAP_NOEXCEPT
 #       undef HPX_UTIL_TUPLE_SWAP
-
-    public: // exposition-only
-#       define HPX_UTIL_TUPLE_MEMBER(Z, N, D)                                 \
-        detail::tuple_member<BOOST_PP_CAT(T, N)> BOOST_PP_CAT(_m, N);         \
-        /**/
-        BOOST_PP_REPEAT(N, HPX_UTIL_TUPLE_MEMBER, _);
-#       undef HPX_UTIL_TUPLE_MEMBER
     };
 
     // template<class... Types>
