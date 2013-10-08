@@ -90,34 +90,6 @@ namespace hpx { namespace util
             BOOST_CONSTEXPR tuple_member(BOOST_RV_REF(tuple_member) other)
               : _value(boost::forward<T>(other._value))
             {}
-
-            // 20.4.2.2, tuple assignment
-            template <typename U>
-            tuple_member& operator=(BOOST_FWD_REF(U) value)
-                BOOST_NOEXCEPT_IF(
-                    BOOST_NOEXCEPT_EXPR(_value = boost::declval<U>())
-                )
-            {
-                _value = boost::forward<U>(value);
-                return *this;
-            }
-
-            tuple_member& operator=(tuple_member const& other)
-                BOOST_NOEXCEPT_IF(
-                    BOOST_NOEXCEPT_EXPR(_value = boost::declval<T const&>())
-                )
-            {
-                _value = other._value;
-                return *this;
-            }
-            tuple_member& operator=(BOOST_RV_REF(tuple_member) other)
-                BOOST_NOEXCEPT_IF(
-                    BOOST_NOEXCEPT_EXPR(_value = boost::declval<T>())
-                )
-            {
-                _value = boost::forward<T>(other._value);
-                return *this;
-            }
         };
 
         template <typename T>
@@ -135,34 +107,6 @@ namespace hpx { namespace util
             BOOST_CONSTEXPR tuple_member(tuple_member const& other)
               : _value(other._value)
             {}
-
-            // 20.4.2.2, tuple assignment
-            template <typename U>
-            tuple_member& operator=(BOOST_FWD_REF(U) value)
-                BOOST_NOEXCEPT_IF(
-                    BOOST_NOEXCEPT_EXPR(_value = boost::declval<U>())
-                )
-            {
-                _value = boost::forward<U>(value);
-                return *this;
-            }
-
-            tuple_member& operator=(tuple_member const& other)
-                BOOST_NOEXCEPT_IF(
-                    BOOST_NOEXCEPT_EXPR(_value = boost::declval<T const&>())
-                )
-            {
-                _value = other._value;
-                return *this;
-            }
-            tuple_member& operator=(BOOST_RV_REF(tuple_member) other)
-                BOOST_NOEXCEPT_IF(
-                    BOOST_NOEXCEPT_EXPR(_value = boost::declval<T>())
-                )
-            {
-                _value = boost::forward<T>(other._value);
-                return *this;
-            }
         };
 
         template <typename T>
@@ -180,34 +124,6 @@ namespace hpx { namespace util
             BOOST_CONSTEXPR tuple_member(tuple_member const& other)
               : _value(boost::forward<T>(other._value))
             {}
-
-            // 20.4.2.2, tuple assignment
-            template <typename U>
-            tuple_member& operator=(BOOST_FWD_REF(U) value)
-                BOOST_NOEXCEPT_IF(
-                    BOOST_NOEXCEPT_EXPR(_value = boost::declval<U>())
-                )
-            {
-                _value = boost::forward<U>(value);
-                return *this;
-            }
-
-            tuple_member& operator=(tuple_member const& other)
-                BOOST_NOEXCEPT_IF(
-                    BOOST_NOEXCEPT_EXPR(_value = boost::declval<T const&>())
-                )
-            {
-                _value = other._value;
-                return *this;
-            }
-            tuple_member& operator=(BOOST_RV_REF(tuple_member) other)
-                BOOST_NOEXCEPT_IF(
-                    BOOST_NOEXCEPT_EXPR(_value = boost::declval<T>())
-                )
-            {
-                _value = boost::forward<T>(other._value);
-                return *this;
-            }
         };
 
         ///////////////////////////////////////////////////////////////////////
@@ -1062,11 +978,13 @@ namespace hpx { namespace util
         //  Returns: *this.
 #       define HPX_UTIL_TUPLE_COPY_ASSIGN_NOEXCEPT(Z, N, D)                   \
          && BOOST_NOEXCEPT_EXPR((                                             \
-                BOOST_PP_CAT(_m, N) = BOOST_PP_CAT(other._m, N)               \
+                BOOST_PP_CAT(_m, N)._value =                                  \
+                    BOOST_PP_CAT(other._m, N)._value                          \
             ))                                                                \
         /**/
 #       define HPX_UTIL_TUPLE_COPY_ASSIGN(Z, N, D)                            \
-        BOOST_PP_CAT(_m, N) = BOOST_PP_CAT(other._m, N);                      \
+        BOOST_PP_CAT(_m, N)._value =                                          \
+            BOOST_PP_CAT(other._m, N)._value;                                 \
         /**/
         tuple& operator=(tuple const& other)
             BOOST_NOEXCEPT_IF(
@@ -1086,11 +1004,15 @@ namespace hpx { namespace util
         //  Returns: *this.
 #       define HPX_UTIL_TUPLE_MOVE_ASSIGN_NOEXCEPT(Z, N, D)                   \
          && BOOST_NOEXCEPT_EXPR((                                             \
-                BOOST_PP_CAT(_m, N) = boost::move(BOOST_PP_CAT(other._m, N))  \
+                BOOST_PP_CAT(_m, N)._value =                                  \
+                    boost::forward<BOOST_PP_CAT(T, N)>                        \
+                        (BOOST_PP_CAT(other._m, N)._value)                    \
             ))                                                                \
         /**/
 #       define HPX_UTIL_TUPLE_MOVE_ASSIGN(Z, N, D)                            \
-        BOOST_PP_CAT(_m, N) = boost::move(BOOST_PP_CAT(other._m, N));         \
+        BOOST_PP_CAT(_m, N)._value =                                          \
+            boost::forward<BOOST_PP_CAT(T, N)>                                \
+                (BOOST_PP_CAT(other._m, N)._value);                           \
         /**/
         tuple& operator=(BOOST_RV_REF(tuple) other)
             BOOST_NOEXCEPT_IF(
@@ -1116,11 +1038,13 @@ namespace hpx { namespace util
         //  Returns: *this.
 #       define HPX_UTIL_TUPLE_GET_ASSIGN_NOEXCEPT(Z, N, D)                    \
          && BOOST_NOEXCEPT_EXPR((                                             \
-                BOOST_PP_CAT(_m, N) = util::get<N>(boost::forward<UTuple>(other))\
+                BOOST_PP_CAT(_m, N)._value =                                  \
+                    util::get<N>(boost::forward<UTuple>(other))               \
             ))                                                                \
         /**/
 #       define HPX_UTIL_TUPLE_GET_ASSIGN(Z, N, D)                             \
-        BOOST_PP_CAT(_m, N) = util::get<N>(boost::forward<UTuple>(other));    \
+        BOOST_PP_CAT(_m, N)._value =                                          \
+            util::get<N>(boost::forward<UTuple>(other));                      \
         /**/
         template <typename UTuple>
         typename boost::enable_if_c<
