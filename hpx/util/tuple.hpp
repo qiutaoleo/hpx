@@ -40,6 +40,8 @@
 #include <boost/ref.hpp>
 #include <boost/serialization/is_bitwise_serializable.hpp>
 #include <boost/type_traits/add_const.hpp>
+#include <boost/type_traits/add_cv.hpp>
+#include <boost/type_traits/add_volatile.hpp>
 #include <boost/type_traits/is_base_of.hpp>
 #include <boost/type_traits/is_reference.hpp>
 #include <boost/type_traits/remove_cv.hpp>
@@ -215,14 +217,24 @@ namespace hpx { namespace util
     struct tuple_size
     {};
 
-    template <>
-    struct tuple_size<tuple<> >
-      : boost::mpl::size_t<0>
-    {};
-
     template <class T>
     struct tuple_size<const T>
       : tuple_size<T>
+    {};
+
+    template <class T>
+    struct tuple_size<volatile T>
+      : tuple_size<T>
+    {};
+
+    template <class T>
+    struct tuple_size<const volatile T>
+      : tuple_size<T>
+    {};
+
+    template <>
+    struct tuple_size<tuple<> >
+      : boost::mpl::size_t<0>
     {};
 
     template <typename T0, typename T1>
@@ -245,6 +257,16 @@ namespace hpx { namespace util
     template <std::size_t I, typename T>
     struct tuple_element<I, const T>
       : boost::add_const<typename tuple_element<I, T>::type>
+    {};
+
+    template <std::size_t I, typename T>
+    struct tuple_element<I, volatile T>
+      : boost::add_volatile<typename tuple_element<I, T>::type>
+    {};
+
+    template <std::size_t I, typename T>
+    struct tuple_element<I, const volatile T>
+      : boost::add_cv<typename tuple_element<I, T>::type>
     {};
 
     template <typename T0, typename T1>
