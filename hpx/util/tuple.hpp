@@ -1304,7 +1304,7 @@ namespace hpx { namespace util
 #   undef HPX_UTIL_TUPLE_CAT_ELEMENT_CALL
 
 #   define HPX_UTIL_TUPLE_CAT_ELEMENT_CALL(Z, N, D)                           \
-    detail::tuple_cat_element<N, T0, T1>::call(t0, t1)                        \
+    detail::tuple_cat_element<N, TTuple, UTuple>::call(t, u)                  \
     /**/
     template <typename TTuple, typename UTuple>
     BOOST_CONSTEXPR BOOST_FORCEINLINE

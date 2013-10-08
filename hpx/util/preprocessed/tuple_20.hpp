@@ -292,7 +292,7 @@ namespace hpx { namespace util
                 typename remove_reference<TTuple>::type
               , typename remove_reference<UTuple>::type
             >::type(
-                detail::tuple_cat_element< 0, T0, T1>::call(t0, t1)
+                detail::tuple_cat_element< 0, TTuple, UTuple>::call(t, u)
             );
     }
 }}
@@ -578,7 +578,7 @@ namespace hpx { namespace util
                 typename remove_reference<TTuple>::type
               , typename remove_reference<UTuple>::type
             >::type(
-                detail::tuple_cat_element< 0, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 1, T0, T1>::call(t0, t1)
+                detail::tuple_cat_element< 0, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 1, TTuple, UTuple>::call(t, u)
             );
     }
 }}
@@ -864,7 +864,7 @@ namespace hpx { namespace util
                 typename remove_reference<TTuple>::type
               , typename remove_reference<UTuple>::type
             >::type(
-                detail::tuple_cat_element< 0, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 1, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 2, T0, T1>::call(t0, t1)
+                detail::tuple_cat_element< 0, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 1, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 2, TTuple, UTuple>::call(t, u)
             );
     }
     template <typename T0 , typename T1 , typename T2>
@@ -1164,7 +1164,7 @@ namespace hpx { namespace util
                 typename remove_reference<TTuple>::type
               , typename remove_reference<UTuple>::type
             >::type(
-                detail::tuple_cat_element< 0, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 1, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 2, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 3, T0, T1>::call(t0, t1)
+                detail::tuple_cat_element< 0, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 1, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 2, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 3, TTuple, UTuple>::call(t, u)
             );
     }
     template <typename T0 , typename T1 , typename T2 , typename T3>
@@ -1462,7 +1462,7 @@ namespace hpx { namespace util
                 typename remove_reference<TTuple>::type
               , typename remove_reference<UTuple>::type
             >::type(
-                detail::tuple_cat_element< 0, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 1, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 2, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 3, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 4, T0, T1>::call(t0, t1)
+                detail::tuple_cat_element< 0, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 1, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 2, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 3, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 4, TTuple, UTuple>::call(t, u)
             );
     }
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4>
@@ -1762,7 +1762,7 @@ namespace hpx { namespace util
                 typename remove_reference<TTuple>::type
               , typename remove_reference<UTuple>::type
             >::type(
-                detail::tuple_cat_element< 0, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 1, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 2, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 3, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 4, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 5, T0, T1>::call(t0, t1)
+                detail::tuple_cat_element< 0, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 1, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 2, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 3, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 4, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 5, TTuple, UTuple>::call(t, u)
             );
     }
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5>
@@ -2060,7 +2060,7 @@ namespace hpx { namespace util
                 typename remove_reference<TTuple>::type
               , typename remove_reference<UTuple>::type
             >::type(
-                detail::tuple_cat_element< 0, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 1, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 2, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 3, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 4, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 5, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 6, T0, T1>::call(t0, t1)
+                detail::tuple_cat_element< 0, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 1, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 2, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 3, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 4, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 5, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 6, TTuple, UTuple>::call(t, u)
             );
     }
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6>
@@ -2360,7 +2360,7 @@ namespace hpx { namespace util
                 typename remove_reference<TTuple>::type
               , typename remove_reference<UTuple>::type
             >::type(
-                detail::tuple_cat_element< 0, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 1, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 2, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 3, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 4, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 5, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 6, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 7, T0, T1>::call(t0, t1)
+                detail::tuple_cat_element< 0, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 1, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 2, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 3, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 4, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 5, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 6, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 7, TTuple, UTuple>::call(t, u)
             );
     }
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7>
@@ -2658,7 +2658,7 @@ namespace hpx { namespace util
                 typename remove_reference<TTuple>::type
               , typename remove_reference<UTuple>::type
             >::type(
-                detail::tuple_cat_element< 0, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 1, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 2, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 3, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 4, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 5, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 6, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 7, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 8, T0, T1>::call(t0, t1)
+                detail::tuple_cat_element< 0, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 1, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 2, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 3, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 4, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 5, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 6, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 7, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 8, TTuple, UTuple>::call(t, u)
             );
     }
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7 , typename T8>
@@ -2958,7 +2958,7 @@ namespace hpx { namespace util
                 typename remove_reference<TTuple>::type
               , typename remove_reference<UTuple>::type
             >::type(
-                detail::tuple_cat_element< 0, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 1, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 2, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 3, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 4, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 5, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 6, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 7, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 8, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 9, T0, T1>::call(t0, t1)
+                detail::tuple_cat_element< 0, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 1, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 2, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 3, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 4, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 5, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 6, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 7, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 8, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 9, TTuple, UTuple>::call(t, u)
             );
     }
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7 , typename T8 , typename T9>
@@ -3256,7 +3256,7 @@ namespace hpx { namespace util
                 typename remove_reference<TTuple>::type
               , typename remove_reference<UTuple>::type
             >::type(
-                detail::tuple_cat_element< 0, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 1, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 2, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 3, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 4, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 5, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 6, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 7, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 8, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 9, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 10, T0, T1>::call(t0, t1)
+                detail::tuple_cat_element< 0, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 1, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 2, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 3, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 4, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 5, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 6, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 7, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 8, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 9, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 10, TTuple, UTuple>::call(t, u)
             );
     }
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7 , typename T8 , typename T9 , typename T10>
@@ -3556,7 +3556,7 @@ namespace hpx { namespace util
                 typename remove_reference<TTuple>::type
               , typename remove_reference<UTuple>::type
             >::type(
-                detail::tuple_cat_element< 0, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 1, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 2, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 3, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 4, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 5, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 6, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 7, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 8, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 9, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 10, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 11, T0, T1>::call(t0, t1)
+                detail::tuple_cat_element< 0, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 1, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 2, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 3, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 4, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 5, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 6, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 7, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 8, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 9, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 10, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 11, TTuple, UTuple>::call(t, u)
             );
     }
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7 , typename T8 , typename T9 , typename T10 , typename T11>
@@ -3854,7 +3854,7 @@ namespace hpx { namespace util
                 typename remove_reference<TTuple>::type
               , typename remove_reference<UTuple>::type
             >::type(
-                detail::tuple_cat_element< 0, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 1, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 2, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 3, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 4, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 5, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 6, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 7, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 8, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 9, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 10, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 11, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 12, T0, T1>::call(t0, t1)
+                detail::tuple_cat_element< 0, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 1, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 2, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 3, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 4, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 5, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 6, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 7, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 8, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 9, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 10, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 11, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 12, TTuple, UTuple>::call(t, u)
             );
     }
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7 , typename T8 , typename T9 , typename T10 , typename T11 , typename T12>
@@ -4154,7 +4154,7 @@ namespace hpx { namespace util
                 typename remove_reference<TTuple>::type
               , typename remove_reference<UTuple>::type
             >::type(
-                detail::tuple_cat_element< 0, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 1, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 2, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 3, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 4, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 5, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 6, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 7, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 8, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 9, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 10, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 11, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 12, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 13, T0, T1>::call(t0, t1)
+                detail::tuple_cat_element< 0, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 1, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 2, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 3, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 4, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 5, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 6, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 7, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 8, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 9, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 10, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 11, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 12, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 13, TTuple, UTuple>::call(t, u)
             );
     }
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7 , typename T8 , typename T9 , typename T10 , typename T11 , typename T12 , typename T13>
@@ -4452,7 +4452,7 @@ namespace hpx { namespace util
                 typename remove_reference<TTuple>::type
               , typename remove_reference<UTuple>::type
             >::type(
-                detail::tuple_cat_element< 0, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 1, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 2, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 3, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 4, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 5, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 6, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 7, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 8, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 9, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 10, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 11, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 12, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 13, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 14, T0, T1>::call(t0, t1)
+                detail::tuple_cat_element< 0, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 1, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 2, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 3, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 4, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 5, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 6, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 7, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 8, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 9, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 10, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 11, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 12, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 13, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 14, TTuple, UTuple>::call(t, u)
             );
     }
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7 , typename T8 , typename T9 , typename T10 , typename T11 , typename T12 , typename T13 , typename T14>
@@ -4752,7 +4752,7 @@ namespace hpx { namespace util
                 typename remove_reference<TTuple>::type
               , typename remove_reference<UTuple>::type
             >::type(
-                detail::tuple_cat_element< 0, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 1, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 2, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 3, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 4, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 5, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 6, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 7, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 8, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 9, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 10, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 11, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 12, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 13, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 14, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 15, T0, T1>::call(t0, t1)
+                detail::tuple_cat_element< 0, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 1, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 2, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 3, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 4, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 5, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 6, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 7, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 8, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 9, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 10, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 11, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 12, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 13, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 14, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 15, TTuple, UTuple>::call(t, u)
             );
     }
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7 , typename T8 , typename T9 , typename T10 , typename T11 , typename T12 , typename T13 , typename T14 , typename T15>
@@ -5050,7 +5050,7 @@ namespace hpx { namespace util
                 typename remove_reference<TTuple>::type
               , typename remove_reference<UTuple>::type
             >::type(
-                detail::tuple_cat_element< 0, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 1, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 2, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 3, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 4, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 5, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 6, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 7, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 8, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 9, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 10, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 11, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 12, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 13, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 14, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 15, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 16, T0, T1>::call(t0, t1)
+                detail::tuple_cat_element< 0, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 1, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 2, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 3, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 4, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 5, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 6, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 7, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 8, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 9, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 10, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 11, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 12, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 13, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 14, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 15, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 16, TTuple, UTuple>::call(t, u)
             );
     }
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7 , typename T8 , typename T9 , typename T10 , typename T11 , typename T12 , typename T13 , typename T14 , typename T15 , typename T16>
@@ -5350,7 +5350,7 @@ namespace hpx { namespace util
                 typename remove_reference<TTuple>::type
               , typename remove_reference<UTuple>::type
             >::type(
-                detail::tuple_cat_element< 0, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 1, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 2, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 3, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 4, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 5, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 6, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 7, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 8, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 9, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 10, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 11, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 12, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 13, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 14, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 15, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 16, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 17, T0, T1>::call(t0, t1)
+                detail::tuple_cat_element< 0, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 1, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 2, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 3, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 4, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 5, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 6, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 7, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 8, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 9, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 10, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 11, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 12, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 13, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 14, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 15, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 16, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 17, TTuple, UTuple>::call(t, u)
             );
     }
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7 , typename T8 , typename T9 , typename T10 , typename T11 , typename T12 , typename T13 , typename T14 , typename T15 , typename T16 , typename T17>
@@ -5648,7 +5648,7 @@ namespace hpx { namespace util
                 typename remove_reference<TTuple>::type
               , typename remove_reference<UTuple>::type
             >::type(
-                detail::tuple_cat_element< 0, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 1, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 2, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 3, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 4, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 5, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 6, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 7, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 8, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 9, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 10, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 11, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 12, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 13, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 14, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 15, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 16, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 17, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 18, T0, T1>::call(t0, t1)
+                detail::tuple_cat_element< 0, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 1, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 2, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 3, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 4, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 5, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 6, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 7, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 8, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 9, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 10, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 11, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 12, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 13, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 14, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 15, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 16, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 17, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 18, TTuple, UTuple>::call(t, u)
             );
     }
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7 , typename T8 , typename T9 , typename T10 , typename T11 , typename T12 , typename T13 , typename T14 , typename T15 , typename T16 , typename T17 , typename T18>
@@ -5948,7 +5948,7 @@ namespace hpx { namespace util
                 typename remove_reference<TTuple>::type
               , typename remove_reference<UTuple>::type
             >::type(
-                detail::tuple_cat_element< 0, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 1, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 2, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 3, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 4, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 5, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 6, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 7, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 8, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 9, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 10, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 11, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 12, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 13, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 14, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 15, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 16, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 17, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 18, T0, T1>::call(t0, t1) , detail::tuple_cat_element< 19, T0, T1>::call(t0, t1)
+                detail::tuple_cat_element< 0, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 1, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 2, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 3, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 4, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 5, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 6, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 7, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 8, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 9, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 10, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 11, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 12, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 13, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 14, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 15, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 16, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 17, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 18, TTuple, UTuple>::call(t, u) , detail::tuple_cat_element< 19, TTuple, UTuple>::call(t, u)
             );
     }
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7 , typename T8 , typename T9 , typename T10 , typename T11 , typename T12 , typename T13 , typename T14 , typename T15 , typename T16 , typename T17 , typename T18 , typename T19>
