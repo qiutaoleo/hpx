@@ -10,10 +10,11 @@
 #include <hpx/config.hpp>
 #include <hpx/util/tuple.hpp>
 
+#include <boost/preprocessor/min.hpp>
 #include <boost/preprocessor/arithmetic/add.hpp>
 
 #if !defined(HPX_USE_PREPROCESSOR_LIMIT_EXPANSION)
-#   define HPX_FUSION_TUPLE_MAX BOOST_PP_ADD(HPX_PP_ROUND_UP(HPX_TUPLE_LIMIT), 3)
+#   define HPX_FUSION_TUPLE_MAX BOOST_PP_MIN(BOOST_PP_ADD(HPX_PP_ROUND_UP(HPX_TUPLE_LIMIT), 3), HPX_MAX_LIMIT)
 #else
 #   define HPX_FUSION_TUPLE_MAX HPX_TUPLE_LIMIT
 #endif

@@ -27,6 +27,7 @@
 #include <boost/mpl/identity.hpp>
 #include <boost/mpl/size_t.hpp>
 #include <boost/preprocessor/cat.hpp>
+#include <boost/preprocessor/min.hpp>
 #include <boost/preprocessor/arithmetic/add.hpp>
 #include <boost/preprocessor/arithmetic/dec.hpp>
 #include <boost/preprocessor/arithmetic/div.hpp>
@@ -53,7 +54,7 @@
 #include <utility> // for pair
 
 #if !defined(HPX_USE_PREPROCESSOR_LIMIT_EXPANSION)
-#   define HPX_TUPLE_MAX BOOST_PP_ADD(HPX_PP_ROUND_UP(HPX_TUPLE_LIMIT), 3)
+#   define HPX_TUPLE_MAX BOOST_PP_MIN(BOOST_PP_ADD(HPX_PP_ROUND_UP(HPX_TUPLE_LIMIT), 3), HPX_MAX_LIMIT)
 #else
 #   define HPX_TUPLE_MAX HPX_TUPLE_LIMIT
 #endif
