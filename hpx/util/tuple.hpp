@@ -27,6 +27,7 @@
 #include <boost/mpl/identity.hpp>
 #include <boost/mpl/size_t.hpp>
 #include <boost/preprocessor/cat.hpp>
+#include <boost/preprocessor/arithmetic/add.hpp>
 #include <boost/preprocessor/arithmetic/dec.hpp>
 #include <boost/preprocessor/arithmetic/div.hpp>
 #include <boost/preprocessor/arithmetic/inc.hpp>
@@ -51,7 +52,13 @@
 #include <cstddef> // for size_t
 #include <utility> // for pair
 
-#define N HPX_PP_ROUND_UP_ADD3(HPX_TUPLE_LIMIT)
+#if !defined(HPX_USE_PREPROCESSOR_LIMIT_EXPANSION)
+#   define HPX_TUPLE_MAX BOOST_PP_ADD(HPX_PP_ROUND_UP(HPX_TUPLE_LIMIT), 3)
+#else
+#   define HPX_TUPLE_MAX HPX_TUPLE_LIMIT
+#endif
+
+#define N HPX_TUPLE_MAX
 
 namespace hpx { namespace util
 {
@@ -183,7 +190,7 @@ namespace hpx { namespace util
         //  Requires: is_copy_assignable<Ti>::value is true for all i.
         //  Effects: Assigns each element of u to the corresponding element of *this.
         //  Returns: *this.
-        tuple& operator=(tuple const& other)
+        tuple& operator=(tuple const& other) BOOST_NOEXCEPT
         {
             return *this;
         }
@@ -823,7 +830,7 @@ namespace boost { namespace serialization
             3                                                                 \
           , (                                                                 \
                 1                                                             \
-              , HPX_FUNCTION_ARGUMENT_LIMIT                                   \
+              , HPX_TUPLE_LIMIT                                               \
               , <hpx/util/tuple.hpp>                                          \
             )                                                                 \
         )                                                                     \
@@ -834,6 +841,8 @@ namespace boost { namespace serialization
 #           pragma wave option(output: null)
 #       endif
 #   endif // !defined(HPX_USE_PREPROCESSOR_LIMIT_EXPANSION)
+
+#undef HPX_TUPLE_MAX
 
 #endif
 
@@ -849,7 +858,7 @@ namespace hpx { namespace util
         struct are_tuples_compatible<
             tuple<BOOST_PP_ENUM_PARAMS(N, T)>, UTuple
           , typename boost::enable_if_c<
-                tuple_size<typename remove_reference<tuple<BOOST_PP_ENUM_PARAMS(N, T)>>::type>::value == N
+                tuple_size<tuple<BOOST_PP_ENUM_PARAMS(N, T)> >::value == N
              && tuple_size<typename remove_reference<UTuple>::type>::value == N
             >::type
         >
@@ -875,7 +884,11 @@ namespace hpx { namespace util
 
     // 20.4.2, class template tuple
     template <BOOST_PP_ENUM_PARAMS(N, typename T)>
+#   if N != HPX_TUPLE_LIMIT
     class tuple<BOOST_PP_ENUM_PARAMS(N, T)>
+#   else
+    class tuple
+#   endif
     {
     public: // exposition-only
 #       define HPX_UTIL_TUPLE_MEMBER(Z, N, D)                                 \

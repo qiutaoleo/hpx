@@ -10,7 +10,13 @@
 #include <hpx/config.hpp>
 #include <hpx/util/tuple.hpp>
 
-#define HPX_TUPLE_MAX HPX_PP_ROUND_UP_ADD3(HPX_TUPLE_LIMIT)
+#include <boost/preprocessor/arithmetic/add.hpp>
+
+#if !defined(HPX_USE_PREPROCESSOR_LIMIT_EXPANSION)
+#   define HPX_FUSION_TUPLE_MAX BOOST_PP_ADD(HPX_PP_ROUND_UP(HPX_TUPLE_LIMIT), 3)
+#else
+#   define HPX_FUSION_TUPLE_MAX HPX_TUPLE_LIMIT
+#endif
 
 ///////////////////////////////////////////////////////////////////////////////
 /// tag_of.hpp
@@ -28,9 +34,9 @@ namespace boost { namespace fusion
 
     namespace traits
     {
-        template <BOOST_PP_ENUM_PARAMS(HPX_TUPLE_MAX, typename T)>
+        template <BOOST_PP_ENUM_PARAMS(HPX_FUSION_TUPLE_MAX, typename T)>
         struct tag_of<
-            hpx::util::tuple<BOOST_PP_ENUM_PARAMS(HPX_TUPLE_MAX, T)>
+            hpx::util::tuple<BOOST_PP_ENUM_PARAMS(HPX_FUSION_TUPLE_MAX, T)>
         >
         {
             typedef hpx::util::detail::tuple_tag type;
@@ -43,17 +49,17 @@ namespace boost { namespace mpl
     template <typename>
     struct sequence_tag;
 
-    template <BOOST_PP_ENUM_PARAMS(HPX_TUPLE_MAX, typename T)>
+    template <BOOST_PP_ENUM_PARAMS(HPX_FUSION_TUPLE_MAX, typename T)>
     struct sequence_tag<hpx::util::tuple<
-        BOOST_PP_ENUM_PARAMS(HPX_TUPLE_MAX, T)>
+        BOOST_PP_ENUM_PARAMS(HPX_FUSION_TUPLE_MAX, T)>
     >
     {
         typedef fusion::fusion_sequence_tag type;
     };
 
-    template <BOOST_PP_ENUM_PARAMS(HPX_TUPLE_MAX, typename T)>
+    template <BOOST_PP_ENUM_PARAMS(HPX_FUSION_TUPLE_MAX, typename T)>
     struct sequence_tag<hpx::util::tuple<
-        BOOST_PP_ENUM_PARAMS(HPX_TUPLE_MAX, T)> const
+        BOOST_PP_ENUM_PARAMS(HPX_FUSION_TUPLE_MAX, T)> const
     >
     {
         typedef fusion::fusion_sequence_tag type;
@@ -357,6 +363,6 @@ namespace boost { namespace fusion
     }
 }}
 
-#undef HPX_TUPLE_MAX
+#undef HPX_FUSION_TUPLE_MAX
 
 #endif

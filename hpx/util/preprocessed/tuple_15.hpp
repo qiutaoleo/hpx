@@ -17,7 +17,7 @@ namespace hpx { namespace util
         struct are_tuples_compatible<
             tuple<T0>, UTuple
           , typename boost::enable_if_c<
-                tuple_size<typename remove_reference<tuple<T0>>::type>::value == 1
+                tuple_size<tuple<T0> >::value == 1
              && tuple_size<typename remove_reference<UTuple>::type>::value == 1
             >::type
         >
@@ -304,7 +304,7 @@ namespace hpx { namespace util
         struct are_tuples_compatible<
             tuple<T0 , T1>, UTuple
           , typename boost::enable_if_c<
-                tuple_size<typename remove_reference<tuple<T0 , T1>>::type>::value == 2
+                tuple_size<tuple<T0 , T1> >::value == 2
              && tuple_size<typename remove_reference<UTuple>::type>::value == 2
             >::type
         >
@@ -590,7 +590,7 @@ namespace hpx { namespace util
         struct are_tuples_compatible<
             tuple<T0 , T1 , T2>, UTuple
           , typename boost::enable_if_c<
-                tuple_size<typename remove_reference<tuple<T0 , T1 , T2>>::type>::value == 3
+                tuple_size<tuple<T0 , T1 , T2> >::value == 3
              && tuple_size<typename remove_reference<UTuple>::type>::value == 3
             >::type
         >
@@ -897,7 +897,7 @@ namespace hpx { namespace util
         struct are_tuples_compatible<
             tuple<T0 , T1 , T2 , T3>, UTuple
           , typename boost::enable_if_c<
-                tuple_size<typename remove_reference<tuple<T0 , T1 , T2 , T3>>::type>::value == 4
+                tuple_size<tuple<T0 , T1 , T2 , T3> >::value == 4
              && tuple_size<typename remove_reference<UTuple>::type>::value == 4
             >::type
         >
@@ -1201,7 +1201,7 @@ namespace hpx { namespace util
         struct are_tuples_compatible<
             tuple<T0 , T1 , T2 , T3 , T4>, UTuple
           , typename boost::enable_if_c<
-                tuple_size<typename remove_reference<tuple<T0 , T1 , T2 , T3 , T4>>::type>::value == 5
+                tuple_size<tuple<T0 , T1 , T2 , T3 , T4> >::value == 5
              && tuple_size<typename remove_reference<UTuple>::type>::value == 5
             >::type
         >
@@ -1508,7 +1508,7 @@ namespace hpx { namespace util
         struct are_tuples_compatible<
             tuple<T0 , T1 , T2 , T3 , T4 , T5>, UTuple
           , typename boost::enable_if_c<
-                tuple_size<typename remove_reference<tuple<T0 , T1 , T2 , T3 , T4 , T5>>::type>::value == 6
+                tuple_size<tuple<T0 , T1 , T2 , T3 , T4 , T5> >::value == 6
              && tuple_size<typename remove_reference<UTuple>::type>::value == 6
             >::type
         >
@@ -1812,7 +1812,7 @@ namespace hpx { namespace util
         struct are_tuples_compatible<
             tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6>, UTuple
           , typename boost::enable_if_c<
-                tuple_size<typename remove_reference<tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6>>::type>::value == 7
+                tuple_size<tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6> >::value == 7
              && tuple_size<typename remove_reference<UTuple>::type>::value == 7
             >::type
         >
@@ -2119,7 +2119,7 @@ namespace hpx { namespace util
         struct are_tuples_compatible<
             tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7>, UTuple
           , typename boost::enable_if_c<
-                tuple_size<typename remove_reference<tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7>>::type>::value == 8
+                tuple_size<tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7> >::value == 8
              && tuple_size<typename remove_reference<UTuple>::type>::value == 8
             >::type
         >
@@ -2423,7 +2423,7 @@ namespace hpx { namespace util
         struct are_tuples_compatible<
             tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7 , T8>, UTuple
           , typename boost::enable_if_c<
-                tuple_size<typename remove_reference<tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7 , T8>>::type>::value == 9
+                tuple_size<tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7 , T8> >::value == 9
              && tuple_size<typename remove_reference<UTuple>::type>::value == 9
             >::type
         >
@@ -2730,7 +2730,7 @@ namespace hpx { namespace util
         struct are_tuples_compatible<
             tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7 , T8 , T9>, UTuple
           , typename boost::enable_if_c<
-                tuple_size<typename remove_reference<tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7 , T8 , T9>>::type>::value == 10
+                tuple_size<tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7 , T8 , T9> >::value == 10
              && tuple_size<typename remove_reference<UTuple>::type>::value == 10
             >::type
         >
@@ -3034,7 +3034,7 @@ namespace hpx { namespace util
         struct are_tuples_compatible<
             tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7 , T8 , T9 , T10>, UTuple
           , typename boost::enable_if_c<
-                tuple_size<typename remove_reference<tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7 , T8 , T9 , T10>>::type>::value == 11
+                tuple_size<tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7 , T8 , T9 , T10> >::value == 11
              && tuple_size<typename remove_reference<UTuple>::type>::value == 11
             >::type
         >
@@ -3341,7 +3341,7 @@ namespace hpx { namespace util
         struct are_tuples_compatible<
             tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7 , T8 , T9 , T10 , T11>, UTuple
           , typename boost::enable_if_c<
-                tuple_size<typename remove_reference<tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7 , T8 , T9 , T10 , T11>>::type>::value == 12
+                tuple_size<tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7 , T8 , T9 , T10 , T11> >::value == 12
              && tuple_size<typename remove_reference<UTuple>::type>::value == 12
             >::type
         >
@@ -3645,7 +3645,7 @@ namespace hpx { namespace util
         struct are_tuples_compatible<
             tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7 , T8 , T9 , T10 , T11 , T12>, UTuple
           , typename boost::enable_if_c<
-                tuple_size<typename remove_reference<tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7 , T8 , T9 , T10 , T11 , T12>>::type>::value == 13
+                tuple_size<tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7 , T8 , T9 , T10 , T11 , T12> >::value == 13
              && tuple_size<typename remove_reference<UTuple>::type>::value == 13
             >::type
         >
@@ -3952,7 +3952,7 @@ namespace hpx { namespace util
         struct are_tuples_compatible<
             tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7 , T8 , T9 , T10 , T11 , T12 , T13>, UTuple
           , typename boost::enable_if_c<
-                tuple_size<typename remove_reference<tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7 , T8 , T9 , T10 , T11 , T12 , T13>>::type>::value == 14
+                tuple_size<tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7 , T8 , T9 , T10 , T11 , T12 , T13> >::value == 14
              && tuple_size<typename remove_reference<UTuple>::type>::value == 14
             >::type
         >
@@ -4256,7 +4256,7 @@ namespace hpx { namespace util
         struct are_tuples_compatible<
             tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7 , T8 , T9 , T10 , T11 , T12 , T13 , T14>, UTuple
           , typename boost::enable_if_c<
-                tuple_size<typename remove_reference<tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7 , T8 , T9 , T10 , T11 , T12 , T13 , T14>>::type>::value == 15
+                tuple_size<tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7 , T8 , T9 , T10 , T11 , T12 , T13 , T14> >::value == 15
              && tuple_size<typename remove_reference<UTuple>::type>::value == 15
             >::type
         >
@@ -4563,7 +4563,7 @@ namespace hpx { namespace util
         struct are_tuples_compatible<
             tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7 , T8 , T9 , T10 , T11 , T12 , T13 , T14 , T15>, UTuple
           , typename boost::enable_if_c<
-                tuple_size<typename remove_reference<tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7 , T8 , T9 , T10 , T11 , T12 , T13 , T14 , T15>>::type>::value == 16
+                tuple_size<tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7 , T8 , T9 , T10 , T11 , T12 , T13 , T14 , T15> >::value == 16
              && tuple_size<typename remove_reference<UTuple>::type>::value == 16
             >::type
         >
@@ -4867,7 +4867,7 @@ namespace hpx { namespace util
         struct are_tuples_compatible<
             tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7 , T8 , T9 , T10 , T11 , T12 , T13 , T14 , T15 , T16>, UTuple
           , typename boost::enable_if_c<
-                tuple_size<typename remove_reference<tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7 , T8 , T9 , T10 , T11 , T12 , T13 , T14 , T15 , T16>>::type>::value == 17
+                tuple_size<tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7 , T8 , T9 , T10 , T11 , T12 , T13 , T14 , T15 , T16> >::value == 17
              && tuple_size<typename remove_reference<UTuple>::type>::value == 17
             >::type
         >
@@ -5174,7 +5174,7 @@ namespace hpx { namespace util
         struct are_tuples_compatible<
             tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7 , T8 , T9 , T10 , T11 , T12 , T13 , T14 , T15 , T16 , T17>, UTuple
           , typename boost::enable_if_c<
-                tuple_size<typename remove_reference<tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7 , T8 , T9 , T10 , T11 , T12 , T13 , T14 , T15 , T16 , T17>>::type>::value == 18
+                tuple_size<tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7 , T8 , T9 , T10 , T11 , T12 , T13 , T14 , T15 , T16 , T17> >::value == 18
              && tuple_size<typename remove_reference<UTuple>::type>::value == 18
             >::type
         >
@@ -5192,7 +5192,7 @@ namespace hpx { namespace util
     }
     
     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7 , typename T8 , typename T9 , typename T10 , typename T11 , typename T12 , typename T13 , typename T14 , typename T15 , typename T16 , typename T17>
-    class tuple<T0 , T1 , T2 , T3 , T4 , T5 , T6 , T7 , T8 , T9 , T10 , T11 , T12 , T13 , T14 , T15 , T16 , T17>
+    class tuple
     {
     public: 
         detail::tuple_member<T0> _m0; detail::tuple_member<T1> _m1; detail::tuple_member<T2> _m2; detail::tuple_member<T3> _m3; detail::tuple_member<T4> _m4; detail::tuple_member<T5> _m5; detail::tuple_member<T6> _m6; detail::tuple_member<T7> _m7; detail::tuple_member<T8> _m8; detail::tuple_member<T9> _m9; detail::tuple_member<T10> _m10; detail::tuple_member<T11> _m11; detail::tuple_member<T12> _m12; detail::tuple_member<T13> _m13; detail::tuple_member<T14> _m14; detail::tuple_member<T15> _m15; detail::tuple_member<T16> _m16; detail::tuple_member<T17> _m17;;
